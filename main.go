@@ -5,28 +5,33 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	// var params []string
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Enter image name: ")
+	var input string
+	if scanner.Scan() {
+		input = scanner.Text()
+	}
 
-	fmt.Print("Enter your domain name (default: localhost): ")
-	input, err := reader.ReadString('\n')
-	try(err)
-	fmt.Print(input)
+	printContainerID(input)
 }
 
-func printContainersWithID() {
+func printContainerID(imageName string) {
 	cli, err := client.NewEnvClient()
 	try(err)
+
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
 	try(err)
 	for _, container := range containers {
-		fmt.Printf("%s %s\n", container.ID[:12], container.Image)
+		if strings.Contains(container.Image, imageName) {
+			fmt.Printf("%s\n", container.ID[:12])
+		}
 	}
 }
 
