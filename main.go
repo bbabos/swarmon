@@ -25,9 +25,13 @@ func main() {
 }
 
 func execAll(answers []string) {
-	fmt.Print("\nConfig started...\n")
-	for _, answer := range answers {
-		printContainerID(answer)
+	fmt.Print("\nOutput:\n")
+	for i := 0; i < length; i++ {
+		if i == 0 {
+			printContainerID(answers[0])
+		} else if i == 1 {
+			// TODO
+		}
 	}
 }
 
