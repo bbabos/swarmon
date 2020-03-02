@@ -11,15 +11,44 @@ import (
 	"github.com/docker/docker/client"
 )
 
-func main() {
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("Enter image name: ")
-	var input string
-	if scanner.Scan() {
-		input = scanner.Text()
-	}
+var questions = []string{
+	"Enter image name: ",
+	"2nd question: ",
+	"Third question: ",
+}
 
-	printContainerID(input)
+var length = len(questions)
+
+func main() {
+	answers := getAnswers()
+	execAll(answers)
+}
+
+func execAll(answers []string) {
+	fmt.Print("\nConfig started...\n")
+	for _, answer := range answers {
+		printContainerID(answer)
+	}
+}
+
+func getAnswers() []string {
+	answers := make([]string, length)
+
+	for i, question := range questions {
+		answers[i] = readInput(question)
+	}
+	return answers
+}
+
+func readInput(question string) string {
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Printf(question)
+
+	var answer string
+	if scanner.Scan() {
+		answer = scanner.Text()
+	}
+	return answer
 }
 
 func printContainerID(imageName string) {
@@ -28,6 +57,7 @@ func printContainerID(imageName string) {
 
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
 	try(err)
+
 	for _, container := range containers {
 		if strings.Contains(container.Image, imageName) {
 			fmt.Printf("%s\n", container.ID[:12])
