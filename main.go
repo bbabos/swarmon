@@ -4,91 +4,71 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 )
 
-type params struct {
-	stackName   string
-	domainName  string
-	admunUser   string
-	adminPw     string
-	basicAuthPw string
-	slackURL    string
-	slackUser   string
-	traefikPort string
-	schema      string
-	metricPort  string
-	gwBridge    string
+type input struct {
+	Question string
+	Answer   string
 }
 
-var questions = []string{
-	"Enter docker stack name (default is swarmon): ",
-	"Enter domain name: ",
-	"Enter admin user name: ",
-	"Enter admin password: ",
-	"Enter basicAuth password (it will be hashed for Traefik):",
-	"Enter Slack Webhook URL: ",
-	"Enter username for Slack alerts: ",
-	"Enter Traefik external port: ",
-	"Enter HTTP schema (http or https): ",
-	"Enter Docker Swarm metric port (you sould enable it manually): ",
-	"Enter GW_BRIDGE ip (default is 172.18.0.1): ",
+func (i input) execute(action func(text string) string) {
+	action(i.Answer)
 }
 
-var length = len(questions)
+var inputs = []input{
+	{Question: "Docker stack name", Answer: "random"},
+	{Question: "Domain name"},
+	{Question: "Admin username"},
+	{Question: "Admin password"},
+	{Question: "BasicAuth password"},
+	{Question: "Slack Webhook URL"},
+	{Question: "Username for Slack alerts"},
+	{Question: "Traefik external port"},
+	{Question: "HTTP schema"},
+	{Question: "Docker Swarm metric port"},
+	{Question: "GW_BRIDGE IP"},
+}
+var length = len(inputs)
 
 func main() {
-	answers := getAnswers()
-	execAll(answers)
+	getAnswers()
+	executeAll()
 }
 
-func execAll(answers []string) {
-	fmt.Print("\nOutput:\n")
-	for i := 0; i < length; i++ {
-		if i == 0 {
-			// printContainerID(answers[0])
-		} else if i == 1 {
-			// TODO
+func getAnswers() {
+	for i := 0; i < 3; i++ { // TODO i < length
+		if inputs[i].Answer == "" {
+			inputs[i].Question = inputs[i].Question + ": "
+			fmt.Print(inputs[i].Question)
+			inputs[i].Answer = readInput(inputs[i].Question)
+		} else {
+			inputs[i].Question = inputs[i].Question + " [" + inputs[i].Answer + "]" + ": "
+			fmt.Print(inputs[i].Question)
+			result := readInput(inputs[i].Question)
+			if result != "" {
+				inputs[i].Answer = result
+			}
 		}
 	}
 }
 
-func getAnswers() []string {
-	answers := make([]string, length)
-
-	for i, question := range questions {
-		answers[i] = readInput(question)
-	}
-	return answers
-}
-
 func readInput(question string) string {
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Printf(question)
-
 	var answer string
+
 	if scanner.Scan() {
 		answer = scanner.Text()
 	}
 	return answer
 }
 
-// func printContainerID(imageName string) {
-// 	cli, err := client.NewEnvClient()
-// 	try(err)
-
-// 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
-// 	try(err)
-
-// 	for _, container := range containers {
-// 		if strings.Contains(container.Image, imageName) {
-// 			fmt.Printf("%s\n", container.ID[:12])
-// 		}
-// 	}
-// }
-
-func deployStack() {
-	exec.Command("docker", "stack deploy -c ./templates/compose.yml swarmon")
+func executeAll() {
+	fmt.Print("\nOutput:\n")
+	for i := 0; i < length; i++ {
+		if inputs[i].Answer != "" {
+			fmt.Println(inputs[i].Answer)
+		}
+	}
 }
 
 func try(err error) {
