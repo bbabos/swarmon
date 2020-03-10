@@ -2,19 +2,37 @@ package main
 
 import (
 	"bufio"
-	"context"
 	"fmt"
 	"os"
-	"strings"
-
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
+	"os/exec"
 )
 
+type params struct {
+	stackName   string
+	domainName  string
+	admunUser   string
+	adminPw     string
+	basicAuthPw string
+	slackURL    string
+	slackUser   string
+	traefikPort string
+	schema      string
+	metricPort  string
+	gwBridge    string
+}
+
 var questions = []string{
-	"Enter image name: ",
-	"2nd question: ",
-	"Third question: ",
+	"Enter docker stack name (default is swarmon): ",
+	"Enter domain name: ",
+	"Enter admin user name: ",
+	"Enter admin password: ",
+	"Enter basicAuth password (it will be hashed for Traefik):",
+	"Enter Slack Webhook URL: ",
+	"Enter username for Slack alerts: ",
+	"Enter Traefik external port: ",
+	"Enter HTTP schema (http or https): ",
+	"Enter Docker Swarm metric port (you sould enable it manually): ",
+	"Enter GW_BRIDGE ip (default is 172.18.0.1): ",
 }
 
 var length = len(questions)
@@ -28,7 +46,7 @@ func execAll(answers []string) {
 	fmt.Print("\nOutput:\n")
 	for i := 0; i < length; i++ {
 		if i == 0 {
-			printContainerID(answers[0])
+			// printContainerID(answers[0])
 		} else if i == 1 {
 			// TODO
 		}
@@ -55,18 +73,22 @@ func readInput(question string) string {
 	return answer
 }
 
-func printContainerID(imageName string) {
-	cli, err := client.NewEnvClient()
-	try(err)
+// func printContainerID(imageName string) {
+// 	cli, err := client.NewEnvClient()
+// 	try(err)
 
-	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
-	try(err)
+// 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+// 	try(err)
 
-	for _, container := range containers {
-		if strings.Contains(container.Image, imageName) {
-			fmt.Printf("%s\n", container.ID[:12])
-		}
-	}
+// 	for _, container := range containers {
+// 		if strings.Contains(container.Image, imageName) {
+// 			fmt.Printf("%s\n", container.ID[:12])
+// 		}
+// 	}
+// }
+
+func deployStack() {
+	exec.Command("docker", "stack deploy -c ./templates/compose.yml swarmon")
 }
 
 func try(err error) {
