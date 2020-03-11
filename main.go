@@ -32,8 +32,13 @@ var length = len(inputs)
 
 func main() {
 	// gitClone("https://github.com/github/platform-samples.git")
-	getAnswers()
-	printAll()
+	// getAnswers()
+	// printAll()
+
+	testObj := input{Question: "Kerdes ehh", Answer: "Valasz ahh"}
+	result := processFile("test-tmpl.yml", testObj)
+
+	fmt.Println(result)
 }
 
 func getAnswers() {
