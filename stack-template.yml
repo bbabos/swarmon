@@ -18,12 +18,12 @@ configs:
 
 services:
   dockerd-exporter:
-    image: babobene/dockerd-exporter:{{.TAG}}
+    image: babobene/dockerd-exporter:{{.Tag}}
     networks:
       - net
     environment:
-      - GW_BRIDGE_IP={{.GW_BRIDGE_IP}}
-      - METRIC_PORT={{.METRIC_PORT}}
+      - GW_BRIDGE_IP={{.GwBridgeIP}}
+      - METRIC_PORT={{.MetricPort}}
     deploy:
       mode: global
       resources:
@@ -33,7 +33,7 @@ services:
           memory: 64M
 
   node-exporter:
-    image: babobene/node-exporter:{{.TAG}}
+    image: babobene/node-exporter:{{.Tag}}
     networks:
       - net
     environment:
@@ -79,7 +79,7 @@ services:
           memory: 64M
 
   prometheus:
-    image: babobene/prometheus:{{.TAG}}
+    image: babobene/prometheus:{{.Tag}}
     networks:
       - net
     command:
@@ -105,20 +105,20 @@ services:
         reservations:
           memory: 128M
       labels:
-        - traefik.http.routers.prometheus.rule=Host(`prometheus.{{.DOMAIN}}`)
+        - traefik.http.routers.prometheus.rule=Host(`prometheus.{{.Domain}}`)
         - traefik.http.services.prometheus-service.loadbalancer.server.port=9090
-        - traefik.http.middlewares.prometheus-auth.basicauth.users={{.ADMIN_USER}}:{{.TRAEFIK_ADMIN_PW}}
+        - traefik.http.middlewares.prometheus-auth.basicauth.users={{.AdminUser}}:{{.TraefikAdminPassword}}
         - traefik.http.routers.prometheus.middlewares=prometheus-auth
-        - constraint={{.STACKNAME}}
+        - constraint={{.StackName}}
 
   grafana:
-    image: babobene/grafana:{{.TAG}}
+    image: babobene/grafana:{{.Tag}}
     networks:
       - net
     environment:
-      - GF_SECURITY_ADMIN_USER={{.ADMIN_USER}}
-      - GF_SECURITY_ADMIN_PASSWORD={{.ADMIN_PASSWORD}}
-      - GF_SERVER_ROOT_URL={{.SCHEMA}}://grafana.{{.DOMAIN}}
+      - GF_SECURITY_ADMIN_USER={{.AdminUser}}
+      - GF_SECURITY_ADMIN_PASSWORD={{.AdminPassword}}
+      - GF_SERVER_ROOT_URL={{.Schema}}://grafana.{{.Domain}}
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - grafana:/var/lib/grafana
@@ -134,19 +134,19 @@ services:
         reservations:
           memory: 64M
       labels:
-        - traefik.http.routers.grafana.rule=Host(`grafana.{{.DOMAIN}}`)
+        - traefik.http.routers.grafana.rule=Host(`grafana.{{.Domain}}`)
         - traefik.http.services.grafana-service.loadbalancer.server.port=3000
-        - constraint={{.STACKNAME}}
+        - constraint={{.StackName}}
 
   alertmanager:
-    image: babobene/alertmanager:{{.TAG}}
+    image: babobene/alertmanager:{{.Tag}}
     networks:
       - net
     environment:
-      - SLACK_URL={{.SLACK_URL}}
-      - SLACK_USER={{.SLACK_USER}}
-      - DOMAIN={{.DOMAIN}}
-      - SCHEMA={{.SCHEMA}}
+      - SLACK_URL={{.SlackURL}}
+      - SLACK_USER={{.SlackUser}}
+      - DOMAIN={{.Domain}}
+      - SCHEMA={{.Schema}}
     command:
       - --config.file=/etc/alertmanager/alertmanager.yml
       - --storage.path=/alertmanager
@@ -169,7 +169,7 @@ services:
     networks:
       - net
     environment:
-      - ALERTMANAGER_URI={{.SCHEMA}}://alertmanager:9093
+      - ALERTMANAGER_URI={{.Schema}}://alertmanager:9093
     deploy:
       mode: replicated
       replicas: 1
@@ -179,24 +179,24 @@ services:
         reservations:
           memory: 64M
       labels:
-        - traefik.http.routers.karma.rule=Host(`karma.{{.DOMAIN}}`)
+        - traefik.http.routers.karma.rule=Host(`karma.{{.Domain}}`)
         - traefik.http.services.karma-service.loadbalancer.server.port=8080
-        - traefik.http.middlewares.karma-auth.basicauth.users={{.ADMIN_USER}}:{{.TRAEFIK_ADMIN_PW}}
+        - traefik.http.middlewares.karma-auth.basicauth.users={{.AdminUser}}:{{.TraefikAdminPassword}}
         - traefik.http.routers.karma.middlewares=karma-auth
-        - constraint={{.STACKNAME}}
+        - constraint={{.StackName}}
 
   traefik:
     image: traefik:v2.1
     networks:
       - net
     ports:
-      - {{.PORT}}:80
+      - {{.Port}}:80
     command:
       - --accesslog=true
       - --providers.docker=true
       - --providers.docker.watch
       - --providers.docker.swarmMode=true
-      - --providers.docker.constraints=Label(`constraint`,`{{.STACKNAME}}`)
+      - --providers.docker.constraints=Label(`constraint`,`{{.StackName}}`)
       - --entryPoints.web.address=:80
       # - --entryPoints.web.forwardedHeaders.trustedIPs=172.31.0.0/16,10.255.0.0/16
       - --entryPoints.web.forwardedHeaders.insecure # TODO

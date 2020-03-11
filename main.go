@@ -1,14 +1,28 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 )
 
 type input struct {
 	Question string
 	Answer   string
+	Param    param
+}
+
+type param struct {
+	Tag                  string
+	Domain               string
+	AdminUser            string
+	AdminPassword        string
+	StackName            string
+	Schema               string
+	SlackURL             string
+	SlackUser            string
+	Port                 int
+	MetricPort           int
+	GwBridgeIP           string
+	TraefikAdminPassword string
 }
 
 func (i *input) execute(action func(text string) string) {
@@ -16,9 +30,9 @@ func (i *input) execute(action func(text string) string) {
 }
 
 var inputs = []input{
-	{Question: "Docker stack name", Answer: "random"}, // TODO remove answer
-	{Question: "Domain name"},
-	{Question: "Admin username"},
+	{Question: "Docker stack name", Answer: "stackname", Param: param{StackName: ""}}, // TODO remove answer
+	{Question: "Domain name", Answer: "domain name", Param: param{Domain: ""}},
+	{Question: "Admin username", Param: param{AdminUser: ""}},
 	{Question: "Admin password"},
 	{Question: "BasicAuth password"},
 	{Question: "Slack Webhook URL"},
@@ -32,13 +46,14 @@ var length = len(inputs)
 
 func main() {
 	// gitClone("https://github.com/github/platform-samples.git")
-	// getAnswers()
-	// printAll()
+	getAnswers()
+	printAll()
 
-	testObj := input{Question: "Kerdes ehh", Answer: "Valasz ahh"}
-	result := processFile("test-tmpl.yml", testObj)
+	// testObj := input{Question: "Kerdes ehh", Answer: "Valasz ahh"}
+	// result := parseFile("test-tmpl.yml", testObj)
+	// writeToFile(result, "asd.txt")
 
-	fmt.Println(result)
+	// fmt.Println(result)
 }
 
 func getAnswers() {
@@ -56,16 +71,6 @@ func getAnswers() {
 			}
 		}
 	}
-}
-
-func readInput(question string) string {
-	scanner := bufio.NewScanner(os.Stdin)
-	var answer string
-
-	if scanner.Scan() {
-		answer = scanner.Text()
-	}
-	return answer
 }
 
 func printAll() {
