@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"os"
 	"text/template"
@@ -14,6 +15,16 @@ func try(err error) {
 	}
 }
 
+func readInput(question string) string {
+	scanner := bufio.NewScanner(os.Stdin)
+	var answer string
+
+	if scanner.Scan() {
+		answer = scanner.Text()
+	}
+	return answer
+}
+
 func gitClone(repoURL string) {
 	_, err := git.PlainClone("./tmp", false, &git.CloneOptions{
 		URL:      repoURL,
@@ -22,7 +33,7 @@ func gitClone(repoURL string) {
 	try(err)
 }
 
-func process(t *template.Template, vars interface{}) string {
+func processTemplate(t *template.Template, vars interface{}) string {
 	var tmplBytes bytes.Buffer
 
 	err := t.Execute(&tmplBytes, vars)
@@ -31,9 +42,20 @@ func process(t *template.Template, vars interface{}) string {
 	return tmplBytes.String()
 }
 
-func processFile(fileName string, vars interface{}) string {
+func parseFile(fileName string, vars interface{}) string {
 	tmpl, err := template.ParseFiles(fileName)
 	try(err)
 
-	return process(tmpl, vars)
+	return processTemplate(tmpl, vars)
+}
+
+func writeToFile(content string, filename string) {
+	f, err := os.Create(filename)
+	try(err)
+
+	_, err = f.WriteString(content)
+	try(err)
+
+	err = f.Close()
+	try(err)
 }
