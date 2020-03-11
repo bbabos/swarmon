@@ -11,12 +11,12 @@ type input struct {
 	Answer   string
 }
 
-func (i input) execute(action func(text string) string) {
+func (i *input) execute(action func(text string) string) {
 	action(i.Answer)
 }
 
 var inputs = []input{
-	{Question: "Docker stack name", Answer: "random"},
+	{Question: "Docker stack name", Answer: "random"}, // TODO remove answer
 	{Question: "Domain name"},
 	{Question: "Admin username"},
 	{Question: "Admin password"},
@@ -31,8 +31,9 @@ var inputs = []input{
 var length = len(inputs)
 
 func main() {
+	// gitClone("https://github.com/github/platform-samples.git")
 	getAnswers()
-	executeAll()
+	printAll()
 }
 
 func getAnswers() {
@@ -62,17 +63,11 @@ func readInput(question string) string {
 	return answer
 }
 
-func executeAll() {
-	fmt.Print("\nOutput:\n")
+func printAll() {
+	fmt.Print("\nAnswers:\n")
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer != "" {
 			fmt.Println(inputs[i].Answer)
 		}
-	}
-}
-
-func try(err error) {
-	if err != nil {
-		panic(err)
 	}
 }
