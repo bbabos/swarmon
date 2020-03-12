@@ -59,3 +59,7 @@ func writeToFile(content string, filename string) {
 	err = f.Close()
 	try(err)
 }
+
+func (i *input) execute(action func(text string) string) {
+	action(i.Answer)
+}
