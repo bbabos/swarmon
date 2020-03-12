@@ -1,0 +1,13 @@
+Node ID: {{.Node.ID}}
+Tag: {.Tag}}
+Domain: {.Domain}}
+Admin user: {.AdminUser}}
+Admin pw: {.AdminPassword}}
+Stack name: {.StackName}}
+Schema: {.Schema}}
+Slack url: {{.SlackURL}}
+Slack user: {.SlackUser}}
+Port: {.Port}}
+Metric port: {.MetricPort}}
+Gw bridge ip: {.GwBridgeIP}}
+Hashed pw: {{.TraefikAdminPassword}}
