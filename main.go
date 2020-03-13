@@ -57,12 +57,11 @@ var length = len(inputs)
 func main() {
 	// gitClone("https://github.com/github/platform-samples.git", "tmp")
 	getAnswers()
-
-	result := parseFile("templates/stack.yml", p)
-	writeToFile(result, "templates/parsed.yml")
+	parsedfile := parseFile("templates/stack.yml", p)
+	writeToFile(parsedfile, "templates/parsed.yml")
 }
 
-func notOkSolution() {
+func setParams() {
 	p.Docker.StackName = inputs[0].Answer
 	p.Domain = inputs[1].Answer
 	p.AdminUser.Name = inputs[2].Answer
@@ -92,14 +91,5 @@ func getAnswers() {
 			}
 		}
 	}
-	notOkSolution()
-}
-
-func printAll() {
-	fmt.Print("\nAnswers:\n")
-	for i := 0; i < length; i++ {
-		if inputs[i].Answer != "" {
-			fmt.Println(inputs[i].Answer)
-		}
-	}
+	setParams()
 }
