@@ -10,21 +10,30 @@ type input struct {
 }
 
 type param struct {
-	Node struct {
+	Tag    string
+	Domain string
+	Schema string
+	Node   struct {
 		ID string
 	}
-	Tag                  string
-	Domain               string
-	AdminUser            string
-	AdminPassword        string
-	StackName            string
-	Schema               string
-	SlackURL             string
-	SlackUser            string
-	Port                 string
-	MetricPort           string
-	GwBridgeIP           string
-	TraefikAdminPassword string
+	AdminUser struct {
+		Name     string
+		Password string
+	}
+	Slack struct {
+		Webhook   string
+		AlertUser string
+	}
+	Traefik struct {
+		Port       string
+		BAPassword string
+		BAUser     string
+	}
+	Docker struct {
+		StackName  string
+		MetricPort string
+		GwBridgeIP string
+	}
 }
 
 var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
@@ -33,7 +42,8 @@ var inputs = []input{
 	{Question: "Docker stack name", Answer: "swarmon"},
 	{Question: "Domain name", Answer: "localhost"},
 	{Question: "Admin username", Answer: "admin"},
-	{Question: "Admin password", Answer: "admin"},
+	{Question: "Admin password", Answer: "adminpw"},
+	{Question: "BasicAuth username", Answer: "admin"},
 	{Question: "BasicAuth password", Answer: "hashedpw"},
 	{Question: "Slack Webhook URL", Answer: "http://webhook.url.com"},
 	{Question: "Username for Slack alerts", Answer: "alertmanager"},
@@ -45,31 +55,30 @@ var inputs = []input{
 var length = len(inputs)
 
 func main() {
-	// gitClone("https://github.com/github/platform-samples.git")
-
+	// gitClone("https://github.com/github/platform-samples.git", "tmp")
 	getAnswers()
-	// printAll()
 
-	result := parseFile("templates/example.yml", p)
+	result := parseFile("templates/stack.yml", p)
 	writeToFile(result, "templates/parsed.yml")
 }
 
 func notOkSolution() {
-	p.StackName = inputs[0].Answer
+	p.Docker.StackName = inputs[0].Answer
 	p.Domain = inputs[1].Answer
-	p.AdminUser = inputs[2].Answer
-	p.AdminPassword = inputs[3].Answer
-	p.TraefikAdminPassword = inputs[4].Answer
-	p.SlackURL = inputs[5].Answer
-	p.SlackUser = inputs[6].Answer
-	p.Port = inputs[7].Answer
-	p.Schema = inputs[8].Answer
-	p.MetricPort = inputs[9].Answer
-	p.GwBridgeIP = inputs[10].Answer
+	p.AdminUser.Name = inputs[2].Answer
+	p.AdminUser.Password = inputs[3].Answer
+	p.Traefik.BAUser = inputs[4].Answer
+	p.Traefik.BAPassword = inputs[5].Answer
+	p.Slack.Webhook = inputs[6].Answer
+	p.Slack.AlertUser = inputs[7].Answer
+	p.Traefik.Port = inputs[8].Answer
+	p.Schema = inputs[9].Answer
+	p.Docker.MetricPort = inputs[10].Answer
+	p.Docker.GwBridgeIP = inputs[11].Answer
 }
 
 func getAnswers() {
-	for i := 0; i < length; i++ { // TODO i < length
+	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
 			inputs[i].Question = inputs[i].Question + ": "
 			fmt.Print(inputs[i].Question)

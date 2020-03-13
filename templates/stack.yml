@@ -22,8 +22,8 @@ services:
     networks:
       - net
     environment:
-      - GW_BRIDGE_IP={{.GwBridgeIP}}
-      - METRIC_PORT={{.MetricPort}}
+      - GW_BRIDGE_IP={{.Docker.GwBridgeIP}}
+      - METRIC_PORT={{.Docker.MetricPort}}
     deploy:
       mode: global
       resources:
@@ -107,17 +107,17 @@ services:
       labels:
         - traefik.http.routers.prometheus.rule=Host(`prometheus.{{.Domain}}`)
         - traefik.http.services.prometheus-service.loadbalancer.server.port=9090
-        - traefik.http.middlewares.prometheus-auth.basicauth.users={{.AdminUser}}:{{.TraefikAdminPassword}}
+        - traefik.http.middlewares.prometheus-auth.basicauth.users={{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
         - traefik.http.routers.prometheus.middlewares=prometheus-auth
-        - constraint={{.StackName}}
+        - constraint={{.Docker.StackName}}
 
   grafana:
     image: babobene/grafana:{{.Tag}}
     networks:
       - net
     environment:
-      - GF_SECURITY_ADMIN_USER={{.AdminUser}}
-      - GF_SECURITY_ADMIN_PASSWORD={{.AdminPassword}}
+      - GF_SECURITY_ADMIN_USER={{.AdminUser.Name}}
+      - GF_SECURITY_ADMIN_PASSWORD={{.AdminUser.Password}}
       - GF_SERVER_ROOT_URL={{.Schema}}://grafana.{{.Domain}}
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
@@ -136,15 +136,15 @@ services:
       labels:
         - traefik.http.routers.grafana.rule=Host(`grafana.{{.Domain}}`)
         - traefik.http.services.grafana-service.loadbalancer.server.port=3000
-        - constraint={{.StackName}}
+        - constraint={{.Docker.StackName}}
 
   alertmanager:
     image: babobene/alertmanager:{{.Tag}}
     networks:
       - net
     environment:
-      - SLACK_URL={{.SlackURL}}
-      - SLACK_USER={{.SlackUser}}
+      - SLACK_URL={{.Slack.Webhook}}
+      - SLACK_USER={{.Slack.AlertUser}}
       - DOMAIN={{.Domain}}
       - SCHEMA={{.Schema}}
     command:
@@ -181,22 +181,22 @@ services:
       labels:
         - traefik.http.routers.karma.rule=Host(`karma.{{.Domain}}`)
         - traefik.http.services.karma-service.loadbalancer.server.port=8080
-        - traefik.http.middlewares.karma-auth.basicauth.users={{.AdminUser}}:{{.TraefikAdminPassword}}
+        - traefik.http.middlewares.karma-auth.basicauth.users={{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
         - traefik.http.routers.karma.middlewares=karma-auth
-        - constraint={{.StackName}}
+        - constraint={{.Docker.StackName}}
 
   traefik:
     image: traefik:v2.1
     networks:
       - net
     ports:
-      - {{.Port}}:80
+      - {{.Traefik.Port}}:80
     command:
       - --accesslog=true
       - --providers.docker=true
       - --providers.docker.watch
       - --providers.docker.swarmMode=true
-      - --providers.docker.constraints=Label(`constraint`,`{{.StackName}}`)
+      - --providers.docker.constraints=Label(`constraint`,`{{.Docker.StackName}}`)
       - --entryPoints.web.address=:80
       # - --entryPoints.web.forwardedHeaders.trustedIPs=172.31.0.0/16,10.255.0.0/16
       - --entryPoints.web.forwardedHeaders.insecure # TODO
