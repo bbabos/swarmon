@@ -1,4 +1,4 @@
-# NODE.ID removed
+Node ID: "{{.Node.ID}}"
 Tag: "{{.Tag}}"
 Domain: "{{.Domain}}"
 Admin user: "{{.AdminUser}}"

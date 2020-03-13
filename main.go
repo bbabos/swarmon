@@ -10,6 +10,9 @@ type input struct {
 }
 
 type param struct {
+	Node struct {
+		ID string
+	}
 	Tag                  string
 	Domain               string
 	AdminUser            string
@@ -24,7 +27,7 @@ type param struct {
 	TraefikAdminPassword string
 }
 
-var p = param{Tag: "development"}
+var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
 
 var inputs = []input{
 	{Question: "Docker stack name", Answer: "swarmon"},
@@ -45,7 +48,7 @@ func main() {
 	// gitClone("https://github.com/github/platform-samples.git")
 
 	getAnswers()
-	printAll()
+	// printAll()
 
 	result := parseFile("templates/example.yml", p)
 	writeToFile(result, "templates/parsed.yml")
