@@ -25,10 +25,9 @@ func readInput(question string) string {
 	return answer
 }
 
-func gitClone(repoURL string) {
-	_, err := git.PlainClone("./tmp", false, &git.CloneOptions{
-		URL:      repoURL,
-		Progress: os.Stdout,
+func gitClone(repoURL string, folderPath string) {
+	_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
+		URL: repoURL,
 	})
 	try(err)
 }
