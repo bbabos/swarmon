@@ -57,7 +57,7 @@ var length = len(inputs)
 func main() {
 	// gitClone("https://github.com/github/platform-samples.git", "tmp")
 	getAnswers()
-	parsedfile := parseFile("templates/stack.yml", p)
+	parsedfile := parseFile("templates/example.yml", p)
 	writeToFile(parsedfile, "templates/parsed.yml")
 }
 
@@ -67,7 +67,7 @@ func setParams() {
 	p.AdminUser.Name = inputs[2].Answer
 	p.AdminUser.Password = inputs[3].Answer
 	p.Traefik.BAUser = inputs[4].Answer
-	p.Traefik.BAPassword = inputs[5].Answer
+	p.Traefik.BAPassword = hashPass([]byte(inputs[5].Answer))
 	p.Slack.Webhook = inputs[6].Answer
 	p.Slack.AlertUser = inputs[7].Answer
 	p.Traefik.Port = inputs[8].Answer

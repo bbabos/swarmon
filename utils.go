@@ -6,6 +6,7 @@ import (
 	"os"
 	"text/template"
 
+	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/src-d/go-git.v4"
 )
 
@@ -61,4 +62,11 @@ func writeToFile(content string, filename string) {
 
 func (i *input) execute(action func(text string) string) {
 	action(i.Answer)
+}
+
+func hashPass(pwd []byte) string {
+	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+	try(err)
+
+	return string(hash)
 }
