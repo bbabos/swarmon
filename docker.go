@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os/exec"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -22,9 +21,4 @@ func printContainerID(imageName string) {
 			fmt.Printf("%s\n", container.ID[:12])
 		}
 	}
-}
-
-// TODO with SDK
-func deployStack() {
-	exec.Command("docker", "stack deploy -c ./templates/compose.yml swarmon")
 }
