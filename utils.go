@@ -64,8 +64,8 @@ func (i *input) execute(action func(text string) string) {
 	action(i.Answer)
 }
 
-func hashPass(pwd []byte) string {
-	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+func hashPass(password string) string {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	try(err)
 
 	return string(hash)

@@ -67,7 +67,7 @@ func setParams() {
 	p.AdminUser.Name = inputs[2].Answer
 	p.AdminUser.Password = inputs[3].Answer
 	p.Traefik.BAUser = inputs[4].Answer
-	p.Traefik.BAPassword = hashPass([]byte(inputs[5].Answer))
+	p.Traefik.BAPassword = hashPass(inputs[5].Answer)
 	p.Slack.Webhook = inputs[6].Answer
 	p.Slack.AlertUser = inputs[7].Answer
 	p.Traefik.Port = inputs[8].Answer
