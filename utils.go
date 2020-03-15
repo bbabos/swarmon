@@ -60,10 +60,6 @@ func writeToFile(content string, filename string) {
 	try(err)
 }
 
-func (i *input) execute(action func(text string) string) {
-	action(i.Answer)
-}
-
 func hashPass(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	try(err)
