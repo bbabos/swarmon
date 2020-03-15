@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/docker/docker/client"
 )
 
 type input struct {
@@ -55,10 +57,14 @@ var inputs = []input{
 var length = len(inputs)
 
 func main() {
-	// gitClone("https://github.com/github/platform-samples.git", "tmp")
-	getAnswers()
-	parsedfile := parseFile("templates/example.yml", p)
-	writeToFile(parsedfile, "templates/parsed.yml")
+	cli, err := client.NewEnvClient()
+	try(err)
+
+	listServices(cli)
+	listSwarmNodes(cli)
+	// getAnswers()
+	// parsedfile := parseFile("templates/example.yml", p)
+	// writeToFile(parsedfile, "templates/parsed.yml")
 }
 
 func setParams() {
