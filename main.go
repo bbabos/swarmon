@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/docker/docker/client"
 )
 
 type input struct {
@@ -57,14 +55,11 @@ var inputs = []input{
 var length = len(inputs)
 
 func main() {
-	cli, err := client.NewEnvClient()
-	try(err)
-
-	listServices(cli)
-	listSwarmNodes(cli)
-	// getAnswers()
-	// parsedfile := parseFile("templates/example.yml", p)
-	// writeToFile(parsedfile, "templates/parsed.yml")
+	gitClone("https://github.com/babobene/swarmon.git", "tmp")
+	getAnswers()
+	parsedfile := parseFile("templates/stack.yml", p)
+	writeToFile(parsedfile, "tmp/parsed.yml")
+	stackDeploy("tmp/parsed.yml", p.Docker.StackName)
 }
 
 func setParams() {
