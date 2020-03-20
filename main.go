@@ -72,16 +72,6 @@ func setParams() {
 	p.Docker.GwBridgeIP = inputs[11].Answer
 }
 
-func stackInit() {
-	fmt.Println()
-	fmt.Println("Swarm stack initialization started...")
-	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
-	getAnswers()
-	parsedfile := parseFile("templates/example.yml", p)
-	writeToFile(parsedfile, "templates/parsed.yml")
-	// stackDeploy("templates/parsed.yml", p.Docker.StackName)
-}
-
 func getAnswers() {
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
