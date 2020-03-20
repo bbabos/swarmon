@@ -28,9 +28,9 @@ func listServices() {
 	try(err)
 
 	fmt.Println("\n--------------------------")
-	fmt.Println("SWARM SERVICES:           |")
+	fmt.Println("SWARM SERVICES:")
 	for _, service := range services {
-		fmt.Printf("%s | %s", service.ID, service.Spec.Name)
+		fmt.Printf("%s | %s\n", service.ID, service.Spec.Name)
 	}
 }
 
@@ -40,7 +40,7 @@ func listSwarmNodes() {
 	try(err)
 
 	fmt.Println("\n--------------------------")
-	fmt.Println("SWARM NODES:              |")
+	fmt.Println("SWARM NODES:")
 	for _, node := range nodes {
 		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
