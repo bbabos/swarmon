@@ -77,7 +77,7 @@ func stackInit() {
 	fmt.Println("Swarm stack initialization started...")
 	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
 	getAnswers()
-	parsedfile := parseFile("templates/example.conf", p)
+	parsedfile := parseFile("templates/example.yml", p)
 	writeToFile(parsedfile, "templates/parsed.yml")
 	// stackDeploy("templates/parsed.yml", p.Docker.StackName)
 }
