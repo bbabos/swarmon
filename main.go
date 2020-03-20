@@ -36,8 +36,6 @@ type param struct {
 	}
 }
 
-var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
-
 var inputs = []input{
 	{Question: "Docker stack name", Answer: "swarmon"},
 	{Question: "Domain name", Answer: "localhost"},
@@ -50,16 +48,13 @@ var inputs = []input{
 	{Question: "Traefik external port", Answer: "80"},
 	{Question: "HTTP schema", Answer: "http"},
 	{Question: "Docker Swarm metric port", Answer: "9323"},
-	{Question: "GW_BRIDGE IP", Answer: "172.18.0.1"},
+	{Question: "Docker gwbridge IP", Answer: "172.18.0.1"},
 }
 var length = len(inputs)
+var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
 
 func main() {
-	gitClone("https://github.com/babobene/swarmon.git", "tmp")
-	getAnswers()
-	parsedfile := parseFile("templates/stack.yml", p)
-	writeToFile(parsedfile, "tmp/parsed.yml")
-	stackDeploy("tmp/parsed.yml", p.Docker.StackName)
+	menuPage()
 }
 
 func setParams() {
@@ -77,16 +72,26 @@ func setParams() {
 	p.Docker.GwBridgeIP = inputs[11].Answer
 }
 
+func stackInit() {
+	fmt.Println()
+	fmt.Println("Swarm stack initialization started...")
+	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
+	getAnswers()
+	parsedfile := parseFile("templates/example.conf", p)
+	writeToFile(parsedfile, "templates/parsed.yml")
+	// stackDeploy("templates/parsed.yml", p.Docker.StackName)
+}
+
 func getAnswers() {
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
 			inputs[i].Question = inputs[i].Question + ": "
 			fmt.Print(inputs[i].Question)
-			inputs[i].Answer = readInput(inputs[i].Question)
+			inputs[i].Answer = readInput()
 		} else {
 			inputs[i].Question = inputs[i].Question + " [" + inputs[i].Answer + "]" + ": "
 			fmt.Print(inputs[i].Question)
-			result := readInput(inputs[i].Question)
+			result := readInput()
 			if result != "" {
 				inputs[i].Answer = result
 			}
