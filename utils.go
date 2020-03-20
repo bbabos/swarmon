@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"os"
+	"os/exec"
 	"text/template"
 
 	"golang.org/x/crypto/bcrypt"
@@ -16,7 +17,7 @@ func try(err error) {
 	}
 }
 
-func readInput(question string) string {
+func readInput() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	var answer string
 
@@ -65,4 +66,10 @@ func hashPass(password string) string {
 	try(err)
 
 	return string(hash)
+}
+
+func clear() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
