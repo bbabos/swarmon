@@ -34,7 +34,7 @@ func createBorder(items []menuItem) string {
 func menuPage() {
 	validInput := true
 	items := []menuItem{
-		{option: "1. Deploy monitoring stack to swarm", action: initPage},
+		{option: "1. Monitoring stack options", action: initPage},
 		{option: "2. Maintain monitoring services", action: dockerPage},
 		{option: "3. Exit"},
 	}
@@ -77,10 +77,13 @@ func dockerPage() {
 
 		switch choosen {
 		case "1":
+			validInput = false
 			items[0].action()
 		case "2":
+			validInput = false
 			items[1].action()
 		case "3":
+			validInput = false
 			items[2].action()
 		case "4":
 			validInput = false
@@ -92,11 +95,31 @@ func dockerPage() {
 }
 
 func initPage() {
-	fmt.Println()
-	fmt.Println("Swarm stack initialization started...")
-	gitClone("https://github.com/babobene/swarmon.git", "tmp")
-	getAnswers()
-	parsedfile := parseFile("tmp/docker-compose.yml", p)
-	writeToFile(parsedfile, "tmp/parsed.yml")
-	stackDeploy("tmp/parsed.yml", p.Docker.StackName)
+	validInput := true
+	items := []menuItem{
+		{option: "1. Docker stack init/update", action: stackInit}, // TODO ha a docker stack name valtozik, info message hogy ehhez torolni kell a regi stack-et es uj nevvel letrehozni
+		{option: "2. Remove previously deployed stack", action: removeStack},
+		{option: "3. Exit to main menu", action: menuPage},
+	}
+	border := createBorder(items)
+	renderMenu(items, border, "STACK MENU")
+
+	for validInput {
+		fmt.Print("Choose an option: ")
+		choosen := readInput()
+
+		switch choosen {
+		case "1":
+			validInput = false
+			items[0].action()
+		case "2":
+			validInput = false
+			items[1].action()
+		case "3":
+			validInput = false
+			items[2].action()
+		default:
+			fmt.Printf("%s is not a valid option\n", choosen)
+		}
+	}
 }

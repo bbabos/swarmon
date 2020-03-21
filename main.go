@@ -89,3 +89,13 @@ func getAnswers() {
 	}
 	setParams()
 }
+
+func stackInit() {
+	fmt.Println()
+	fmt.Println("Swarm stack initialization started...")
+	gitClone("https://github.com/babobene/swarmon.git", "tmp")
+	getAnswers()
+	parsedfile := parseFile("tmp/docker-compose.yml", p)
+	writeToFile(parsedfile, "tmp/parsed.yml")
+	deployStack("tmp/parsed.yml", p.Docker.StackName)
+}
