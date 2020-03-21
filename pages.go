@@ -7,7 +7,7 @@ type menuItem struct {
 	action func()
 }
 
-func renderPage(items []menuItem, border string, title string) {
+func renderMenu(items []menuItem, border string, title string) {
 	fmt.Println(border)
 	fmt.Println(title)
 	fmt.Println(border)
@@ -40,7 +40,7 @@ func menuPage() {
 		{option: "3. Exit"},
 	}
 	border := createBorder(items)
-	renderPage(items, border, "MAIN MENU")
+	renderMenu(items, border, "MAIN MENU")
 
 	for validInput {
 		fmt.Print("Choose an option: ")
@@ -61,16 +61,6 @@ func menuPage() {
 	}
 }
 
-func initPage() {
-	fmt.Println()
-	fmt.Println("Swarm stack initialization started...")
-	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
-	getAnswers()
-	parsedfile := parseFile("templates/example.yml", p)
-	writeToFile(parsedfile, "templates/parsed.yml")
-	// stackDeploy("templates/parsed.yml", p.Docker.StackName)
-}
-
 func dockerPage() {
 	validInput := true
 	items := []menuItem{
@@ -80,7 +70,7 @@ func dockerPage() {
 		{option: "4. Exit to main menu", action: menuPage},
 	}
 	border := createBorder(items)
-	renderPage(items, border, "DOCKER MENU")
+	renderMenu(items, border, "DOCKER MENU")
 
 	for validInput {
 		fmt.Print("Choose an option: ")
@@ -100,4 +90,14 @@ func dockerPage() {
 			fmt.Printf("%s is not a valid option\n", choosen)
 		}
 	}
+}
+
+func initPage() {
+	fmt.Println()
+	fmt.Println("Swarm stack initialization started...")
+	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
+	getAnswers()
+	parsedfile := parseFile("templates/example.yml", p)
+	writeToFile(parsedfile, "templates/parsed.yml")
+	// stackDeploy("templates/parsed.yml", p.Docker.StackName)
 }
