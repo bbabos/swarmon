@@ -2,13 +2,45 @@ package main
 
 import "fmt"
 
+type menuItem struct {
+	option string
+	action func()
+}
+
+func renderPage(items []menuItem, border string, title string) {
+	fmt.Println(border)
+	fmt.Println(title)
+	fmt.Println(border)
+	for _, item := range items {
+		fmt.Println(item.option)
+	}
+	fmt.Println(border)
+}
+
+func createBorder(items []menuItem) string {
+	border := ""
+	length := 0
+	for _, item := range items {
+		if len(item.option) > length {
+			length = len(item.option)
+		}
+	}
+	for i := 0; i < length; i++ {
+		border += "-"
+	}
+	return border
+}
+
 func menuPage() {
 	// clear()
-	fmt.Println("1. Deploy monitoring stack to swarm")
-	fmt.Println("2. Maintain monitoring services")
-	fmt.Println("3. Exit")
-
 	validInput := true
+	items := []menuItem{
+		{option: "1. Deploy monitoring stack to swarm", action: initPage},
+		{option: "2. Maintain monitoring services", action: dockerPage},
+		{option: "3. Exit"},
+	}
+	border := createBorder(items)
+	renderPage(items, border, "MAIN MENU")
 
 	for validInput {
 		fmt.Print("Choose an option: ")
@@ -17,10 +49,10 @@ func menuPage() {
 		switch choosen {
 		case "1":
 			validInput = false
-			stackInitPage()
+			items[0].action()
 		case "2":
 			validInput = false
-			dockerPage()
+			items[1].action()
 		case "3":
 			validInput = false
 		default:
@@ -29,7 +61,7 @@ func menuPage() {
 	}
 }
 
-func stackInitPage() {
+func initPage() {
 	fmt.Println()
 	fmt.Println("Swarm stack initialization started...")
 	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
@@ -40,12 +72,15 @@ func stackInitPage() {
 }
 
 func dockerPage() {
-	fmt.Println("1. List all running container IDs")
-	fmt.Println("2. List services")
-	fmt.Println("3. List swarm nodes")
-	fmt.Println("4. Exit to main menu")
-
 	validInput := true
+	items := []menuItem{
+		{option: "1. List all running container IDs", action: listContainerIDs},
+		{option: "2. List services", action: listServices},
+		{option: "3. List swarm nodes", action: listSwarmNodes},
+		{option: "4. Exit to main menu", action: menuPage},
+	}
+	border := createBorder(items)
+	renderPage(items, border, "DOCKER MENU")
 
 	for validInput {
 		fmt.Print("Choose an option: ")
@@ -53,17 +88,14 @@ func dockerPage() {
 
 		switch choosen {
 		case "1":
-			listContainerIDs()
-			fmt.Println()
+			items[0].action()
 		case "2":
-			listServices()
-			fmt.Println()
+			items[1].action()
 		case "3":
-			listSwarmNodes()
-			fmt.Println()
+			items[2].action()
 		case "4":
 			validInput = false
-			menuPage()
+			items[3].action()
 		default:
 			fmt.Printf("%s is not a valid option\n", choosen)
 		}
