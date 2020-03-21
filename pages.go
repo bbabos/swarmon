@@ -97,7 +97,7 @@ func dockerPage() {
 func initPage() {
 	validInput := true
 	items := []menuItem{
-		{option: "1. Docker stack init/update", action: stackInit}, // TODO ha a docker stack name valtozik, info message hogy ehhez torolni kell a regi stack-et es uj nevvel letrehozni
+		{option: "1. Docker stack init/update", action: stackInit},
 		{option: "2. Remove previously deployed stack", action: removeStack},
 		{option: "3. Exit to main menu", action: menuPage},
 	}
