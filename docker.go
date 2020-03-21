@@ -50,7 +50,8 @@ func listSwarmNodes() {
 	fmt.Println("--------------------------")
 }
 
-func stackDeploy(stackFile string, stackName string) {
+// TODO with sdk
+func deployStack(stackFile string, stackName string) {
 	cmd := exec.Command("docker", "stack", "deploy", "-c", stackFile, stackName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -66,4 +67,8 @@ func stackDeploy(stackFile string, stackName string) {
 		fmt.Println()
 		fmt.Printf("Result:\n%v", out.String())
 	}
+}
+
+func removeStack() {
+	// TODO
 }
