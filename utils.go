@@ -28,10 +28,21 @@ func readInput() string {
 }
 
 func gitClone(repoURL string, folderPath string) {
-	_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
-		URL: repoURL,
-	})
-	try(err)
+	if existsCheck(folderPath) {
+		_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
+			URL: repoURL,
+		})
+		try(err)
+	}
+}
+
+func existsCheck(folderPath string) bool {
+	isExists := false
+	_, err := os.Stat(folderPath)
+	if os.IsNotExist(err) {
+		isExists = true
+	}
+	return isExists
 }
 
 func processTemplate(t *template.Template, vars interface{}) string {
