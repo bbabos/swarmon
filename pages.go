@@ -32,7 +32,6 @@ func createBorder(items []menuItem) string {
 }
 
 func menuPage() {
-	// clear()
 	validInput := true
 	items := []menuItem{
 		{option: "1. Deploy monitoring stack to swarm", action: initPage},
@@ -95,9 +94,9 @@ func dockerPage() {
 func initPage() {
 	fmt.Println()
 	fmt.Println("Swarm stack initialization started...")
-	// gitClone("https://github.com/babobene/swarmon.git", "tmp")
+	gitClone("https://github.com/babobene/swarmon.git", "tmp")
 	getAnswers()
-	parsedfile := parseFile("templates/example.yml", p)
-	writeToFile(parsedfile, "templates/parsed.yml")
-	// stackDeploy("templates/parsed.yml", p.Docker.StackName)
+	parsedfile := parseFile("tmp/docker-compose.yml", p)
+	writeToFile(parsedfile, "tmp/parsed.yml")
+	stackDeploy("tmp/parsed.yml", p.Docker.StackName)
 }
