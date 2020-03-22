@@ -37,24 +37,63 @@ type param struct {
 }
 
 var inputs = []input{
-	{Question: "Docker stack name", Answer: "swarmon"},
-	{Question: "Domain name", Answer: "localhost"},
-	{Question: "Admin username", Answer: "admin"},
-	{Question: "Admin password", Answer: "adminpw"},
-	{Question: "BasicAuth username", Answer: "admin"},
-	{Question: "BasicAuth password", Answer: "hashedpw"},
-	{Question: "Slack Webhook URL", Answer: "http://webhook.url.com"},
-	{Question: "Username for Slack alerts", Answer: "alertmanager"},
-	{Question: "Traefik external port", Answer: "80"},
-	{Question: "HTTP schema", Answer: "http"},
-	{Question: "Docker Swarm metric port", Answer: "9323"},
-	{Question: "Docker gwbridge IP", Answer: "172.18.0.1"},
+	{Question: "Docker stack name"},
+	{Question: "Domain name"},
+	{Question: "Admin username"},
+	{Question: "Admin password"},
+	{Question: "BasicAuth username"},
+	{Question: "BasicAuth password"},
+	{Question: "Slack Webhook URL"},
+	{Question: "Username for Slack alerts"},
+	{Question: "Traefik external port"},
+	{Question: "HTTP schema"},
+	{Question: "Docker Swarm metric port"},
+	{Question: "Docker gwbridge IP"},
 }
 var length = len(inputs)
 var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
+var configPath = "templates/config.json"
 
 func main() {
 	menuPage()
+}
+
+func getAnswers() {
+	if fileExists(configPath) {
+		loadConfig(configPath)
+		loadParams()
+	}
+	for i := 0; i < length; i++ {
+		if inputs[i].Answer == "" {
+			inputs[i].Question = inputs[i].Question + ": "
+			fmt.Print(inputs[i].Question)
+			inputs[i].Answer = readInput()
+		} else {
+			inputs[i].Question = inputs[i].Question + " [" + inputs[i].Answer + "]" + ": "
+			fmt.Print(inputs[i].Question)
+			result := readInput()
+			if result != "" {
+				inputs[i].Answer = result
+			}
+		}
+	}
+	setParams()
+	saveConfig(configPath)
+}
+
+func loadParams() {
+	inputs[0].Answer = p.Docker.StackName
+	inputs[1].Answer = p.Domain
+	inputs[2].Answer = p.AdminUser.Name
+	inputs[3].Answer = p.AdminUser.Password
+	inputs[4].Answer = p.Traefik.BAUser
+	inputs[5].Answer = p.Traefik.BAPassword
+	inputs[6].Answer = p.Slack.Webhook
+	inputs[7].Answer = p.Slack.AlertUser
+	inputs[8].Answer = p.Traefik.Port
+	inputs[9].Answer = p.Schema
+	inputs[10].Answer = p.Docker.MetricPort
+	inputs[11].Answer = p.Docker.GwBridgeIP
 }
 
 func setParams() {
@@ -72,24 +111,6 @@ func setParams() {
 	p.Docker.GwBridgeIP = inputs[11].Answer
 }
 
-func getAnswers() {
-	for i := 0; i < length; i++ {
-		if inputs[i].Answer == "" {
-			inputs[i].Question = inputs[i].Question + ": "
-			fmt.Print(inputs[i].Question)
-			inputs[i].Answer = readInput()
-		} else {
-			inputs[i].Question = inputs[i].Question + " [" + inputs[i].Answer + "]" + ": "
-			fmt.Print(inputs[i].Question)
-			result := readInput()
-			if result != "" {
-				inputs[i].Answer = result
-			}
-		}
-	}
-	setParams()
-}
-
 func stackInit() {
 	fmt.Println()
 	fmt.Println("Swarm stack initialization started...")
@@ -97,5 +118,5 @@ func stackInit() {
 	getAnswers()
 	parsedfile := parseFile("tmp/docker-compose.yml", p)
 	writeToFile(parsedfile, "tmp/parsed.yml")
-	deployStack("tmp/parsed.yml", p.Docker.StackName)
+	// deployStack("tmp/parsed.yml", p.Docker.StackName)
 }

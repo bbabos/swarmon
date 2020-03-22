@@ -1,4 +1,5 @@
 swarmon
 tmp
 templates/parsed.yml
+templates/config.json
 TODOs.txt

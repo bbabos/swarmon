@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"text/template"
@@ -28,7 +30,7 @@ func readInput() string {
 }
 
 func gitClone(repoURL string, folderPath string) {
-	if existsCheck(folderPath) {
+	if !fileExists(folderPath) {
 		_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
 			URL: repoURL,
 		})
@@ -36,10 +38,10 @@ func gitClone(repoURL string, folderPath string) {
 	}
 }
 
-func existsCheck(folderPath string) bool {
+func fileExists(folderPath string) bool {
 	isExists := false
 	_, err := os.Stat(folderPath)
-	if os.IsNotExist(err) {
+	if !os.IsNotExist(err) {
 		isExists = true
 	}
 	return isExists
@@ -83,4 +85,14 @@ func clear() {
 	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
+}
+
+func saveConfig(folderPath string) {
+	file, _ := json.MarshalIndent(p, "", " ")
+	_ = ioutil.WriteFile(folderPath, file, 0644)
+}
+
+func loadConfig(filePath string) {
+	file, _ := ioutil.ReadFile(filePath)
+	_ = json.Unmarshal([]byte(file), &p)
 }
