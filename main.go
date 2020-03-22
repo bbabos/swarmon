@@ -61,7 +61,7 @@ func main() {
 func getAnswers() {
 	if fileExists(configPath) {
 		loadConfig(configPath)
-		loadParams()
+		setAnswers()
 	}
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
@@ -81,7 +81,7 @@ func getAnswers() {
 	saveConfig(configPath)
 }
 
-func loadParams() {
+func setAnswers() {
 	inputs[0].Answer = p.Docker.StackName
 	inputs[1].Answer = p.Domain
 	inputs[2].Answer = p.AdminUser.Name
