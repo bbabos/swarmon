@@ -8,6 +8,7 @@ type menuItem struct {
 }
 
 func renderMenu(items []menuItem, border string, title string) {
+	clear()
 	fmt.Println(border)
 	fmt.Println(title)
 	fmt.Println(border)
@@ -77,13 +78,10 @@ func dockerPage() {
 
 		switch choosen {
 		case "1":
-			validInput = false
 			items[0].action()
 		case "2":
-			validInput = false
 			items[1].action()
 		case "3":
-			validInput = false
 			items[2].action()
 		case "4":
 			validInput = false
@@ -110,10 +108,8 @@ func initPage() {
 
 		switch choosen {
 		case "1":
-			validInput = false
 			items[0].action()
 		case "2":
-			validInput = false
 			items[1].action()
 		case "3":
 			validInput = false
