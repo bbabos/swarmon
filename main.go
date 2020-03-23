@@ -55,14 +55,14 @@ var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
 var configPath = "templates/config.json"
 
 func main() {
-	menuPage()
-}
-
-func getAnswers() {
 	if fileExists(configPath) {
 		loadConfig(configPath)
 		setAnswers()
 	}
+	menuPage()
+}
+
+func getAnswers() {
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
 			inputs[i].Question = inputs[i].Question + ": "
@@ -102,7 +102,7 @@ func setParams() {
 	p.AdminUser.Name = inputs[2].Answer
 	p.AdminUser.Password = inputs[3].Answer
 	p.Traefik.BAUser = inputs[4].Answer
-	p.Traefik.BAPassword = hashPass(inputs[5].Answer)
+	p.Traefik.BAPassword = inputs[5].Answer
 	p.Slack.Webhook = inputs[6].Answer
 	p.Slack.AlertUser = inputs[7].Answer
 	p.Traefik.Port = inputs[8].Answer
@@ -116,7 +116,8 @@ func stackInit() {
 	fmt.Println("Swarm stack initialization started...")
 	gitClone("https://github.com/babobene/swarmon.git", "tmp")
 	getAnswers()
+	p.Traefik.BAPassword = hashPass(inputs[5].Answer) // TODO
 	parsedfile := parseFile("tmp/docker-compose.yml", p)
 	writeToFile(parsedfile, "tmp/parsed.yml")
-	// deployStack("tmp/parsed.yml", p.Docker.StackName)
+	deployStack()
 }
