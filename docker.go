@@ -10,6 +10,8 @@ import (
 	"github.com/docker/docker/client"
 )
 
+var stackFile = "tmp/parsed.yml"
+
 func listContainerIDs() {
 	cli, err := client.NewEnvClient()
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
@@ -30,7 +32,7 @@ func listServices() {
 	try(err)
 
 	fmt.Println("--------------------------")
-	fmt.Println("SWARM SERVICES:")
+	fmt.Println("SWARM SERVICES:           |")
 	for _, service := range services {
 		fmt.Printf("%s | %s\n", service.ID, service.Spec.Name)
 	}
@@ -43,16 +45,15 @@ func listSwarmNodes() {
 	try(err)
 
 	fmt.Println("--------------------------")
-	fmt.Println("SWARM NODES:")
+	fmt.Println("SWARM NODES:              |")
 	for _, node := range nodes {
 		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
 	fmt.Println("--------------------------")
 }
 
-// TODO with sdk
-func deployStack(stackFile string, stackName string) {
-	cmd := exec.Command("docker", "stack", "deploy", "-c", stackFile, stackName)
+func execDocker(args []string) {
+	cmd := exec.Command("docker", args...)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 
@@ -69,6 +70,12 @@ func deployStack(stackFile string, stackName string) {
 	}
 }
 
+func deployStack() {
+	args := []string{"stack", "deploy", "-c", stackFile, p.Docker.StackName}
+	execDocker(args)
+}
+
 func removeStack() {
-	// TODO
+	args := []string{"stack", "rm", p.Docker.StackName}
+	execDocker(args)
 }
