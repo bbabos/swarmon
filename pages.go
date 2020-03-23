@@ -37,7 +37,7 @@ func menuPage() {
 	items := []menuItem{
 		{option: "1. Monitoring stack options", action: initPage},
 		{option: "2. Maintain monitoring services", action: dockerPage},
-		{option: "3. Exit"},
+		{option: "0. Exit"},
 	}
 	border := createBorder(items)
 	renderMenu(items, border, "MAIN MENU")
@@ -53,7 +53,7 @@ func menuPage() {
 		case "2":
 			validInput = false
 			items[1].action()
-		case "3":
+		case "0":
 			validInput = false
 		default:
 			fmt.Printf("%s is not a valid option\n", choosen)
@@ -67,7 +67,7 @@ func dockerPage() {
 		{option: "1. List all running container IDs", action: listContainerIDs},
 		{option: "2. List services", action: listServices},
 		{option: "3. List swarm nodes", action: listSwarmNodes},
-		{option: "4. Exit to main menu", action: menuPage},
+		{option: "0. Exit to main menu", action: menuPage},
 	}
 	border := createBorder(items)
 	renderMenu(items, border, "DOCKER MENU")
@@ -83,7 +83,7 @@ func dockerPage() {
 			items[1].action()
 		case "3":
 			items[2].action()
-		case "4":
+		case "0":
 			validInput = false
 			items[3].action()
 		default:
@@ -97,7 +97,7 @@ func initPage() {
 	items := []menuItem{
 		{option: "1. Docker stack init/update", action: stackInit},
 		{option: "2. Remove previously deployed stack", action: removeStack},
-		{option: "3. Exit to main menu", action: menuPage},
+		{option: "0. Exit to main menu", action: menuPage},
 	}
 	border := createBorder(items)
 	renderMenu(items, border, "STACK MENU")
@@ -108,10 +108,11 @@ func initPage() {
 
 		switch choosen {
 		case "1":
+			validInput = false
 			items[0].action()
 		case "2":
 			items[1].action()
-		case "3":
+		case "0":
 			validInput = false
 			items[2].action()
 		default:
