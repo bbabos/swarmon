@@ -65,12 +65,10 @@ func main() {
 func getAnswers() {
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
-			inputs[i].Question = inputs[i].Question + ": "
-			fmt.Print(inputs[i].Question)
+			fmt.Print(inputs[i].Question + ": ")
 			inputs[i].Answer = readInput()
 		} else {
-			inputs[i].Question = inputs[i].Question + " [" + inputs[i].Answer + "]" + ": "
-			fmt.Print(inputs[i].Question)
+			fmt.Print(inputs[i].Question + " [" + inputs[i].Answer + "]" + ": ")
 			result := readInput()
 			if result != "" {
 				inputs[i].Answer = result
