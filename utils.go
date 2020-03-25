@@ -18,7 +18,7 @@ import (
 
 func try(err error) {
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
 
@@ -107,6 +107,9 @@ func execCommand(command string) {
 	reader, err := cmd.StdoutPipe()
 	try(err)
 
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+
 	scanner := bufio.NewScanner(reader)
 	go func() {
 		for scanner.Scan() {
@@ -117,6 +120,6 @@ func execCommand(command string) {
 		log.Fatal(err)
 	}
 	if err := cmd.Wait(); err != nil {
-		log.Fatal(err)
+		fmt.Printf("Error: %v", stderr.String())
 	}
 }
