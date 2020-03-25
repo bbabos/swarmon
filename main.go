@@ -118,6 +118,5 @@ func stackInit() {
 	parsedfile := parseFile("tmp/docker-compose.yml", p)
 	writeToFile(parsedfile, "tmp/parsed.yml")
 	fmt.Println()
-	fmt.Println("Stack deploy started...")
 	deployStack()
 }
