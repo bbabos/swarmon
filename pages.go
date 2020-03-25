@@ -2,28 +2,23 @@ package main
 
 import "fmt"
 
-type menuItem struct {
-	option string
-	action func()
-}
-
-func renderMenu(items []menuItem, border string, title string) {
+func renderMenu(items []string, border string, title string) {
 	clear()
 	fmt.Println(border)
 	fmt.Println(title)
 	fmt.Println(border)
 	for _, item := range items {
-		fmt.Println(item.option)
+		fmt.Println(item)
 	}
-	fmt.Println(border)
+	// fmt.Println(border)
 }
 
-func createBorder(items []menuItem) string {
+func createBorder(items []string) string {
 	border := ""
 	length := 0
 	for _, item := range items {
-		if len(item.option) > length {
-			length = len(item.option)
+		if len(item) > length {
+			length = len(item)
 		}
 	}
 	for i := 0; i < length; i++ {
@@ -34,25 +29,26 @@ func createBorder(items []menuItem) string {
 
 func menuPage() {
 	validInput := true
-	items := []menuItem{
-		{option: "1. Monitoring stack options", action: initPage},
-		{option: "2. Maintain monitoring services", action: dockerPage},
-		{option: "0. Exit"},
+	items := []string{
+		"1. Monitoring stack options",
+		"2. Maintain monitoring services",
+		"0. Exit",
 	}
 	border := createBorder(items)
 	renderMenu(items, border, "MAIN MENU")
 
 	for validInput {
+		fmt.Println(border)
 		fmt.Print("Choose an option: ")
 		choosen := readInput()
 
 		switch choosen {
 		case "1":
 			validInput = false
-			items[0].action()
+			initPage()
 		case "2":
 			validInput = false
-			items[1].action()
+			dockerPage()
 		case "0":
 			validInput = false
 		default:
@@ -63,29 +59,39 @@ func menuPage() {
 
 func dockerPage() {
 	validInput := true
-	items := []menuItem{
-		{option: "1. List all running containers", action: listContainers},
-		{option: "2. List services", action: listServices},
-		{option: "3. List swarm nodes", action: listSwarmNodes},
-		{option: "0. Exit to main menu", action: menuPage},
+	items := []string{
+		"1. List all running containers",
+		"2. List services",
+		"3. List swarm nodes",
+		"0. Exit to main menu",
 	}
 	border := createBorder(items)
 	renderMenu(items, border, "DOCKER MENU")
 
 	for validInput {
+		fmt.Println(border)
 		fmt.Print("Choose an option: ")
 		choosen := readInput()
 
 		switch choosen {
 		case "1":
-			items[0].action()
+			fmt.Println("--------------------------")
+			fmt.Println("CONTAINERS:               |")
+			fmt.Println("--------------------------")
+			listContainers()
 		case "2":
-			items[1].action()
+			fmt.Println("--------------------------")
+			fmt.Println("SWARM SERVICES:           |")
+			fmt.Println("--------------------------")
+			listServices()
 		case "3":
-			items[2].action()
+			fmt.Println("--------------------------")
+			fmt.Println("SWARM NODES:              |")
+			fmt.Println("--------------------------")
+			listSwarmNodes()
 		case "0":
 			validInput = false
-			items[3].action()
+			menuPage()
 		default:
 			fmt.Printf("%s is not a valid option\n", choosen)
 		}
@@ -94,27 +100,27 @@ func dockerPage() {
 
 func initPage() {
 	validInput := true
-	items := []menuItem{
-		{option: "1. Docker stack init/update", action: stackInit},
-		{option: "2. Remove previously deployed stack", action: removeStack},
-		{option: "0. Exit to main menu", action: menuPage},
+	items := []string{
+		"1. Docker stack init/update",
+		"2. Remove previously deployed stack",
+		"0. Exit to main menu",
 	}
 	border := createBorder(items)
 	renderMenu(items, border, "STACK MENU")
 
 	for validInput {
+		fmt.Println(border)
 		fmt.Print("Choose an option: ")
 		choosen := readInput()
 
 		switch choosen {
 		case "1":
-			validInput = false
-			items[0].action()
+			stackInit()
 		case "2":
-			items[1].action()
+			removeStack()
 		case "0":
 			validInput = false
-			items[2].action()
+			menuPage()
 		default:
 			fmt.Printf("%s is not a valid option\n", choosen)
 		}
