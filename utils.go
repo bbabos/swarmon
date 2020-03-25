@@ -4,9 +4,12 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
 
 	"golang.org/x/crypto/bcrypt"
@@ -15,7 +18,7 @@ import (
 
 func try(err error) {
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -95,4 +98,25 @@ func saveConfig(folderPath string) {
 func loadConfig(filePath string) {
 	file, _ := ioutil.ReadFile(filePath)
 	_ = json.Unmarshal([]byte(file), &p)
+}
+
+func execCommand(command string) {
+	args := strings.Fields(command)
+
+	cmd := exec.Command(args[0], args[1:len(args)]...)
+	reader, err := cmd.StdoutPipe()
+	try(err)
+
+	scanner := bufio.NewScanner(reader)
+	go func() {
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+	}()
+	if err := cmd.Start(); err != nil {
+		log.Fatal(err)
+	}
+	if err := cmd.Wait(); err != nil {
+		log.Fatal(err)
+	}
 }

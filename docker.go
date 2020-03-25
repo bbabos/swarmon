@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"fmt"
-	"os/exec"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -12,15 +10,16 @@ import (
 
 var stackFile = "tmp/parsed.yml"
 
-func listContainerIDs() {
+func listContainers() {
 	cli, err := client.NewEnvClient()
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
 	try(err)
 
 	fmt.Println("--------------------------")
 	fmt.Println("CONTAINERS:")
+	fmt.Println("--------------------------")
 	for _, container := range containers {
-		fmt.Printf("%s\n", container.ID[:12])
+		fmt.Printf("%s | %s\n", container.ID[:12], container.Names)
 	}
 	fmt.Println("--------------------------")
 
@@ -33,6 +32,7 @@ func listServices() {
 
 	fmt.Println("--------------------------")
 	fmt.Println("SWARM SERVICES:           |")
+	fmt.Println("--------------------------")
 	for _, service := range services {
 		fmt.Printf("%s | %s\n", service.ID, service.Spec.Name)
 	}
@@ -46,36 +46,19 @@ func listSwarmNodes() {
 
 	fmt.Println("--------------------------")
 	fmt.Println("SWARM NODES:              |")
+	fmt.Println("--------------------------")
 	for _, node := range nodes {
 		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
 	fmt.Println("--------------------------")
 }
 
-func execDocker(args []string) {
-	cmd := exec.Command("docker", args...)
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	cmd.Run()
-
-	if stderr.Len() != 0 {
-		fmt.Println()
-		fmt.Printf("Error: %v", stderr.String())
-	} else {
-		fmt.Println()
-		fmt.Printf("Result:\n%v", out.String())
-	}
-}
-
 func deployStack() {
-	args := []string{"stack", "deploy", "-c", stackFile, p.Docker.StackName}
-	execDocker(args)
+	command := "docker stack deploy -c " + stackFile + " " + p.Docker.StackName
+	execCommand(command)
 }
 
 func removeStack() {
-	args := []string{"stack", "rm", p.Docker.StackName}
-	execDocker(args)
+	command := "docker stack rm " + p.Docker.StackName
+	execCommand(command)
 }
