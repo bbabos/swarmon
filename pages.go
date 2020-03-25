@@ -64,7 +64,7 @@ func menuPage() {
 func dockerPage() {
 	validInput := true
 	items := []menuItem{
-		{option: "1. List all running container IDs", action: listContainerIDs},
+		{option: "1. List all running containers", action: listContainers},
 		{option: "2. List services", action: listServices},
 		{option: "3. List swarm nodes", action: listSwarmNodes},
 		{option: "0. Exit to main menu", action: menuPage},

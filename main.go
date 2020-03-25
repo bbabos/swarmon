@@ -119,5 +119,7 @@ func stackInit() {
 	p.Traefik.BAPassword = hashPass(inputs[5].Answer) // TODO
 	parsedfile := parseFile("tmp/docker-compose.yml", p)
 	writeToFile(parsedfile, "tmp/parsed.yml")
+	fmt.Println()
+	fmt.Println("Stack deploy started...")
 	deployStack()
 }
