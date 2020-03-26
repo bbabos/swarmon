@@ -98,7 +98,7 @@ func dockerPage() {
 func stackPage() {
 	var selected string
 	items := []string{
-		"1. Docker stack init/update",
+		"1. Docker stack deploy/update",
 		"2. Remove previously deployed stack",
 		"0. Back",
 	}
