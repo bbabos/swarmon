@@ -72,19 +72,10 @@ func dockerPage() {
 
 		switch selected {
 		case "1":
-			fmt.Println("--------------------------")
-			fmt.Println("CONTAINERS:               |")
-			fmt.Println("--------------------------")
 			listContainers()
 		case "2":
-			fmt.Println("--------------------------")
-			fmt.Println("SWARM SERVICES:           |")
-			fmt.Println("--------------------------")
 			listServices()
 		case "3":
-			fmt.Println("--------------------------")
-			fmt.Println("SWARM NODES:              |")
-			fmt.Println("--------------------------")
 			listSwarmNodes()
 		case "0":
 			menuPage()
@@ -99,7 +90,7 @@ func stackPage() {
 	var selected string
 	items := []string{
 		"1. Docker stack deploy/update",
-		"2. Remove previously deployed stack",
+		"2. Remove monitoring stack",
 		"0. Back",
 	}
 	renderPage(items, "STACK MENU")
