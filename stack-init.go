@@ -60,12 +60,23 @@ func setParams() {
 }
 
 func stackInit() {
-	fmt.Println("\nSwarm stack initialization started...")
+	clear()
+	fmt.Println("-------------------------------------")
+	fmt.Println("Swarm stack initialization started...")
+	fmt.Println("-------------------------------------")
+
 	gitClone("https://github.com/babobene/swarmon.git", "tmp")
 	getAnswers()
 	parsedFile := parseFile(rawStackFilePath, p)
 	writeToFile(parsedFile, parsedStackFilePath)
-	fmt.Println()
+
+	if stackExist() {
+		fmt.Println("\nUpdating monitoring services...")
+		fmt.Println("-------------------------------")
+	} else {
+		fmt.Println("\nStack deploy started...")
+		fmt.Println("-----------------------")
+	}
 	execCommand("docker stack deploy -c " + parsedStackFilePath + " " + p.Docker.StackName)
 }
 
