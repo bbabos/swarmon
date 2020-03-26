@@ -2,7 +2,10 @@ package main
 
 import "fmt"
 
-func renderPage(items []string, border string, title string) {
+var border string
+
+func renderPage(items []string, title string) {
+	border = createBorder(items)
 	clear()
 	fmt.Println(border)
 	fmt.Println(title)
@@ -13,8 +16,7 @@ func renderPage(items []string, border string, title string) {
 }
 
 func createBorder(items []string) string {
-	border := ""
-	length := 0
+	border, length := "", 0
 	for _, item := range items {
 		if len(item) > length {
 			length = len(item)
@@ -33,21 +35,18 @@ func menuPage() {
 		"2. Maintain monitoring services",
 		"0. Exit",
 	}
-	border := createBorder(items)
-	renderPage(items, border, "MAIN MENU")
+	renderPage(items, "MAIN MENU")
 
-	for selected != "0" {
+	for selected != "0" && selected != "1" && selected != "2" {
 		fmt.Println(border)
-		fmt.Print("Choose an option: ")
+		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
 		case "1":
-			initPage()
-			return
+			stackPage()
 		case "2":
 			dockerPage()
-			return
 		case "0":
 			return
 		default:
@@ -64,12 +63,11 @@ func dockerPage() {
 		"3. List swarm nodes",
 		"0. Back",
 	}
-	border := createBorder(items)
-	renderPage(items, border, "DOCKER MENU")
+	renderPage(items, "DOCKER MENU")
 
 	for selected != "0" {
 		fmt.Println(border)
-		fmt.Print("Choose an option: ")
+		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
@@ -97,26 +95,25 @@ func dockerPage() {
 	}
 }
 
-func initPage() {
+func stackPage() {
 	var selected string
 	items := []string{
 		"1. Docker stack init/update",
 		"2. Remove previously deployed stack",
 		"0. Back",
 	}
-	border := createBorder(items)
-	renderPage(items, border, "STACK MENU")
+	renderPage(items, "STACK MENU")
 
 	for selected != "0" {
 		fmt.Println(border)
-		fmt.Print("Choose an option: ")
+		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
 		case "1":
 			stackInit()
 		case "2":
-			removeStack()
+			stackDelete()
 		case "0":
 			menuPage()
 			return
