@@ -8,8 +8,6 @@ import (
 	"github.com/docker/docker/client"
 )
 
-var stackFile = "tmp/parsed.yml"
-
 func listContainers() {
 	cli, err := client.NewEnvClient()
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
@@ -41,7 +39,7 @@ func listSwarmNodes() {
 }
 
 func deployStack() {
-	command := "docker stack deploy -c " + stackFile + " " + p.Docker.StackName
+	command := "docker stack deploy -c " + parsedStackFilePath + " " + p.Docker.StackName
 	execCommand(command)
 }
 
