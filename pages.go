@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func renderMenu(items []string, border string, title string) {
+func renderPage(items []string, border string, title string) {
 	clear()
 	fmt.Println(border)
 	fmt.Println(title)
@@ -34,7 +34,7 @@ func menuPage() {
 		"0. Exit",
 	}
 	border := createBorder(items)
-	renderMenu(items, border, "MAIN MENU")
+	renderPage(items, border, "MAIN MENU")
 
 	for selected != "0" {
 		fmt.Println(border)
@@ -65,7 +65,7 @@ func dockerPage() {
 		"0. Back",
 	}
 	border := createBorder(items)
-	renderMenu(items, border, "DOCKER MENU")
+	renderPage(items, border, "DOCKER MENU")
 
 	for selected != "0" {
 		fmt.Println(border)
@@ -105,7 +105,7 @@ func initPage() {
 		"0. Back",
 	}
 	border := createBorder(items)
-	renderMenu(items, border, "STACK MENU")
+	renderPage(items, border, "STACK MENU")
 
 	for selected != "0" {
 		fmt.Println(border)
