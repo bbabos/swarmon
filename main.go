@@ -52,7 +52,7 @@ var inputs = []input{
 }
 var length = len(inputs)
 var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
-var configPath = "templates/config.json"
+var configPath = "config.json"
 
 func main() {
 	if fileExists(configPath) {

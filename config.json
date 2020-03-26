@@ -1,0 +1,26 @@
+{
+ "Tag": "development",
+ "Domain": "localhost",
+ "Schema": "http",
+ "Node": {
+  "ID": "{{.Node.ID}}"
+ },
+ "AdminUser": {
+  "Name": "admin",
+  "Password": "admin"
+ },
+ "Slack": {
+  "Webhook": "http://webhook.com",
+  "AlertUser": "alertmanager"
+ },
+ "Traefik": {
+  "Port": "80",
+  "BAPassword": "secret",
+  "BAUser": "admin"
+ },
+ "Docker": {
+  "StackName": "swarmon",
+  "MetricPort": "9323",
+  "GwBridgeIP": "172.18.0.1"
+ }
+}
