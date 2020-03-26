@@ -37,13 +37,3 @@ func listSwarmNodes() {
 		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
 }
-
-func deployStack() {
-	command := "docker stack deploy -c " + parsedStackFilePath + " " + p.Docker.StackName
-	execCommand(command)
-}
-
-func removeStack() {
-	command := "docker stack rm " + p.Docker.StackName
-	execCommand(command)
-}

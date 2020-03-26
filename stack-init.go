@@ -1,20 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+	"os/exec"
+	"strings"
+)
 
 var configPath = "config.json"
 var parsedStackFilePath = "tmp/parsed.yml"
 var rawStackFilePath = "tmp/docker-compose.yml"
-
-func stackInit() {
-	fmt.Println("\nSwarm stack initialization started...")
-	gitClone("https://github.com/babobene/swarmon.git", "tmp")
-	getAnswers()
-	parsedFile := parseFile(rawStackFilePath, p)
-	writeToFile(parsedFile, parsedStackFilePath)
-	fmt.Println()
-	deployStack()
-}
 
 func getAnswers() {
 	for i := 0; i < length; i++ {
@@ -62,4 +57,36 @@ func setParams() {
 	p.Schema = inputs[9].Answer
 	p.Docker.MetricPort = inputs[10].Answer
 	p.Docker.GwBridgeIP = inputs[11].Answer
+}
+
+func stackInit() {
+	fmt.Println("\nSwarm stack initialization started...")
+	gitClone("https://github.com/babobene/swarmon.git", "tmp")
+	getAnswers()
+	parsedFile := parseFile(rawStackFilePath, p)
+	writeToFile(parsedFile, parsedStackFilePath)
+	fmt.Println()
+	execCommand("docker stack deploy -c " + parsedStackFilePath + " " + p.Docker.StackName)
+}
+
+func stackDelete() {
+	if stackExist() {
+		execCommand("docker stack rm " + p.Docker.StackName)
+	} else {
+		fmt.Println("You may not have a monitoring stack deployed!")
+	}
+}
+
+func stackExist() bool {
+	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+
+	cmd.Run()
+	stdout := out.String()
+
+	if strings.Contains(stdout, p.Docker.StackName) {
+		return true
+	}
+	return false
 }
