@@ -7,13 +7,12 @@ func menuPage() {
 	exit := false
 	items := []string{
 		"1. Monitoring stack options",
-		"2. Maintain docker services",
+		"2. Maintain monitor services",
 		"0. Exit",
 	}
 	renderMenu(items, "MAIN MENU")
 
 	for !exit {
-		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
@@ -36,24 +35,23 @@ func dockerPage() {
 	var selected string
 	exit := false
 	items := []string{
-		"1. Container options",
-		"2. Service options",
+		"1. Service options",
+		"2. List containers",
 		"3. List swarm nodes",
 		"0. Back",
 	}
 	renderMenu(items, "DOCKER MENU")
 
 	for !exit {
-		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
 		case "1":
 			exit = true
-			containerOptions()
+			serviceOptions()
 		case "2":
-			listServices()
+			listContainers()
 		case "3":
 			listSwarmNodes()
 		case "0":
@@ -76,12 +74,12 @@ func stackPage() {
 	renderMenu(items, "STACK MENU")
 
 	for !exit {
-		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
 		case "1":
+			exit = true
 			stackInit()
 		case "2":
 			stackDelete()
