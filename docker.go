@@ -13,11 +13,8 @@ func listContainers() {
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
 	try(err)
 
-	fmt.Println(border)
-	fmt.Println("CONTAINERS")
-	fmt.Println(border)
-	for _, container := range containers {
-		fmt.Printf("%s | %s\n", container.ID[:12], container.Names)
+	for i, container := range containers {
+		fmt.Printf("%d) %s | %s\n", i+1, container.ID[:12], container.Names)
 	}
 }
 
