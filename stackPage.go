@@ -62,10 +62,11 @@ func setParams() {
 
 func stackInit() {
 	var selected string
+	stackexist := stackExist()
 	exit := false
 
 	clear()
-	if stackExist() {
+	if stackexist {
 		fmt.Println("-----------------------------------")
 		fmt.Println("Update existing monitoring stack...")
 		fmt.Println("-----------------------------------")
@@ -80,7 +81,7 @@ func stackInit() {
 	parsedFile := parseFile(rawStackFilePath, p)
 	writeToFile(parsedFile, parsedStackFilePath)
 
-	if stackExist() {
+	if stackexist {
 		fmt.Println("\nUpdating docker services...")
 		fmt.Println("-------------------------------")
 	} else {
@@ -104,7 +105,9 @@ func stackInit() {
 }
 
 func stackDelete() {
-	if stackExist() {
+	stackexist := stackExist()
+
+	if stackexist {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := readInput()
 		if input == "y" {
@@ -124,15 +127,20 @@ func stackExist() bool {
 	cmd.Run()
 	stdout := out.String()
 
-	if strings.Contains(stdout, p.Docker.StackName) {
+	contains := strings.Contains(stdout, p.Docker.StackName)
+	if contains {
 		return true
 	}
 	return false
 }
 
 func checkPreviousMonStack() bool {
-	if fileExists(configPath) {
-		if stackExist() {
+	configexist := fileExists(configPath)
+
+	if configexist {
+		stackexist := stackExist()
+
+		if stackexist {
 			fmt.Printf("You have a previously deployed monitoring stack (%s)!\n", p.Docker.StackName)
 			return true
 		}

@@ -49,7 +49,9 @@ var inputs = []input{
 var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
 
 func main() {
-	if fileExists(configPath) {
+	configexist := fileExists(configPath)
+
+	if configexist {
 		loadConfig(configPath)
 		setAnswers()
 	}

@@ -33,7 +33,9 @@ func readInput() string {
 }
 
 func gitClone(repoURL string, folderPath string) {
-	if !fileExists(folderPath) {
+	folderexist := fileExists(folderPath)
+
+	if !folderexist {
 		_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
 			URL: repoURL,
 		})
