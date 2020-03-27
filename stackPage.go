@@ -12,6 +12,7 @@ var parsedStackFilePath = "tmp/parsed.yml"
 var rawStackFilePath = "tmp/docker-compose.yml"
 
 func getAnswers() {
+	length := len(inputs)
 	for i := 0; i < length; i++ {
 		if inputs[i].Answer == "" {
 			fmt.Print(inputs[i].Question + ": ")

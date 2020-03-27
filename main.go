@@ -46,7 +46,6 @@ var inputs = []input{
 	{Question: "Docker Swarm metric port"},
 	{Question: "Docker gwbridge IP"},
 }
-var length = len(inputs)
 var p = param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
 
 func main() {
