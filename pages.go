@@ -30,25 +30,28 @@ func createBorder(items []string) string {
 
 func menuPage() {
 	var selected string
+	exit := false
 	items := []string{
 		"1. Monitoring stack options",
-		"2. Maintain monitoring services",
+		"2. Maintain docker services",
 		"0. Exit",
 	}
 	renderPage(items, "MAIN MENU")
 
-	for selected != "0" && selected != "1" && selected != "2" {
+	for !exit {
 		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
 		case "1":
+			exit = true
 			stackPage()
 		case "2":
+			exit = true
 			dockerPage()
 		case "0":
-			return
+			exit = true
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
 		}
@@ -57,6 +60,7 @@ func menuPage() {
 
 func dockerPage() {
 	var selected string
+	exit := false
 	items := []string{
 		"1. List all running containers",
 		"2. List services",
@@ -65,21 +69,22 @@ func dockerPage() {
 	}
 	renderPage(items, "DOCKER MENU")
 
-	for selected != "0" {
+	for !exit {
 		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
 		switch selected {
 		case "1":
-			listContainers()
+			exit = true
+			containerOptions()
 		case "2":
 			listServices()
 		case "3":
 			listSwarmNodes()
 		case "0":
+			exit = true
 			menuPage()
-			return
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
 		}
@@ -88,6 +93,7 @@ func dockerPage() {
 
 func stackPage() {
 	var selected string
+	exit := false
 	items := []string{
 		"1. Docker stack deploy/update",
 		"2. Remove monitoring stack",
@@ -95,7 +101,7 @@ func stackPage() {
 	}
 	renderPage(items, "STACK MENU")
 
-	for selected != "0" {
+	for !exit {
 		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
@@ -106,8 +112,8 @@ func stackPage() {
 		case "2":
 			stackDelete()
 		case "0":
+			exit = true
 			menuPage()
-			return
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
 		}
