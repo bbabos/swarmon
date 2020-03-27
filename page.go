@@ -19,6 +19,7 @@ func renderMenu(items []string, title string) {
 	for _, item := range items {
 		fmt.Println(item)
 	}
+	fmt.Println(border)
 }
 
 func createMenuSeparator(items []string) string {
@@ -31,7 +32,7 @@ func createMenuSeparator(items []string) string {
 	for i := 0; i < length; i++ {
 		border += "-"
 	}
-	return border
+	return border + border
 }
 
 func createOptionSeparator(options string) string {
