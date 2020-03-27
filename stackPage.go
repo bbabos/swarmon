@@ -61,10 +61,19 @@ func setParams() {
 }
 
 func stackInit() {
+	var selected string
+	exit := false
+
 	clear()
-	fmt.Println("-------------------------------------")
-	fmt.Println("Swarm stack initialization started...")
-	fmt.Println("-------------------------------------")
+	if stackExist() {
+		fmt.Println("-----------------------------------")
+		fmt.Println("Update existing monitoring stack...")
+		fmt.Println("-----------------------------------")
+	} else {
+		fmt.Println("----------------------------------------------")
+		fmt.Println("New monitoring stack initialization started...")
+		fmt.Println("----------------------------------------------")
+	}
 
 	gitClone("https://github.com/babobene/swarmon.git", "tmp")
 	getAnswers()
@@ -72,18 +81,36 @@ func stackInit() {
 	writeToFile(parsedFile, parsedStackFilePath)
 
 	if stackExist() {
-		fmt.Println("\nUpdating monitoring services...")
+		fmt.Println("\nUpdating docker services...")
 		fmt.Println("-------------------------------")
 	} else {
 		fmt.Println("\nStack deploy started...")
 		fmt.Println("-----------------------")
 	}
 	execCommand("docker stack deploy -c " + parsedStackFilePath + " " + p.Docker.StackName)
+
+	for !exit {
+		fmt.Print("Enter 0 to exit: ")
+		selected = readInput()
+
+		switch selected {
+		case "0":
+			exit = true
+			menuPage()
+		default:
+			fmt.Printf("%s is not a valid option\n", selected)
+		}
+	}
 }
 
 func stackDelete() {
 	if stackExist() {
-		execCommand("docker stack rm " + p.Docker.StackName)
+		fmt.Print("Are you sure? [y/N]: ")
+		input := readInput()
+		if input == "y" {
+			execCommand("docker stack rm " + p.Docker.StackName)
+			fmt.Println("Monitoring stack deleted.")
+		}
 	} else {
 		fmt.Println("You may not have a monitoring stack deployed!")
 	}
@@ -99,6 +126,16 @@ func stackExist() bool {
 
 	if strings.Contains(stdout, p.Docker.StackName) {
 		return true
+	}
+	return false
+}
+
+func checkPreviousMonStack() bool {
+	if fileExists(configPath) {
+		if stackExist() {
+			fmt.Printf("You have a previously deployed monitoring stack (%s)!\n", p.Docker.StackName)
+			return true
+		}
 	}
 	return false
 }
