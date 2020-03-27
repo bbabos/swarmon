@@ -4,7 +4,7 @@ import "fmt"
 
 func containerOptions() {
 	var selected string
-	exit := true
+	exit := false
 
 	clear()
 	fmt.Println(border)
@@ -12,7 +12,7 @@ func containerOptions() {
 	fmt.Println(border)
 	listContainers()
 
-	for exit {
+	for !exit {
 		fmt.Println(border)
 		fmt.Println("0 - Back | 1 - Enter into a container")
 		fmt.Println(border)
@@ -23,7 +23,7 @@ func containerOptions() {
 		case "1":
 			// TODO
 		case "0":
-			exit = false
+			exit = true
 			dockerPage()
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
