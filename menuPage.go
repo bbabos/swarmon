@@ -10,7 +10,7 @@ func menuPage() {
 		"2. Maintain docker services",
 		"0. Exit",
 	}
-	renderPage(items, "MAIN MENU")
+	renderMenu(items, "MAIN MENU")
 
 	for !exit {
 		fmt.Println(border)
@@ -36,12 +36,12 @@ func dockerPage() {
 	var selected string
 	exit := false
 	items := []string{
-		"1. List all running containers",
-		"2. List services",
+		"1. Container options",
+		"2. Service options",
 		"3. List swarm nodes",
 		"0. Back",
 	}
-	renderPage(items, "DOCKER MENU")
+	renderMenu(items, "DOCKER MENU")
 
 	for !exit {
 		fmt.Println(border)
@@ -73,7 +73,7 @@ func stackPage() {
 		"2. Remove monitoring stack",
 		"0. Back",
 	}
-	renderPage(items, "STACK MENU")
+	renderMenu(items, "STACK MENU")
 
 	for !exit {
 		fmt.Println(border)

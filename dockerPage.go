@@ -5,17 +5,14 @@ import "fmt"
 func containerOptions() {
 	var selected string
 	exit := false
-
-	clear()
-	fmt.Println(border)
-	fmt.Println("CONTAINERS")
-	fmt.Println(border)
-	listContainers()
+	pageItem := page{
+		title:   "CONTAINERS",
+		options: "| 0 - Back | 1 - Enter into a container |",
+		action:  listContainers,
+	}
+	renderPage(pageItem)
 
 	for !exit {
-		fmt.Println(border)
-		fmt.Println("0 - Back | 1 - Enter into a container")
-		fmt.Println(border)
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
@@ -28,6 +25,5 @@ func containerOptions() {
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
 		}
-
 	}
 }
