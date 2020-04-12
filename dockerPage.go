@@ -4,7 +4,6 @@ import "fmt"
 
 func serviceOptions() {
 	var selected string
-	exit := false
 	pageItem := page{
 		title:   "SERVICES",
 		options: "| 0 - Back | 1 - another opts | 2 - another opts |",
@@ -12,7 +11,8 @@ func serviceOptions() {
 	}
 	renderPage(pageItem)
 
-	for !exit {
+loop:
+	for {
 		fmt.Print("Select an option: ")
 		selected = readInput()
 
@@ -22,8 +22,8 @@ func serviceOptions() {
 		case "2":
 			// TODO
 		case "0":
-			exit = true
 			dockerPage()
+			break loop
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
 		}

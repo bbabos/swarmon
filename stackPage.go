@@ -63,7 +63,6 @@ func setParams() {
 func stackInit() {
 	var selected string
 	stackexist := stackExist()
-	exit := false
 
 	clear()
 	if stackexist {
@@ -90,14 +89,15 @@ func stackInit() {
 	}
 	execCommand("docker stack deploy -c " + parsedStackFilePath + " " + p.Docker.StackName)
 
-	for !exit {
+loop:
+	for {
 		fmt.Print("Enter 0 to exit: ")
 		selected = readInput()
 
 		switch selected {
 		case "0":
-			exit = true
 			menuPage()
+			break loop
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
 		}

@@ -105,7 +105,7 @@ func loadConfig(filePath string) {
 func execCommand(command string) {
 	args := strings.Fields(command)
 
-	cmd := exec.Command(args[0], args[1:len(args)]...)
+	cmd := exec.Command(args[0], args[1:]...)
 	reader, err := cmd.StdoutPipe()
 	try(err)
 
