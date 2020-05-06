@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bbabos/swarmon-go/cmd/page"
+	"github.com/bbabos/swarmon-go/config"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
@@ -17,13 +17,13 @@ func ListContainers() {
 		panic(err)
 	}
 
-	fmt.Println(page.Border)
+	fmt.Println(config.Border)
 	fmt.Println("CONTAINERS")
-	fmt.Println(page.Border)
+	fmt.Println(config.Border)
 	for _, container := range containers {
 		fmt.Printf("%s | %s | %s\n", container.ID[:12], container.Status, container.Names)
 	}
-	fmt.Println(page.Border)
+	fmt.Println(config.Border)
 }
 
 // ListServices is ...
@@ -47,11 +47,11 @@ func ListSwarmNodes() {
 		panic(err)
 	}
 
-	fmt.Println(page.Border)
+	fmt.Println(config.Border)
 	fmt.Println("SWARM NODES")
-	fmt.Println(page.Border)
+	fmt.Println(config.Border)
 	for _, node := range nodes {
 		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
-	fmt.Println(page.Border)
+	fmt.Println(config.Border)
 }

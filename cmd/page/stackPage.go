@@ -1,4 +1,4 @@
-package stackpage
+package page
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/bbabos/swarmon-go/cmd/page/menupage"
 	"github.com/bbabos/swarmon-go/cmd/utils"
 	"github.com/bbabos/swarmon-go/config"
 )
@@ -101,7 +100,7 @@ loop:
 
 		switch selected {
 		case "0":
-			menupage.MenuPage()
+			MenuPage()
 			break loop
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)

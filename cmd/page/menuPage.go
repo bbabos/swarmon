@@ -1,12 +1,9 @@
-package menupage
+package page
 
 import (
 	"fmt"
 
 	"github.com/bbabos/swarmon-go/cmd/docker"
-	"github.com/bbabos/swarmon-go/cmd/page"
-	"github.com/bbabos/swarmon-go/cmd/page/dockerpage"
-	"github.com/bbabos/swarmon-go/cmd/page/stackpage"
 	"github.com/bbabos/swarmon-go/cmd/utils"
 )
 
@@ -18,7 +15,7 @@ func MenuPage() {
 		"2. Maintain monitor services",
 		"0. Exit",
 	}
-	page.RenderMenu(items, "MAIN MENU")
+	RenderMenu(items, "MAIN MENU")
 
 loop:
 	for {
@@ -49,7 +46,7 @@ func DockerPage() {
 		"3. List swarm nodes",
 		"0. Back",
 	}
-	page.RenderMenu(items, "DOCKER MENU")
+	RenderMenu(items, "DOCKER MENU")
 
 loop:
 	for {
@@ -58,7 +55,7 @@ loop:
 
 		switch selected {
 		case "1":
-			dockerpage.ServiceOptions()
+			ServiceOptions()
 			break loop
 		case "2":
 			docker.ListContainers()
@@ -80,7 +77,7 @@ func stackPage() {
 		"2. Remove monitoring stack",
 		"0. Back",
 	}
-	page.RenderMenu(items, "STACK MENU")
+	RenderMenu(items, "STACK MENU")
 
 loop:
 	for {
@@ -89,10 +86,10 @@ loop:
 
 		switch selected {
 		case "1":
-			stackpage.StackInit()
+			StackInit()
 			break loop
 		case "2":
-			stackpage.StackDelete()
+			StackDelete()
 		case "0":
 			MenuPage()
 			break loop
