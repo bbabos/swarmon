@@ -1,27 +1,36 @@
-package page
+package menupage
 
-import "fmt"
+import (
+	"fmt"
 
-func menuPage() {
+	"github.com/bbabos/swarmon-go/cmd/docker"
+	"github.com/bbabos/swarmon-go/cmd/page"
+	"github.com/bbabos/swarmon-go/cmd/page/dockerpage"
+	"github.com/bbabos/swarmon-go/cmd/page/stackpage"
+	"github.com/bbabos/swarmon-go/cmd/utils"
+)
+
+// MenuPage is ...
+func MenuPage() {
 	var selected string
 	items := []string{
 		"1. Monitoring stack options",
 		"2. Maintain monitor services",
 		"0. Exit",
 	}
-	renderMenu(items, "MAIN MENU")
+	page.RenderMenu(items, "MAIN MENU")
 
 loop:
 	for {
 		fmt.Print("Select an option: ")
-		selected = readInput()
+		selected = utils.ReadInput()
 
 		switch selected {
 		case "1":
 			stackPage()
 			break loop
 		case "2":
-			dockerPage()
+			DockerPage()
 			break loop
 		case "0":
 			break loop
@@ -31,7 +40,8 @@ loop:
 	}
 }
 
-func dockerPage() {
+// DockerPage is ...
+func DockerPage() {
 	var selected string
 	items := []string{
 		"1. Service options",
@@ -39,23 +49,23 @@ func dockerPage() {
 		"3. List swarm nodes",
 		"0. Back",
 	}
-	renderMenu(items, "DOCKER MENU")
+	page.RenderMenu(items, "DOCKER MENU")
 
 loop:
 	for {
 		fmt.Print("Select an option: ")
-		selected = readInput()
+		selected = utils.ReadInput()
 
 		switch selected {
 		case "1":
-			serviceOptions()
+			dockerpage.ServiceOptions()
 			break loop
 		case "2":
-			listContainers()
+			docker.ListContainers()
 		case "3":
-			listSwarmNodes()
+			docker.ListSwarmNodes()
 		case "0":
-			menuPage()
+			MenuPage()
 			break loop
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)
@@ -70,21 +80,21 @@ func stackPage() {
 		"2. Remove monitoring stack",
 		"0. Back",
 	}
-	renderMenu(items, "STACK MENU")
+	page.RenderMenu(items, "STACK MENU")
 
 loop:
 	for {
 		fmt.Print("Select an option: ")
-		selected = readInput()
+		selected = utils.ReadInput()
 
 		switch selected {
 		case "1":
-			stackInit()
+			stackpage.StackInit()
 			break loop
 		case "2":
-			stackDelete()
+			stackpage.StackDelete()
 		case "0":
-			menuPage()
+			MenuPage()
 			break loop
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)

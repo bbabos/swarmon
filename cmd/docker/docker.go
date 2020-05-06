@@ -4,44 +4,54 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/bbabos/swarmon-go/cmd/page"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
 
-func listContainers() {
+// ListContainers is ...
+func ListContainers() {
 	cli, err := client.NewEnvClient()
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println(border)
+	fmt.Println(page.Border)
 	fmt.Println("CONTAINERS")
-	fmt.Println(border)
+	fmt.Println(page.Border)
 	for _, container := range containers {
 		fmt.Printf("%s | %s | %s\n", container.ID[:12], container.Status, container.Names)
 	}
-	fmt.Println(border)
+	fmt.Println(page.Border)
 }
 
-func listServices() {
+// ListServices is ...
+func ListServices() {
 	cli, err := client.NewEnvClient()
 	services, err := cli.ServiceList(context.Background(), types.ServiceListOptions{})
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	for _, service := range services {
 		fmt.Printf("%s | %s\n", service.ID, service.Spec.Name)
 	}
 }
 
-func listSwarmNodes() {
+// ListSwarmNodes is ...
+func ListSwarmNodes() {
 	cli, err := client.NewEnvClient()
 	nodes, err := cli.NodeList(context.Background(), types.NodeListOptions{})
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println(border)
+	fmt.Println(page.Border)
 	fmt.Println("SWARM NODES")
-	fmt.Println(border)
+	fmt.Println(page.Border)
 	for _, node := range nodes {
 		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
-	fmt.Println(border)
+	fmt.Println(page.Border)
 }

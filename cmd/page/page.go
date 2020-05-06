@@ -1,25 +1,32 @@
 package page
 
-import "fmt"
+import (
+	"fmt"
 
-type page struct {
-	title   string
-	options string
-	action  func()
+	"github.com/bbabos/swarmon-go/cmd/utils"
+)
+
+// Page is ...
+type Page struct {
+	Title   string
+	Options string
+	Action  func()
 }
 
-var border string
+// Border is ...
+var Border string
 
-func renderMenu(items []string, title string) {
-	border = createMenuSeparator(items)
-	clear()
-	fmt.Println(border)
+// RenderMenu is ...
+func RenderMenu(items []string, title string) {
+	Border = createMenuSeparator(items)
+	utils.Clear()
+	fmt.Println(Border)
 	fmt.Println(title)
-	fmt.Println(border)
+	fmt.Println(Border)
 	for _, item := range items {
 		fmt.Println(item)
 	}
-	fmt.Println(border)
+	fmt.Println(Border)
 }
 
 func createMenuSeparator(items []string) string {
@@ -45,12 +52,13 @@ func createOptionSeparator(options string) string {
 	return border
 }
 
-func renderPage(pageitem page) {
-	clear()
-	separator := createOptionSeparator(pageitem.options)
-	addSeparator(pageitem.title, separator)
-	pageitem.action()
-	addSeparator(pageitem.options, separator)
+// RenderPage is ...
+func RenderPage(pageitem Page) {
+	utils.Clear()
+	separator := createOptionSeparator(pageitem.Options)
+	addSeparator(pageitem.Title, separator)
+	pageitem.Action()
+	addSeparator(pageitem.Options, separator)
 }
 
 func addSeparator(header string, separator string) {

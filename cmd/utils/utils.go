@@ -12,17 +12,13 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/bbabos/swarmon-go/config"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/src-d/go-git.v4"
 )
 
-func try(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
-func readInput() string {
+// ReadInput is ...
+func ReadInput() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	var answer string
 
@@ -32,18 +28,22 @@ func readInput() string {
 	return answer
 }
 
-func gitClone(repoURL string, folderPath string) {
-	folderexist := fileExists(folderPath)
+// GitClone is ...
+func GitClone(repoURL string, folderPath string) {
+	folderexist := FileExists(folderPath)
 
 	if !folderexist {
 		_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
 			URL: repoURL,
 		})
-		try(err)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
-func fileExists(folderPath string) bool {
+// FileExists is ...
+func FileExists(folderPath string) bool {
 	isExists := false
 	_, err := os.Stat(folderPath)
 	if !os.IsNotExist(err) {
@@ -56,58 +56,79 @@ func processTemplate(t *template.Template, vars interface{}) string {
 	var tmplBytes bytes.Buffer
 
 	err := t.Execute(&tmplBytes, vars)
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	return tmplBytes.String()
 }
 
-func parseFile(fileName string, vars interface{}) string {
+// ParseFile is ...
+func ParseFile(fileName string, vars interface{}) string {
 	tmpl, err := template.ParseFiles(fileName)
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	return processTemplate(tmpl, vars)
 }
 
-func writeToFile(content string, filename string) {
+// WriteToFile is ...
+func WriteToFile(content string, filename string) {
 	f, err := os.Create(filename)
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	_, err = f.WriteString(content)
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	err = f.Close()
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 }
 
-func hashPass(password string) string {
+// HashPass is ...
+func HashPass(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	return string(hash)
 }
 
-func clear() {
+// Clear is ...
+func Clear() {
 	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }
 
-func saveConfig(folderPath string) {
-	file, _ := json.MarshalIndent(p, "", " ")
+// SaveConfig is ...
+func SaveConfig(folderPath string) {
+	file, _ := json.MarshalIndent(config.Params, "", " ")
 	_ = ioutil.WriteFile(folderPath, file, 0644)
 }
 
-func loadConfig(filePath string) {
+// LoadConfig is ...
+func LoadConfig(filePath string) {
 	file, _ := ioutil.ReadFile(filePath)
-	_ = json.Unmarshal([]byte(file), &p)
+	_ = json.Unmarshal([]byte(file), &config.Params)
 }
 
-func execCommand(command string) {
+// ExecCommand is ...
+func ExecCommand(command string) {
 	args := strings.Fields(command)
 
 	cmd := exec.Command(args[0], args[1:]...)
 	reader, err := cmd.StdoutPipe()
-	try(err)
+	if err != nil {
+		panic(err)
+	}
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
