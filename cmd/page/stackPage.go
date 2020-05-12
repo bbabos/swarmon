@@ -10,8 +10,8 @@ import (
 	"github.com/bbabos/swarmon/config"
 )
 
-var parsedStackFilePath = "tmp/parsed.yml"
-var rawStackFilePath = "tmp/docker-compose.yml"
+var parsedStackFilePath = "config/docker/parsed.yml"
+var rawStackFilePath = "config/docker/docker-compose.yml"
 
 func stackPage() {
 	var selected string
@@ -108,7 +108,6 @@ func StackInit() {
 		fmt.Println("----------------------------------------------")
 	}
 
-	utils.GitClone("https://github.com/babobene/swarmon.git", "tmp")
 	getAnswers()
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
 	utils.WriteToFile(parsedFile, parsedStackFilePath)
