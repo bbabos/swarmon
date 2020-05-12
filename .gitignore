@@ -1,2 +1,4 @@
 swarmon
 secret
+config/config.json
+config/docker/parsed.yml
