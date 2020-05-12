@@ -58,4 +58,4 @@ var Params = Param{
 }
 
 // ConfigPath is ...
-var ConfigPath = "config/config.json"
+var ConfigPath = "config/stackconfig.json"
