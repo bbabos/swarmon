@@ -54,6 +54,3 @@ var Params = Param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}
 
 // ConfigPath is ...
 var ConfigPath = "config/config.json"
-
-// Border is ...
-var Border string

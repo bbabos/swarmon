@@ -13,6 +13,35 @@ import (
 var parsedStackFilePath = "tmp/parsed.yml"
 var rawStackFilePath = "tmp/docker-compose.yml"
 
+func stackPage() {
+	var selected string
+	items := []string{
+		"1. Docker stack deploy/update",
+		"2. Remove monitoring stack",
+		"0. Back",
+	}
+	renderMenu(items, "STACK MENU")
+
+loop:
+	for {
+		fmt.Print("Select an option: ")
+		selected = utils.ReadInput()
+
+		switch selected {
+		case "1":
+			StackInit()
+			break loop
+		case "2":
+			StackDelete()
+		case "0":
+			MenuPage()
+			break loop
+		default:
+			fmt.Printf("%s is not a valid option\n", selected)
+		}
+	}
+}
+
 func getAnswers() {
 	length := len(config.Inputs)
 	for i := 0; i < length; i++ {
