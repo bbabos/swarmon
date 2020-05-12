@@ -10,6 +10,7 @@ type Param struct {
 	Tag    string
 	Domain string
 	Schema string
+	Cgroup string
 	Node   struct {
 		ID string
 	}
@@ -50,7 +51,11 @@ var Inputs = []input{
 }
 
 // Params is ...
-var Params = Param{Tag: "development", Node: struct{ ID string }{"{{.Node.ID}}"}}
+var Params = Param{
+	Tag:    "development",
+	Node:   struct{ ID string }{"{{.Node.ID}}"},
+	Cgroup: "# - /cgroup:/sys/fs/cgroup:ro",
+}
 
 // ConfigPath is ...
 var ConfigPath = "config/config.json"

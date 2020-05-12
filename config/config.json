@@ -2,6 +2,7 @@
  "Tag": "development",
  "Domain": "localhost",
  "Schema": "http",
+ "Cgroup": "# - /cgroup:/sys/fs/cgroup:ro",
  "Node": {
   "ID": "{{.Node.ID}}"
  },

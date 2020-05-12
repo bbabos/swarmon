@@ -30,7 +30,7 @@ cat docker-compose.yml |
     sed "s/{{.Traefik.Port}}/$traefik_port/g" |
     sed "s/{{.Docker.MetricPort}}/$metric_port/g" |
     sed "s/{{.Docker.GwBridgeIP}}/$gwbridge/g" |
-    sed "s@{{.cgroup}}@$cgroup@g" |
+    sed "s@{{.Cgroup}}@$cgroup@g" |
     sed "s/{{.Traefik.BAUser}}/$traefik_user/g" |
     sed "s@{{.Traefik.BAPassword}}@$traefik_pw@g" >tmp-docker-compose.yml
 
