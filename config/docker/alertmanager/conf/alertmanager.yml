@@ -1,0 +1,13 @@
+route:
+  receiver: "slack"
+
+receivers:
+  - name: "slack"
+    slack_configs:
+      - send_resolved: true
+        text: "*Summary:* {{ .CommonAnnotations.summary }}\n*Description:* {{ .CommonAnnotations.description }}"
+        icon_url: https://avatars3.githubusercontent.com/u/3380462
+        #title_link#
+        #url#
+        #user#
+        #channel#
