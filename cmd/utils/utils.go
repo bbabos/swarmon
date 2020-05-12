@@ -14,7 +14,6 @@ import (
 
 	"github.com/bbabos/swarmon/config"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/src-d/go-git.v4"
 )
 
 // ReadInput is ...
@@ -26,20 +25,6 @@ func ReadInput() string {
 		answer = scanner.Text()
 	}
 	return answer
-}
-
-// GitClone is ...
-func GitClone(repoURL string, folderPath string) {
-	folderexist := FileExists(folderPath)
-
-	if !folderexist {
-		_, err := git.PlainClone(folderPath, false, &git.CloneOptions{
-			URL: repoURL,
-		})
-		if err != nil {
-			panic(err)
-		}
-	}
 }
 
 // FileExists is ...
