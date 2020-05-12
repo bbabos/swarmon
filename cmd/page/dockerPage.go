@@ -3,8 +3,8 @@ package page
 import (
 	"fmt"
 
-	"github.com/bbabos/swarmon-go/cmd/docker"
-	"github.com/bbabos/swarmon-go/cmd/utils"
+	"github.com/bbabos/swarmon/cmd/docker"
+	"github.com/bbabos/swarmon/cmd/utils"
 )
 
 func dockerPage() {

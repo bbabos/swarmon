@@ -6,8 +6,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/bbabos/swarmon-go/cmd/utils"
-	"github.com/bbabos/swarmon-go/config"
+	"github.com/bbabos/swarmon/cmd/utils"
+	"github.com/bbabos/swarmon/config"
 )
 
 var parsedStackFilePath = "tmp/parsed.yml"

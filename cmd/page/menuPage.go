@@ -3,7 +3,7 @@ package page
 import (
 	"fmt"
 
-	"github.com/bbabos/swarmon-go/cmd/utils"
+	"github.com/bbabos/swarmon/cmd/utils"
 )
 
 // MenuPage is ...

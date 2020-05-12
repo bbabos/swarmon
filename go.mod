@@ -1,4 +1,4 @@
-module github.com/bbabos/swarmon-go
+module github.com/bbabos/swarmon
 
 go 1.14
 

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/bbabos/swarmon-go/config"
+	"github.com/bbabos/swarmon/config"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/src-d/go-git.v4"
 )
