@@ -14,7 +14,7 @@ type page struct {
 	action    func()
 }
 
-func renderPage(p *page) {
+func renderMenuPage(p *page) {
 	utils.Clear()
 	p.createBorder()
 	p.addSeparator()

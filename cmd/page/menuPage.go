@@ -17,7 +17,7 @@ func MenuPage() {
 			"0. Exit",
 		},
 	}
-	renderPage(&p)
+	renderMenuPage(&p)
 
 loop:
 	for {

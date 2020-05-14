@@ -18,7 +18,7 @@ func dockerPage() {
 			"0. Back",
 		},
 	}
-	renderPage(&p)
+	renderMenuPage(&p)
 
 loop:
 	for {
@@ -63,8 +63,10 @@ loop:
 		switch selected {
 		case "1":
 			// TODO
+			fmt.Println("TODO")
 		case "2":
 			// TODO
+			fmt.Println("TODO")
 		case "0":
 			dockerPage()
 			break loop

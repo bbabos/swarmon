@@ -17,7 +17,7 @@ func ListContainers() {
 	}
 
 	for _, container := range containers {
-		fmt.Printf("%s | %s | %s\n", container.ID[:12], container.Status, container.Names)
+		fmt.Printf("%s | %s\n", container.Names[0], container.Status)
 	}
 }
 
@@ -30,7 +30,7 @@ func ListServices() {
 	}
 
 	for _, service := range services {
-		fmt.Printf("%s | %s\n", service.ID, service.Spec.Name)
+		fmt.Printf("%s\n", service.Spec.Name)
 	}
 }
 
