@@ -83,7 +83,11 @@ func HashPass(password string) string {
 		panic(err)
 	}
 
-	return string(hash)
+	passwd := string(hash)
+	if strings.HasPrefix(passwd, "$") {
+		passwd = "$" + passwd
+	}
+	return passwd
 }
 
 // Clear is ...
