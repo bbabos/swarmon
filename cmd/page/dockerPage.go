@@ -30,11 +30,11 @@ loop:
 			serviceOptions()
 			break loop
 		case "2":
-			p.addSeparator()
+			p.renderSeparator()
 			docker.ListContainers()
 			fmt.Println(p.border)
 		case "3":
-			p.addSeparator()
+			p.renderSeparator()
 			docker.ListSwarmNodes()
 			fmt.Println(p.border)
 		case "0":

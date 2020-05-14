@@ -108,7 +108,7 @@ func stackInit() {
 		p.border = "----------------------------------------------"
 		p.title = "New monitoring stack initialization started..."
 	}
-	p.addSeparator()
+	p.renderSeparator()
 
 	getAnswers()
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)

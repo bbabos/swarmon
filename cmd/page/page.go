@@ -17,7 +17,7 @@ type page struct {
 func renderMenuPage(p *page) {
 	utils.Clear()
 	p.createBorder()
-	p.addSeparator()
+	p.renderSeparator()
 	for _, item := range p.menuItems {
 		fmt.Println(item)
 	}
@@ -27,7 +27,7 @@ func renderMenuPage(p *page) {
 func renderSubPage(p *page) {
 	utils.Clear()
 	p.createOptionBorder()
-	p.addSeparator()
+	p.renderSeparator()
 	p.action()
 	fmt.Println(p.border)
 	fmt.Println(p.options)
@@ -47,7 +47,7 @@ func (p *page) createBorder() {
 	p.border = border + border
 }
 
-func (p *page) addSeparator() {
+func (p *page) renderSeparator() {
 	fmt.Println(p.border)
 	fmt.Println(p.title)
 	fmt.Println(p.border)
