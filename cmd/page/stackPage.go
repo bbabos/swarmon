@@ -10,8 +10,8 @@ import (
 	"github.com/bbabos/swarmon/config"
 )
 
-var parsedStackFilePath = "config/docker/parsed.yml"
 var rawStackFilePath = "config/docker/docker-compose.yml"
+var parsedStackFilePath = "config/docker/parsed.yml"
 
 func stackPage() {
 	var selected string
@@ -23,7 +23,7 @@ func stackPage() {
 			"0. Back",
 		},
 	}
-	renderPage(&p)
+	renderMenuPage(&p)
 
 loop:
 	for {
@@ -95,31 +95,32 @@ func setParams() {
 	config.Params.Docker.GwBridgeIP = config.Inputs[11].Answer
 }
 
-// StackInit is ...
 func stackInit() {
 	var selected string
 	stackexist := stackExist()
+	p := page{}
 
 	utils.Clear()
 	if stackexist {
-		fmt.Println("-----------------------------------")
-		fmt.Println("Update existing monitoring stack...")
-		fmt.Println("-----------------------------------")
+		p.border = "-----------------------------------"
+		p.title = "Update existing monitoring stack..."
 	} else {
-		fmt.Println("----------------------------------------------")
-		fmt.Println("New monitoring stack initialization started...")
-		fmt.Println("----------------------------------------------")
+		p.border = "----------------------------------------------"
+		p.title = "New monitoring stack initialization started..."
 	}
+	p.addSeparator()
 
 	getAnswers()
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
 	utils.WriteToFile(parsedFile, parsedStackFilePath)
 
 	if stackexist {
-		fmt.Println("\nUpdating docker services...")
+		fmt.Println("-------------------------------")
+		fmt.Println("Updating docker services...")
 		fmt.Println("-------------------------------")
 	} else {
-		fmt.Println("\nStack deploy started...")
+		fmt.Println("-----------------------")
+		fmt.Println("Stack deploy started...")
 		fmt.Println("-----------------------")
 	}
 	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
@@ -163,13 +164,10 @@ func stackExist() bool {
 	stdout := out.String()
 
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
-	if contains {
-		return true
-	}
-	return false
+	return contains
 }
 
-func checkPreviousMonStack() bool {
+func checkPreviouslyDeployedStack() bool {
 	configexist := utils.FileExists(config.ConfigPath)
 
 	if configexist {
