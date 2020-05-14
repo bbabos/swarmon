@@ -6,30 +6,37 @@ import (
 	"github.com/bbabos/swarmon/cmd/utils"
 )
 
-// Page is ...
-type Page struct {
-	Title   string
-	Options string
-	Action  func()
+type page struct {
+	title     string
+	border    string
+	menuItems []string
+	options   string
+	action    func()
 }
 
-var border string
-
-func renderMenu(items []string, title string) {
-	border = createMenuSeparator(items)
+func renderPage(p *page) {
 	utils.Clear()
-	fmt.Println(border)
-	fmt.Println(title)
-	fmt.Println(border)
-	for _, item := range items {
+	p.createBorder()
+	p.addSeparator()
+	for _, item := range p.menuItems {
 		fmt.Println(item)
 	}
-	fmt.Println(border)
+	fmt.Println(p.border)
 }
 
-func createMenuSeparator(items []string) string {
+func renderSubPage(p *page) {
+	utils.Clear()
+	p.createOptionBorder()
+	p.addSeparator()
+	p.action()
+	fmt.Println(p.border)
+	fmt.Println(p.options)
+	fmt.Println(p.border)
+}
+
+func (p *page) createBorder() {
 	border, length := "", 0
-	for _, item := range items {
+	for _, item := range p.menuItems {
 		if len(item) > length {
 			length = len(item)
 		}
@@ -37,29 +44,21 @@ func createMenuSeparator(items []string) string {
 	for i := 0; i < length; i++ {
 		border += "-"
 	}
-	return border + border
+	p.border = border + border
 }
 
-func createOptionSeparator(options string) string {
-	length := len(options)
+func (p *page) addSeparator() {
+	fmt.Println(p.border)
+	fmt.Println(p.title)
+	fmt.Println(p.border)
+}
+
+func (p *page) createOptionBorder() {
+	length := len(p.options)
 	border := ""
 
 	for i := 0; i < length; i++ {
 		border += "-"
 	}
-	return border
-}
-
-func renderPage(pageitem Page) {
-	utils.Clear()
-	separator := createOptionSeparator(pageitem.Options)
-	addSeparator(pageitem.Title, separator)
-	pageitem.Action()
-	addSeparator(pageitem.Options, separator)
-}
-
-func addSeparator(header string, separator string) {
-	fmt.Println(separator)
-	fmt.Println(header)
-	fmt.Println(separator)
+	p.border = border
 }

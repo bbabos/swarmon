@@ -9,13 +9,16 @@ import (
 
 func dockerPage() {
 	var selected string
-	items := []string{
-		"1. Service options",
-		"2. List containers",
-		"3. List swarm nodes",
-		"0. Back",
+	p := page{
+		title: "DOCKER MENU",
+		menuItems: []string{
+			"1. Service options",
+			"2. List containers",
+			"3. List swarm nodes",
+			"0. Back",
+		},
 	}
-	renderMenu(items, "DOCKER MENU")
+	renderPage(&p)
 
 loop:
 	for {
@@ -27,17 +30,13 @@ loop:
 			serviceOptions()
 			break loop
 		case "2":
-			fmt.Println(border)
-			fmt.Println("CONTAINERS")
-			fmt.Println(border)
+			p.addSeparator()
 			docker.ListContainers()
-			fmt.Println(border)
+			fmt.Println(p.border)
 		case "3":
-			fmt.Println(border)
-			fmt.Println("SWARM NODES")
-			fmt.Println(border)
+			p.addSeparator()
 			docker.ListSwarmNodes()
-			fmt.Println(border)
+			fmt.Println(p.border)
 		case "0":
 			MenuPage()
 			break loop
@@ -49,12 +48,12 @@ loop:
 
 func serviceOptions() {
 	var selected string
-	pageItem := Page{
-		Title:   "SERVICES",
-		Options: "| 0 - Back | 1 - another opts | 2 - another opts |",
-		Action:  docker.ListServices,
+	p := page{
+		title:   "SERVICES",
+		options: "| 0 - Back | 1 - another opts | 2 - another opts |",
+		action:  docker.ListServices,
 	}
-	renderPage(pageItem)
+	renderSubPage(&p)
 
 loop:
 	for {

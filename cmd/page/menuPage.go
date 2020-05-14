@@ -9,12 +9,15 @@ import (
 // MenuPage is ...
 func MenuPage() {
 	var selected string
-	items := []string{
-		"1. Monitoring stack options",
-		"2. Maintain monitor services",
-		"0. Exit",
+	p := page{
+		title: "MAIN MENU",
+		menuItems: []string{
+			"1. Monitoring stack options",
+			"2. Maintain monitor services",
+			"0. Exit",
+		},
 	}
-	renderMenu(items, "MAIN MENU")
+	renderPage(&p)
 
 loop:
 	for {

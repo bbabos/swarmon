@@ -15,12 +15,15 @@ var rawStackFilePath = "config/docker/docker-compose.yml"
 
 func stackPage() {
 	var selected string
-	items := []string{
-		"1. Docker stack deploy/update",
-		"2. Remove monitoring stack",
-		"0. Back",
+	p := page{
+		title: "STACK MENU",
+		menuItems: []string{
+			"1. Docker stack deploy/update",
+			"2. Remove monitoring stack",
+			"0. Back",
+		},
 	}
-	renderMenu(items, "STACK MENU")
+	renderPage(&p)
 
 loop:
 	for {
@@ -29,10 +32,10 @@ loop:
 
 		switch selected {
 		case "1":
-			StackInit()
+			stackInit()
 			break loop
 		case "2":
-			StackDelete()
+			stackDelete()
 		case "0":
 			MenuPage()
 			break loop
@@ -93,7 +96,7 @@ func setParams() {
 }
 
 // StackInit is ...
-func StackInit() {
+func stackInit() {
 	var selected string
 	stackexist := stackExist()
 
@@ -136,8 +139,7 @@ loop:
 	}
 }
 
-// StackDelete is ...
-func StackDelete() {
+func stackDelete() {
 	stackexist := stackExist()
 
 	if stackexist {
