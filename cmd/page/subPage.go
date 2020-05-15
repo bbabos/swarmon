@@ -4,8 +4,6 @@ import "fmt"
 
 type iSubPage interface {
 	renderSubPage()
-	createOptionBorder()
-	renderSeparator()
 }
 
 type subPage struct {
@@ -20,12 +18,12 @@ func (p *subPage) renderSubPage() {
 	p.createOptionBorder()
 	p.renderSeparator()
 	p.action()
-	p.renderSeparator()
+	p.renderOptions()
 }
 
 func (p *subPage) createOptionBorder() {
 	length := len(p.options)
-	border := ""
+	var border string
 
 	for i := 0; i < length; i++ {
 		border += "-"
@@ -36,5 +34,11 @@ func (p *subPage) createOptionBorder() {
 func (p *subPage) renderSeparator() {
 	fmt.Println(p.border)
 	fmt.Println(p.title)
+	fmt.Println(p.border)
+}
+
+func (p *subPage) renderOptions() {
+	fmt.Println(p.border)
+	fmt.Println(p.options)
 	fmt.Println(p.border)
 }

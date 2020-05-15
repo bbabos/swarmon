@@ -6,8 +6,6 @@ import (
 
 type iPage interface {
 	renderMenuPage()
-	createBorder()
-	renderSeparator()
 }
 
 type menuPage struct {
