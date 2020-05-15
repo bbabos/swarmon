@@ -42,14 +42,14 @@ func renderService(services []docker.Service) {
 		Size:      10,
 	}
 
+	// i, _, err := prompt.Run()
 	_, _, err := prompt.Run()
-
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
 
-	// services[i].Action()
+	// services[i].GetLogs()
 }
 
 func containerOptions() {
