@@ -6,7 +6,7 @@ import (
 	"github.com/bbabos/swarmon/cmd/utils"
 )
 
-type page struct {
+type menuPage struct {
 	title     string
 	border    string
 	menuItems []string
@@ -14,7 +14,7 @@ type page struct {
 	action    func()
 }
 
-func renderMenuPage(p *page) {
+func renderMenuPage(p *menuPage) {
 	utils.Clear()
 	p.createBorder()
 	p.renderSeparator()
@@ -24,7 +24,7 @@ func renderMenuPage(p *page) {
 	fmt.Println(p.border)
 }
 
-func renderSubPage(p *page) {
+func renderSubPage(p *menuPage) {
 	utils.Clear()
 	p.createOptionBorder()
 	p.renderSeparator()
@@ -34,7 +34,7 @@ func renderSubPage(p *page) {
 	fmt.Println(p.border)
 }
 
-func (p *page) createBorder() {
+func (p *menuPage) createBorder() {
 	border, length := "", 0
 	for _, item := range p.menuItems {
 		if len(item) > length {
@@ -47,13 +47,13 @@ func (p *page) createBorder() {
 	p.border = border + border
 }
 
-func (p *page) renderSeparator() {
+func (p *menuPage) renderSeparator() {
 	fmt.Println(p.border)
 	fmt.Println(p.title)
 	fmt.Println(p.border)
 }
 
-func (p *page) createOptionBorder() {
+func (p *menuPage) createOptionBorder() {
 	length := len(p.options)
 	border := ""
 

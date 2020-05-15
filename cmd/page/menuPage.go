@@ -9,7 +9,7 @@ import (
 // MenuPage is ...
 func MenuPage() {
 	var selected string
-	p := page{
+	p := menuPage{
 		title: "MAIN MENU",
 		menuItems: []string{
 			"1. Monitoring stack options",

@@ -15,7 +15,7 @@ var parsedStackFilePath = "config/docker/parsed.yml"
 
 func stackPage() {
 	var selected string
-	p := page{
+	p := menuPage{
 		title: "STACK MENU",
 		menuItems: []string{
 			"1. Docker stack deploy/update",
@@ -98,7 +98,7 @@ func setParams() {
 func stackInit() {
 	var selected string
 	stackexist := stackExist()
-	p := page{}
+	p := menuPage{}
 
 	utils.Clear()
 	if stackexist {

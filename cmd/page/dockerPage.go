@@ -9,7 +9,7 @@ import (
 
 func dockerPage() {
 	var selected string
-	p := page{
+	p := menuPage{
 		title: "DOCKER MENU",
 		menuItems: []string{
 			"1. Service options",
@@ -48,7 +48,7 @@ loop:
 
 func serviceOptions() {
 	var selected string
-	p := page{
+	p := menuPage{
 		title:   "SERVICES",
 		options: "| 0 - Back | 1 - another opts | 2 - another opts |",
 		action:  docker.ListServices,
