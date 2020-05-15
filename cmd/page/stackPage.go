@@ -80,9 +80,11 @@ func stackInit() {
 	if stackexist {
 		fmt.Println("-----------------------------------")
 		fmt.Println("Update existing monitoring stack...")
+		fmt.Println("-----------------------------------")
 	} else {
 		fmt.Println("----------------------------------------------")
 		fmt.Println("New monitoring stack initialization started...")
+		fmt.Println("----------------------------------------------")
 	}
 
 	getAnswers()
