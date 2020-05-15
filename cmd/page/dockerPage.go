@@ -31,13 +31,13 @@ loop:
 			serviceOptions()
 			break loop
 		case "2":
-			p.renderSeparator()
+			fmt.Println("---------TODO TITLE----------")
 			docker.ListContainers()
-			fmt.Println("---------TODO----------")
+			fmt.Println("---------TODO FOOTER----------")
 		case "3":
-			p.renderSeparator()
+			fmt.Println("---------TODO TITLE----------")
 			docker.ListSwarmNodes()
-			fmt.Println("---------TODO----------")
+			fmt.Println("---------TODO FOOTER----------")
 		case "0":
 			MenuPage()
 			break loop
