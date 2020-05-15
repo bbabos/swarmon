@@ -15,7 +15,8 @@ var parsedStackFilePath = "config/docker/parsed.yml"
 
 func stackPage() {
 	var selected string
-	p := menuPage{
+	var p iPage
+	p = &menuPage{
 		title: "STACK MENU",
 		menuItems: []string{
 			"1. Docker stack deploy/update",
@@ -23,7 +24,7 @@ func stackPage() {
 			"0. Back",
 		},
 	}
-	renderMenuPage(&p)
+	p.renderMenuPage()
 
 loop:
 	for {

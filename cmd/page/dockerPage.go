@@ -9,7 +9,8 @@ import (
 
 func dockerPage() {
 	var selected string
-	p := menuPage{
+	var p iPage
+	p = &menuPage{
 		title: "DOCKER MENU",
 		menuItems: []string{
 			"1. Service options",
@@ -18,7 +19,7 @@ func dockerPage() {
 			"0. Back",
 		},
 	}
-	renderMenuPage(&p)
+	p.renderMenuPage()
 
 loop:
 	for {
@@ -32,11 +33,11 @@ loop:
 		case "2":
 			p.renderSeparator()
 			docker.ListContainers()
-			fmt.Println(p.border)
+			fmt.Println("---------TODO----------")
 		case "3":
 			p.renderSeparator()
 			docker.ListSwarmNodes()
-			fmt.Println(p.border)
+			fmt.Println("---------TODO----------")
 		case "0":
 			MenuPage()
 			break loop
@@ -48,12 +49,13 @@ loop:
 
 func serviceOptions() {
 	var selected string
-	p := menuPage{
+	var page iSubPage
+	page = &subPage{
 		title:   "SERVICES",
-		options: "| 0 - Back | 1 - another opts | 2 - another opts |",
+		options: "| 0 - Back | 1 - Scale | 2 - Restart |",
 		action:  docker.ListServices,
 	}
-	renderSubPage(&p)
+	page.renderSubPage()
 
 loop:
 	for {

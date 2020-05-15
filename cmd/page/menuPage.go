@@ -9,7 +9,8 @@ import (
 // MenuPage is ...
 func MenuPage() {
 	var selected string
-	p := menuPage{
+	var p iPage
+	p = &menuPage{
 		title: "MAIN MENU",
 		menuItems: []string{
 			"1. Monitoring stack options",
@@ -17,7 +18,7 @@ func MenuPage() {
 			"0. Exit",
 		},
 	}
-	renderMenuPage(&p)
+	p.renderMenuPage()
 
 loop:
 	for {
