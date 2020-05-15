@@ -1,41 +1,11 @@
 package page
 
-import (
-	"fmt"
-
-	"github.com/bbabos/swarmon/cmd/utils"
-)
-
 // MenuPage is ...
 func MenuPage() {
-	var selected string
-	var p iPage
-	p = &menuPage{
-		title: "MAIN MENU",
-		menuItems: []string{
-			"1. Monitoring stack options",
-			"2. Maintain monitor services",
-			"0. Exit",
-		},
+	p := []page{
+		{Name: "Monitoring stack options", action: stackPage},
+		{Name: "Maintain monitor services", action: dockerPage},
+		{Name: "Exit"},
 	}
-	p.renderMenuPage()
-
-loop:
-	for {
-		fmt.Print("Select an option: ")
-		selected = utils.ReadInput()
-
-		switch selected {
-		case "1":
-			stackPage()
-			break loop
-		case "2":
-			dockerPage()
-			break loop
-		case "0":
-			break loop
-		default:
-			fmt.Printf("%s is not a valid option\n", selected)
-		}
-	}
+	renderMenu(p, "MAIN MENU")
 }

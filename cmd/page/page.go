@@ -2,43 +2,37 @@ package page
 
 import (
 	"fmt"
+
+	"github.com/manifoldco/promptui"
 )
 
-type iPage interface {
-	renderMenuPage()
+type page struct {
+	Name   string
+	action func()
 }
 
-type menuPage struct {
-	title     string
-	border    string
-	menuItems []string
-}
+func renderMenu(items []page, title string) {
+	templates := &promptui.SelectTemplates{
+		Label:    "{{ . }}",
+		Active:   "\u2192 {{ .Name | cyan }}",
+		Inactive: "  {{ .Name | cyan }}",
+		Selected: "--- {{ .Name | cyan }} ---"}
 
-func (p *menuPage) renderMenuPage() {
-	// utils.Clear()
-	p.createBorder()
-	p.renderSeparator()
-	for _, item := range p.menuItems {
-		fmt.Println(item)
+	prompt := promptui.Select{
+		Label:     title,
+		Items:     items,
+		Templates: templates,
+		Size:      5,
 	}
-	fmt.Println(p.border)
-}
 
-func (p *menuPage) createBorder() {
-	border, length := "", 0
-	for _, item := range p.menuItems {
-		if len(item) > length {
-			length = len(item)
-		}
+	i, _, err := prompt.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
 	}
-	for i := 0; i < length; i++ {
-		border += "-"
-	}
-	p.border = border + border
-}
 
-func (p *menuPage) renderSeparator() {
-	fmt.Println(p.border)
-	fmt.Println(p.title)
-	fmt.Println(p.border)
+	if items[i].Name == "Exit" {
+		return
+	}
+	items[i].action()
 }

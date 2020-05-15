@@ -8,43 +8,21 @@ import (
 )
 
 func dockerPage() {
-	var selected string
-	var p iPage
-	p = &menuPage{
-		title: "DOCKER MENU",
-		menuItems: []string{
-			"1. Service options",
-			"2. List containers",
-			"3. List swarm nodes",
-			"0. Back",
-		},
+	p := []page{
+		{Name: "Service options", action: serviceOptions},
+		{Name: "Container options", action: containerOptions},
+		{Name: "Node options", action: nodeOptions},
+		{Name: "Exit"},
 	}
-	p.renderMenuPage()
+	renderMenu(p, "DOCKER MENU")
+}
 
-loop:
-	for {
-		fmt.Print("Select an option: ")
-		selected = utils.ReadInput()
+func containerOptions() {
+	fmt.Println("TODO")
+}
 
-		switch selected {
-		case "1":
-			serviceOptions()
-			break loop
-		case "2":
-			fmt.Println("---------TODO TITLE----------")
-			docker.ListContainers()
-			fmt.Println("---------TODO FOOTER----------")
-		case "3":
-			fmt.Println("---------TODO TITLE----------")
-			docker.ListSwarmNodes()
-			fmt.Println("---------TODO FOOTER----------")
-		case "0":
-			MenuPage()
-			break loop
-		default:
-			fmt.Printf("%s is not a valid option\n", selected)
-		}
-	}
+func nodeOptions() {
+	fmt.Println("TODO")
 }
 
 func serviceOptions() {

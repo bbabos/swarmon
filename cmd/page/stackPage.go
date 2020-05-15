@@ -14,36 +14,13 @@ var rawStackFilePath = "config/docker/docker-compose.yml"
 var parsedStackFilePath = "config/docker/parsed.yml"
 
 func stackPage() {
-	var selected string
-	var p iPage
-	p = &menuPage{
-		title: "STACK MENU",
-		menuItems: []string{
-			"1. Docker stack deploy/update",
-			"2. Remove monitoring stack",
-			"0. Back",
-		},
+	p := []page{
+		{Name: "Docker stack deploy/update", action: stackInit},
+		{Name: "Remove monitoring stack", action: stackDelete},
+		{Name: "Back", action: MenuPage},
 	}
-	p.renderMenuPage()
 
-loop:
-	for {
-		fmt.Print("Select an option: ")
-		selected = utils.ReadInput()
-
-		switch selected {
-		case "1":
-			stackInit()
-			break loop
-		case "2":
-			stackDelete()
-		case "0":
-			MenuPage()
-			break loop
-		default:
-			fmt.Printf("%s is not a valid option\n", selected)
-		}
-	}
+	renderMenu(p, "STACK MENU")
 }
 
 func getAnswers() {
@@ -99,17 +76,15 @@ func setParams() {
 func stackInit() {
 	var selected string
 	stackexist := stackExist()
-	p := menuPage{}
 
 	utils.Clear()
 	if stackexist {
-		p.border = "-----------------------------------"
-		p.title = "Update existing monitoring stack..."
+		fmt.Println("-----------------------------------")
+		fmt.Println("Update existing monitoring stack...")
 	} else {
-		p.border = "----------------------------------------------"
-		p.title = "New monitoring stack initialization started..."
+		fmt.Println("----------------------------------------------")
+		fmt.Println("New monitoring stack initialization started...")
 	}
-	p.renderSeparator()
 
 	getAnswers()
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)

@@ -9,6 +9,12 @@ import (
 	"github.com/docker/docker/client"
 )
 
+type service struct {
+	name     string
+	replicas uint64
+	status   string
+}
+
 // ListServices is ...
 func ListServices() {
 	cli, err := client.NewEnvClient()
@@ -28,6 +34,5 @@ func getServices() []swarm.Service {
 	if err != nil {
 		panic(err)
 	}
-
 	return services
 }
