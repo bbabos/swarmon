@@ -2,37 +2,38 @@ package docker
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/swarm"
 	"github.com/docker/docker/client"
 )
 
-type service struct {
-	name     string
-	replicas uint64
-	status   string
+// Service is ...
+type Service struct {
+	Name     string
+	Mode     string
+	Replicas uint64
+	Action   func()
 }
 
-// ListServices is ...
-func ListServices() {
+// GetServices is ...
+func GetServices() []Service {
 	cli, err := client.NewEnvClient()
 	services, err := cli.ServiceList(context.Background(), types.ServiceListOptions{})
 	if err != nil {
 		panic(err)
 	}
 
-	for _, service := range services {
-		fmt.Printf("%s\n", service.Spec.Name)
-	}
-}
+	srv := make([]Service, len(services))
 
-func getServices() []swarm.Service {
-	cli, err := client.NewEnvClient()
-	services, err := cli.ServiceList(context.Background(), types.ServiceListOptions{})
-	if err != nil {
-		panic(err)
+	for i, service := range services {
+		if service.Spec.Mode.Replicated != nil {
+			srv[i].Name = service.Spec.Name
+			srv[i].Mode = "Replicated"
+			srv[i].Replicas = *service.Spec.Mode.Replicated.Replicas
+		} else {
+			srv[i].Name = service.Spec.Name
+			srv[i].Mode = "Global"
+		}
 	}
-	return services
+	return srv
 }

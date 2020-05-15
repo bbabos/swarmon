@@ -19,7 +19,6 @@ func stackPage() {
 		{Name: "Remove monitoring stack", action: stackDelete},
 		{Name: "Back", action: MenuPage},
 	}
-
 	renderMenu(p, "STACK MENU")
 }
 

@@ -3,6 +3,7 @@ package page
 import (
 	"fmt"
 
+	"github.com/bbabos/swarmon/cmd/utils"
 	"github.com/manifoldco/promptui"
 )
 
@@ -12,11 +13,12 @@ type page struct {
 }
 
 func renderMenu(items []page, title string) {
+	utils.Clear()
 	templates := &promptui.SelectTemplates{
 		Label:    "{{ . }}",
 		Active:   "\u2192 {{ .Name | cyan }}",
 		Inactive: "  {{ .Name | cyan }}",
-		Selected: "--- {{ .Name | cyan }} ---"}
+		Selected: "{{ .Name }}"}
 
 	prompt := promptui.Select{
 		Label:     title,

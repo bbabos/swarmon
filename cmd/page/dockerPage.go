@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/bbabos/swarmon/cmd/docker"
-	"github.com/bbabos/swarmon/cmd/utils"
+	"github.com/manifoldco/promptui"
 )
 
 func dockerPage() {
@@ -12,9 +12,44 @@ func dockerPage() {
 		{Name: "Service options", action: serviceOptions},
 		{Name: "Container options", action: containerOptions},
 		{Name: "Node options", action: nodeOptions},
-		{Name: "Exit"},
+		{Name: "Back", action: MenuPage},
 	}
 	renderMenu(p, "DOCKER MENU")
+}
+
+func serviceOptions() {
+	services := docker.GetServices()
+	renderService(services)
+}
+
+func renderService(services []docker.Service) {
+	templates := &promptui.SelectTemplates{
+		Label:    "{{ . }}",
+		Active:   "\u2192 {{ .Name | cyan }}",
+		Inactive: "  {{ .Name | cyan }}",
+		Selected: "{{ .Name | cyan }}",
+		Details: `
+--------- Service ----------
+{{ "Name:" | faint }}	{{ .Name }}
+{{ "Mode:" | faint }}	{{ .Mode }}
+{{ "Replicas:" | faint }}	{{ .Replicas }}`,
+	}
+
+	prompt := promptui.Select{
+		Label:     "SERVICES",
+		Items:     services,
+		Templates: templates,
+		Size:      10,
+	}
+
+	_, _, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
+	}
+
+	// services[i].Action()
 }
 
 func containerOptions() {
@@ -23,35 +58,4 @@ func containerOptions() {
 
 func nodeOptions() {
 	fmt.Println("TODO")
-}
-
-func serviceOptions() {
-	var selected string
-	var page iSubPage
-	page = &subPage{
-		title:   "SERVICES",
-		options: "| 0 - Back | 1 - Scale | 2 - Restart |",
-		action:  docker.ListServices,
-	}
-	page.renderSubPage()
-
-loop:
-	for {
-		fmt.Print("Select an option: ")
-		selected = utils.ReadInput()
-
-		switch selected {
-		case "1":
-			// TODO
-			fmt.Println("TODO")
-		case "2":
-			// TODO
-			fmt.Println("TODO")
-		case "0":
-			dockerPage()
-			break loop
-		default:
-			fmt.Printf("%s is not a valid option\n", selected)
-		}
-	}
 }
