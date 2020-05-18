@@ -83,11 +83,10 @@ func HashPass(password string) string {
 		panic(err)
 	}
 
-	passwd := string(hash)
-	if strings.HasPrefix(passwd, "$") {
-		passwd = "$" + passwd
-	}
-	return passwd
+	rawpw := string(hash)
+	replacedpw := strings.ReplaceAll(rawpw, "$", "$$")
+
+	return replacedpw
 }
 
 // SaveConfig is ...
