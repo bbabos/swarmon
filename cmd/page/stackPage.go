@@ -8,6 +8,7 @@ import (
 
 	"github.com/bbabos/swarmon/cmd/utils"
 	"github.com/bbabos/swarmon/config"
+	"github.com/eiannone/keyboard"
 )
 
 var rawStackFilePath = "config/docker/docker-compose.yml"
@@ -73,7 +74,6 @@ func setParams() {
 }
 
 func stackInit() {
-	var selected string
 	stackexist := stackExist()
 
 	if stackexist {
@@ -100,21 +100,7 @@ func stackInit() {
 		fmt.Println("-----------------------")
 	}
 	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
-
-loop:
-	for {
-		fmt.Println("-------------------------------")
-		fmt.Print("Enter 0 to exit: ")
-		selected = utils.ReadInput()
-
-		switch selected {
-		case "0":
-			MainPage()
-			break loop
-		default:
-			fmt.Printf("%s is not a valid option\n", selected)
-		}
-	}
+	exitToStackMenu()
 }
 
 func stackDelete() {
@@ -125,11 +111,13 @@ func stackDelete() {
 		input := utils.ReadInput()
 		if input == "y" {
 			utils.ExecCommand("docker stack rm " + config.Params.Docker.StackName)
+			fmt.Println("-----------------------------.")
 			fmt.Println("Monitoring stack deleted.")
 		}
 	} else {
 		fmt.Println("You may not have a monitoring stack deployed!")
 	}
+	exitToStackMenu()
 }
 
 func stackExist() bool {
@@ -156,4 +144,22 @@ func checkPreviouslyDeployedStack() bool {
 		}
 	}
 	return false
+}
+
+func exitToStackMenu() {
+loop:
+	for {
+		fmt.Println("-------------------------------")
+		fmt.Println("Press q to exit!")
+		char, _, err := keyboard.GetSingleKey()
+		if err != nil {
+			panic(err)
+		}
+
+		switch char {
+		case 'q':
+			stackPage()
+			break loop
+		}
+	}
 }
