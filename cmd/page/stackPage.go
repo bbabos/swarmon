@@ -23,9 +23,15 @@ func stackPage() {
 	renderMenu(p, "STACK MENU")
 }
 
-func getAnswers() {
+func getAnswers(isExists bool) {
 	length := len(config.Inputs)
-	for i := 0; i < length; i++ {
+	var num int
+	if isExists {
+		num = 1
+	} else {
+		num = 0
+	}
+	for i := num; i < length; i++ {
 		if config.Inputs[i].Answer == "" {
 			fmt.Print(config.Inputs[i].Question + ": ")
 			config.Inputs[i].Answer = utils.ReadInput()
@@ -85,8 +91,8 @@ func stackInit() {
 		fmt.Println("New monitoring stack initialization started...")
 		fmt.Println("----------------------------------------------")
 	}
+	getAnswers(stackexist)
 
-	getAnswers()
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
 	utils.WriteToFile(parsedFile, parsedStackFilePath)
 
@@ -130,20 +136,6 @@ func stackExist() bool {
 
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
 	return contains
-}
-
-func checkPreviouslyDeployedStack() bool {
-	configexist := utils.FileExists(config.ConfigPath)
-
-	if configexist {
-		stackexist := stackExist()
-
-		if stackexist {
-			fmt.Printf("You have a previously deployed monitoring stack (%s)!\n", config.Params.Docker.StackName)
-			return true
-		}
-	}
-	return false
 }
 
 func exitToStackMenu() {
