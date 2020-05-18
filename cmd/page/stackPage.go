@@ -17,7 +17,7 @@ func stackPage() {
 	p := []page{
 		{Name: "Docker stack deploy/update", action: stackInit},
 		{Name: "Remove monitoring stack", action: stackDelete},
-		{Name: "Back", action: MenuPage},
+		{Name: "Back", action: MainPage},
 	}
 	renderMenu(p, "STACK MENU")
 }
@@ -103,12 +103,13 @@ func stackInit() {
 
 loop:
 	for {
+		fmt.Println("-------------------------------")
 		fmt.Print("Enter 0 to exit: ")
 		selected = utils.ReadInput()
 
 		switch selected {
 		case "0":
-			MenuPage()
+			MainPage()
 			break loop
 		default:
 			fmt.Printf("%s is not a valid option\n", selected)

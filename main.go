@@ -13,5 +13,5 @@ func main() {
 		utils.LoadConfig(config.ConfigPath)
 		page.SetAnswers()
 	}
-	page.MenuPage()
+	page.MainPage()
 }
