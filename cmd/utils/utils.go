@@ -90,13 +90,6 @@ func HashPass(password string) string {
 	return passwd
 }
 
-// Clear is ...
-func Clear() {
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
-}
-
 // SaveConfig is ...
 func SaveConfig(folderPath string) {
 	file, _ := json.MarshalIndent(config.Params, "", " ")

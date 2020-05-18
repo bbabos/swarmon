@@ -76,7 +76,6 @@ func stackInit() {
 	var selected string
 	stackexist := stackExist()
 
-	utils.Clear()
 	if stackexist {
 		fmt.Println("-----------------------------------")
 		fmt.Println("Update existing monitoring stack...")
