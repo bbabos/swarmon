@@ -32,6 +32,7 @@ func renderNodePage(nodes []docker.Node) {
 		Templates:    templates,
 		Size:         5,
 		HideSelected: true,
+		HideHelp:     true,
 	}
 
 	_, _, err := prompt.Run()

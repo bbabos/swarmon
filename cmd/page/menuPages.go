@@ -6,6 +6,11 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
+type page struct {
+	Name   string
+	action func()
+}
+
 // MainPage is ...
 func MainPage() {
 	p := []page{
@@ -26,11 +31,6 @@ func dockerPage() {
 	renderMenu(p, "DOCKER MENU")
 }
 
-type page struct {
-	Name   string
-	action func()
-}
-
 func renderMenu(items []page, title string) {
 	templates := &promptui.SelectTemplates{
 		Label:    "{{ . }}",
@@ -43,6 +43,7 @@ func renderMenu(items []page, title string) {
 		Templates:    templates,
 		Size:         5,
 		HideSelected: true,
+		HideHelp:     true,
 	}
 
 	i, _, err := prompt.Run()

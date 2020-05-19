@@ -30,6 +30,7 @@ func renderContainerPage(containers []docker.Container) {
 		Templates:    templates,
 		Size:         10,
 		HideSelected: true,
+		HideHelp:     true,
 	}
 
 	i, _, err := prompt.Run()
