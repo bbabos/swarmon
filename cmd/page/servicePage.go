@@ -24,7 +24,7 @@ func renderServicePage(services []docker.Service) {
 		Inactive: "  {{ .Name | white }}",
 		Details: `
 --------- Service ----------
-{{ "Name:" | faint }}	{{ .Name }}
+{{ "ID:" | faint }}	{{ .ID }}
 {{ "Mode:" | faint }}	{{ .Mode }}
 {{ "Replicas:" | faint }}	{{ .Replicas }}
 {{ "CreatedAt:" | faint }}	{{ .Created }}
@@ -45,10 +45,10 @@ func renderServicePage(services []docker.Service) {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
-	renderServicesSubPage(services[i])
+	renderServiceSubPage(services[i])
 }
 
-func renderServicesSubPage(s docker.Service) {
+func renderServiceSubPage(s docker.Service) {
 	options := []serviceOptions{
 		{Name: "Restart service", Action: docker.RestartService},
 		{Name: "Scale service", Action: docker.ScaleService},
