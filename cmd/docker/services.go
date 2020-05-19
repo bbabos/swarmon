@@ -2,10 +2,8 @@ package docker
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/swarm"
 	"github.com/docker/docker/client"
 )
 
@@ -45,17 +43,10 @@ func GetServices() []Service {
 
 // RestartService is ...
 func RestartService(s Service) {
-	cli, err := client.NewEnvClient()
-	options := types.ServiceUpdateOptions{}
-	spec := swarm.ServiceSpec{TaskTemplate: swarm.TaskSpec{ForceUpdate: 0}}
-
-	_, err = cli.ServiceUpdate(context.Background(), s.ID, swarm.Version{}, spec, options)
-	if err != nil {
-		panic(err)
-	}
+	// TODO
 }
 
 // ScaleService is ...
 func ScaleService(s Service) {
-	fmt.Println("TODO")
+	// TODO
 }
