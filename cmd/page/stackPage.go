@@ -14,10 +14,21 @@ var rawStackFilePath = "config/docker/docker-compose.yml"
 var parsedStackFilePath = "config/docker/parsed.yml"
 
 func stackPage() {
-	p := []page{
-		{Name: "Docker stack deploy/update", action: stackInit},
-		{Name: "Remove monitoring stack", action: stackDelete},
-		{Name: "Back", action: MainPage},
+	p := []page{}
+	stackexist := stackExist()
+
+	if stackexist {
+		p = []page{
+			{Name: "Docker stack update", action: stackUpdate},
+			{Name: "Remove monitoring stack", action: stackDelete},
+			{Name: "Back", action: MainPage},
+		}
+	} else {
+		p = []page{
+			{Name: "Docker stack deploy", action: stackInit},
+			{Name: "Remove monitoring stack", action: stackDelete},
+			{Name: "Back", action: MainPage},
+		}
 	}
 	renderMenu(p, "STACK MENU")
 }
@@ -78,32 +89,36 @@ func setParams() {
 	config.Params.Docker.GwBridgeIP = config.Inputs[11].Answer
 }
 
-func stackInit() {
-	stackexist := stackExist()
+func stackUpdate() {
+	fmt.Println("-----------------------------------")
+	fmt.Println("Update existing monitoring stack...")
+	fmt.Println("-----------------------------------")
 
-	if stackexist {
-		fmt.Println("-----------------------------------")
-		fmt.Println("Update existing monitoring stack...")
-		fmt.Println("-----------------------------------")
-	} else {
-		fmt.Println("----------------------------------------------")
-		fmt.Println("New monitoring stack initialization started...")
-		fmt.Println("----------------------------------------------")
-	}
-	getAnswers(stackexist)
-
+	getAnswers(true)
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
 	utils.WriteToFile(parsedFile, parsedStackFilePath)
 
-	if stackexist {
-		fmt.Println("-------------------------------")
-		fmt.Println("Updating docker services...")
-		fmt.Println("-------------------------------")
-	} else {
-		fmt.Println("-----------------------")
-		fmt.Println("Stack deploy started...")
-		fmt.Println("-----------------------")
-	}
+	fmt.Println("-------------------------------")
+	fmt.Println("Updating docker services...")
+	fmt.Println("-------------------------------")
+
+	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
+	utils.ExitOnKeyStroke(stackPage)
+}
+
+func stackInit() {
+	fmt.Println("----------------------------------------------")
+	fmt.Println("New monitoring stack initialization started...")
+	fmt.Println("----------------------------------------------")
+
+	getAnswers(false)
+	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
+	utils.WriteToFile(parsedFile, parsedStackFilePath)
+
+	fmt.Println("-----------------------")
+	fmt.Println("Stack deploy started...")
+	fmt.Println("-----------------------")
+
 	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
 	utils.ExitOnKeyStroke(stackPage)
 }
@@ -116,8 +131,8 @@ func stackDelete() {
 		input := utils.ReadInput()
 		if input == "y" {
 			utils.ExecCommand("docker stack rm " + config.Params.Docker.StackName)
-			fmt.Println("-----------------------------.")
-			fmt.Println("Monitoring stack deleted.")
+			fmt.Println("-------------------------------")
+			fmt.Println("Monitoring stack deleted successfully!")
 		}
 	} else {
 		fmt.Println("You may not have a monitoring stack deployed!")
@@ -125,6 +140,7 @@ func stackDelete() {
 	utils.ExitOnKeyStroke(stackPage)
 }
 
+// TODO nagyon lassu page load-ot okoz
 func stackExist() bool {
 	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
 	var out bytes.Buffer
