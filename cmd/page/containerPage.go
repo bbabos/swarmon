@@ -7,6 +7,11 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
+type containerOptions struct {
+	Name   string
+	Action func(s docker.Container)
+}
+
 func containerPage() {
 	containers := docker.GetContainers()
 	renderContainerPage(containers)
@@ -38,6 +43,39 @@ func renderContainerPage(containers []docker.Container) {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
+	renderContainerSubPage(containers[i])
+}
 
-	containers[i].GetLogs()
+func renderContainerSubPage(s docker.Container) {
+	options := []containerOptions{
+		{Name: "Print container logs", Action: docker.GetContainerLogs},
+		{Name: "Back"},
+	}
+
+	templates := &promptui.SelectTemplates{
+		Label:    "{{ . }}",
+		Active:   "\u2192 {{ .Name | cyan }}",
+		Inactive: "  {{ .Name | white }}",
+	}
+
+	prompt := promptui.Select{
+		Label:        s.Name,
+		Items:        options,
+		Templates:    templates,
+		Size:         5,
+		HideSelected: true,
+		HideHelp:     true,
+	}
+
+	i, _, err := prompt.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
+	}
+
+	if options[i].Name == "Back" {
+		dockerPage()
+	} else {
+		options[i].Action(s)
+	}
 }

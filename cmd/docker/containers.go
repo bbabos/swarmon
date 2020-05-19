@@ -36,13 +36,12 @@ func GetContainers() []Container {
 	return conts
 }
 
-// GetLogs is ...
-func (c *Container) GetLogs() {
+// GetContainerLogs is ...
+func GetContainerLogs(c Container) {
 	cli, err := client.NewEnvClient()
 	out, err := cli.ContainerLogs(context.Background(), c.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
 		panic(err)
 	}
-
 	io.Copy(os.Stdout, out)
 }
