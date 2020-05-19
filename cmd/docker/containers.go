@@ -31,7 +31,7 @@ func GetContainers() []Container {
 		conts[i].ID = container.ID[:12]
 		conts[i].Name = container.Names[0]
 		conts[i].State = container.State
-		conts[i].Created = time.Unix(container.Created, 0).String()
+		conts[i].Created = time.Unix(container.Created, 0).Format("2006-01-02 15:04:05")
 	}
 	return conts
 }
