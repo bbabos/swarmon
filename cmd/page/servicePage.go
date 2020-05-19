@@ -7,7 +7,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-type serviceOptions struct {
+type serviceOption struct {
 	Name   string
 	Action func(s docker.Service)
 }
@@ -49,7 +49,7 @@ func renderServicePage(services []docker.Service) {
 }
 
 func renderServiceSubPage(s docker.Service) {
-	options := []serviceOptions{
+	options := []serviceOption{
 		{Name: "Restart service", Action: docker.RestartService},
 		{Name: "Scale service", Action: docker.ScaleService},
 		{Name: "Back"},

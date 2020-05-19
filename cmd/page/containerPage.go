@@ -7,7 +7,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-type containerOptions struct {
+type containerOption struct {
 	Name   string
 	Action func(s docker.Container)
 }
@@ -47,7 +47,7 @@ func renderContainerPage(containers []docker.Container) {
 }
 
 func renderContainerSubPage(s docker.Container) {
-	options := []containerOptions{
+	options := []containerOption{
 		{Name: "Print container logs", Action: docker.GetContainerLogs},
 		{Name: "Back"},
 	}
