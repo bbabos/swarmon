@@ -13,6 +13,7 @@ import (
 	"text/template"
 
 	"github.com/bbabos/swarmon/config"
+	"github.com/eiannone/keyboard"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -125,5 +126,25 @@ func ExecCommand(command string) {
 	}
 	if err := cmd.Wait(); err != nil {
 		fmt.Printf("Error: %v", stderr.String())
+	}
+}
+
+// ExitOnKeyStroke is ...
+func ExitOnKeyStroke(menu func()) {
+loop:
+	for {
+		fmt.Println("-------------------------------")
+		fmt.Println("Press q to exit!")
+		fmt.Println("-------------------------------")
+		char, _, err := keyboard.GetSingleKey()
+		if err != nil {
+			panic(err)
+		}
+
+		switch char {
+		case 'q':
+			menu()
+			break loop
+		}
 	}
 }

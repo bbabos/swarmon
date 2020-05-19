@@ -8,7 +8,6 @@ import (
 
 	"github.com/bbabos/swarmon/cmd/utils"
 	"github.com/bbabos/swarmon/config"
-	"github.com/eiannone/keyboard"
 )
 
 var rawStackFilePath = "config/docker/docker-compose.yml"
@@ -106,7 +105,7 @@ func stackInit() {
 		fmt.Println("-----------------------")
 	}
 	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
-	exitToStackMenu()
+	utils.ExitOnKeyStroke(stackPage)
 }
 
 func stackDelete() {
@@ -123,7 +122,7 @@ func stackDelete() {
 	} else {
 		fmt.Println("You may not have a monitoring stack deployed!")
 	}
-	exitToStackMenu()
+	utils.ExitOnKeyStroke(stackPage)
 }
 
 func stackExist() bool {
@@ -136,22 +135,4 @@ func stackExist() bool {
 
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
 	return contains
-}
-
-func exitToStackMenu() {
-loop:
-	for {
-		fmt.Println("-------------------------------")
-		fmt.Println("Press q to exit!")
-		char, _, err := keyboard.GetSingleKey()
-		if err != nil {
-			panic(err)
-		}
-
-		switch char {
-		case 'q':
-			stackPage()
-			break loop
-		}
-	}
 }
