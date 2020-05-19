@@ -45,7 +45,6 @@ func renderServicePage(services []docker.Service) {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
-
 	renderServicesSubPage(services[i])
 }
 

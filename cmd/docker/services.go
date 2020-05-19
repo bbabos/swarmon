@@ -34,7 +34,6 @@ func GetServices() []Service {
 			srv[i].Replicas = *service.Spec.Mode.Replicated.Replicas
 		} else {
 			srv[i].Mode = "Global"
-
 		}
 		srv[i].ID = service.ID
 		srv[i].Name = service.Spec.Name
