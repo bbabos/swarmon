@@ -2,7 +2,6 @@ package docker
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -34,7 +33,16 @@ func GetNodes() []Node {
 		nds[i].Availability = string(node.Spec.Availability)
 		nds[i].EngineVersion = node.Description.Engine.EngineVersion
 		nds[i].Role = string(node.Spec.Role)
-		fmt.Printf("%s | %s | %s | %s\n", node.ID, node.Description.Hostname, node.Spec.Role, node.Status.State)
 	}
 	return nds
+}
+
+// PromoteNode is ...
+func PromoteNode(n Node) {
+	// TODO
+}
+
+// DemoteNode is ...
+func DemoteNode(n Node) {
+	// TODO
 }

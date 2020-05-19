@@ -7,6 +7,11 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
+type nodeOption struct {
+	Name   string
+	Action func(n docker.Node)
+}
+
 func nodePage() {
 	nodes := docker.GetNodes()
 	renderNodePage(nodes)
@@ -35,11 +40,47 @@ func renderNodePage(nodes []docker.Node) {
 		HideHelp:     true,
 	}
 
-	_, _, err := prompt.Run()
+	i, _, err := prompt.Run()
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
 
-	// nodes[i].Action()
+	renderNodeSubPage(nodes[i])
+}
+
+func renderNodeSubPage(s docker.Node) {
+	options := []nodeOption{
+		{Name: "Promote node", Action: docker.PromoteNode},
+		{Name: "Demote node", Action: docker.DemoteNode},
+		{Name: "Back"},
+	}
+
+	templates := &promptui.SelectTemplates{
+		Label:    "{{ . }}",
+		Active:   "\u2192 {{ .Name | cyan }}",
+		Inactive: "  {{ .Name | white }}",
+	}
+
+	prompt := promptui.Select{
+		Label:        s.Name,
+		Items:        options,
+		Templates:    templates,
+		Size:         5,
+		HideSelected: true,
+		HideHelp:     true,
+	}
+
+	i, _, err := prompt.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
+	}
+
+	if options[i].Name == "Back" {
+		dockerPage()
+	} else {
+		options[i].Action(s)
+		dockerPage()
+	}
 }
