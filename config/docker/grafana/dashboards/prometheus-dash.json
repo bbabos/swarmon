@@ -13,7 +13,7 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
   "links": [
@@ -47,6 +47,12 @@
       "datasource": "Prometheus",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {},
@@ -142,6 +148,12 @@
       "datasource": "Prometheus",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {},
@@ -235,6 +247,12 @@
       "dashes": false,
       "datasource": "Prometheus",
       "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -341,6 +359,12 @@
         "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -389,7 +413,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
+      "tableColumn": "prometheus_tsdb_wal_corruptions_total{instance=\"localhost:9090\", job=\"prometheus\"}",
       "targets": [
         {
           "expr": "prometheus_tsdb_wal_corruptions_total{job=\"prometheus\"}",
@@ -419,6 +443,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -526,6 +556,12 @@
       "datasource": "Prometheus",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {},
@@ -618,6 +654,12 @@
       "datasource": "Prometheus",
       "decimals": null,
       "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -710,6 +752,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -816,6 +864,12 @@
       "datasource": "Prometheus",
       "decimals": null,
       "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -938,6 +992,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1038,6 +1098,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -1132,6 +1198,12 @@
       "decimals": null,
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {},
@@ -1226,6 +1298,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1322,7 +1400,7 @@
   ],
   "refresh": "1m",
   "revision": "1.0",
-  "schemaVersion": 22,
+  "schemaVersion": 25,
   "style": "dark",
   "tags": ["prometheus"],
   "templating": {
@@ -1349,10 +1427,7 @@
     "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
   },
   "timezone": "browser",
-  "title": "Prometheus 2.0 Stats",
+  "title": "Prometheus Stats",
   "uid": "mGFfYSRiz",
-  "variables": {
-    "list": []
-  },
   "version": 1
 }

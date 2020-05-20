@@ -14,10 +14,10 @@
     ]
   },
   "description": "Docker Swarm nodes metrics",
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1588147374014,
+  "iteration": 1589957621264,
   "links": [],
   "panels": [
     {
@@ -31,6 +31,12 @@
       ],
       "datasource": "Prometheus",
       "decimals": 1,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "s",
       "gauge": {
         "maxValue": 100,
@@ -80,7 +86,6 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
       "targets": [
         {
           "expr": "topk(1, sum((node_time_seconds - node_boot_time_seconds) * on(instance) group_left(node_name) node_meta{node_id=~\"$node_id\"}) by (node_name))",
@@ -117,6 +122,12 @@
       ],
       "datasource": null,
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -200,6 +211,12 @@
       ],
       "datasource": null,
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "short",
       "gauge": {
         "maxValue": 100,
@@ -286,6 +303,12 @@
       ],
       "datasource": null,
       "decimals": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -368,6 +391,12 @@
       "dashes": false,
       "datasource": null,
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -464,6 +493,12 @@
       "dashes": false,
       "datasource": null,
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -564,6 +599,12 @@
       ],
       "datasource": null,
       "decimals": 1,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "decbytes",
       "gauge": {
         "maxValue": 100,
@@ -649,6 +690,12 @@
         "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -732,6 +779,12 @@
       ],
       "datasource": null,
       "decimals": 1,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "decbytes",
       "gauge": {
         "maxValue": 100,
@@ -817,6 +870,12 @@
         "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -899,6 +958,12 @@
         "rgba(245, 54, 54, 0.9)"
       ],
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -982,6 +1047,12 @@
       ],
       "datasource": null,
       "decimals": 1,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "decbytes",
       "gauge": {
         "maxValue": 100,
@@ -1067,6 +1138,12 @@
         "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -1145,6 +1222,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1246,6 +1329,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1340,6 +1429,12 @@
       "dashes": false,
       "datasource": null,
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1437,6 +1532,12 @@
       "dashes": false,
       "datasource": null,
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1534,6 +1635,12 @@
       "dashes": false,
       "datasource": null,
       "decimals": 2,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1625,6 +1732,12 @@
       "dashes": false,
       "datasource": null,
       "decimals": 0,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 3,
       "gridPos": {
         "h": 7,
@@ -1721,6 +1834,12 @@
         "rgba(50, 172, 45, 0.97)"
       ],
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1798,6 +1917,12 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1893,6 +2018,12 @@
     {
       "columns": [],
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 7,
@@ -1947,11 +2078,11 @@
       "timeFrom": "1s",
       "title": "Cluster members",
       "transform": "table",
-      "type": "table"
+      "type": "table-old"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 22,
+  "schemaVersion": 25,
   "style": "dark",
   "tags": ["dockmon"],
   "templating": {
@@ -1967,7 +2098,6 @@
         "definition": "",
         "hide": 0,
         "includeAll": true,
-        "index": -1,
         "label": "Swarm Node",
         "multi": false,
         "name": "node_id",
@@ -1978,6 +2108,11 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "label_values({node_id=\"$tag\"},node_name)",
+        "tags": [
+          {
+            "selected": false
+          }
+        ],
         "tagsQuery": "label_values(node_meta, node_name)",
         "type": "query",
         "useTags": true
@@ -2080,8 +2215,5 @@
   "timezone": "",
   "title": "Docker Swarm Nodes",
   "uid": "BPlb-Sgik",
-  "variables": {
-    "list": []
-  },
   "version": 1
 }
