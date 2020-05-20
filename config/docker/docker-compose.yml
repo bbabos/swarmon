@@ -22,8 +22,8 @@ services:
     networks:
       - monitor_net
     environment:
-      - GW_BRIDGE_IP={{.Docker.GwBridgeIP}}
-      - METRIC_PORT={{.Docker.MetricPort}}
+      GW_BRIDGE_IP: {{.Docker.GwBridgeIP}}
+      METRIC_PORT: {{.Docker.MetricPort}}
     deploy:
       mode: global
       resources:
@@ -103,21 +103,21 @@ services:
         reservations:
           memory: 128M
       labels:
-        - traefik.http.routers.prometheus.rule=Host(`prometheus.{{.Domain}}`)
-        - traefik.http.services.prometheus-service.loadbalancer.server.port=9090
-        - traefik.http.middlewares.prometheus-auth.basicauth.users={{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
-        - traefik.http.routers.prometheus.middlewares=prometheus-auth
-        - constraint={{.Docker.StackName}}
+        traefik.http.routers.prometheus.rule: Host(`prometheus.{{.Domain}}`)
+        traefik.http.services.prometheus-service.loadbalancer.server.port: 9090
+        traefik.http.middlewares.prometheus-auth.basicauth.users: {{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
+        traefik.http.routers.prometheus.middlewares: prometheus-auth
+        constraint: {{.Docker.StackName}}
 
   grafana:
     image: babobene/grafana:{{.Tag}}
     networks:
       - monitor_net
     environment:
-      - GF_SECURITY_ADMIN_USER={{.AdminUser.Name}}
-      - GF_SECURITY_ADMIN_PASSWORD={{.AdminUser.Password}}
-      - GF_SERVER_ROOT_URL={{.Schema}}://grafana.{{.Domain}}
-      - GF_USERS_ALLOW_SIGN_UP=false
+      GF_SECURITY_ADMIN_USER: {{.AdminUser.Name}}
+      GF_SECURITY_ADMIN_PASSWORD: {{.AdminUser.Password}}
+      GF_SERVER_ROOT_URL: {{.Schema}}://grafana.{{.Domain}}
+      GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
       - grafana:/var/lib/grafana
     deploy:
@@ -132,19 +132,19 @@ services:
         reservations:
           memory: 64M
       labels:
-        - traefik.http.routers.grafana.rule=Host(`grafana.{{.Domain}}`)
-        - traefik.http.services.grafana-service.loadbalancer.server.port=3000
-        - constraint={{.Docker.StackName}}
+        traefik.http.routers.grafana.rule: Host(`grafana.{{.Domain}}`)
+        traefik.http.services.grafana-service.loadbalancer.server.port: 3000
+        constraint: {{.Docker.StackName}}
 
   alertmanager:
     image: babobene/alertmanager:{{.Tag}}
     networks:
       - monitor_net
     environment:
-      - SLACK_URL={{.Slack.Webhook}}
-      - SLACK_USER={{.Slack.AlertUser}}
-      - DOMAIN={{.Domain}}
-      - SCHEMA={{.Schema}}
+      SLACK_URL: {{.Slack.Webhook}}
+      SLACK_USER: {{.Slack.AlertUser}}
+      DOMAIN: {{.Domain}}
+      SCHEMA: {{.Schema}}
     command:
       - --config.file=/etc/alertmanager/alertmanager.yml
       - --storage.path=/alertmanager
@@ -162,11 +162,11 @@ services:
         reservations:
           memory: 64M
       labels:
-        - traefik.http.routers.alerts.rule=Host(`alerts.{{.Domain}}`)
-        - traefik.http.services.alerts-service.loadbalancer.server.port=9093
-        - traefik.http.middlewares.alerts-auth.basicauth.users={{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
-        - traefik.http.routers.alerts.middlewares=alerts-auth
-        - constraint={{.Docker.StackName}}
+        traefik.http.routers.alerts.rule: Host(`alerts.{{.Domain}}`)
+        traefik.http.services.alerts-service.loadbalancer.server.port: 9093
+        traefik.http.middlewares.alerts-auth.basicauth.users: {{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
+        traefik.http.routers.alerts.middlewares: alerts-auth
+        constraint: {{.Docker.StackName}}
 
   traefik:
     image: traefik:v2.2
@@ -181,8 +181,7 @@ services:
       - --providers.docker.swarmMode=true
       - --providers.docker.constraints=Label(`constraint`,`{{.Docker.StackName}}`)
       - --entryPoints.web.address=:80
-      # - --entryPoints.web.forwardedHeaders.trustedIPs=172.31.0.0/16,10.255.0.0/16
-      - --entryPoints.web.forwardedHeaders.insecure # TODO
+      - --entryPoints.web.forwardedHeaders.insecure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
