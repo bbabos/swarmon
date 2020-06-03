@@ -55,7 +55,7 @@ func getAnswers(isExists bool) {
 	}
 	setParams()
 	utils.SaveConfig(config.ConfigPath)
-	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer) // TODO
+	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
 }
 
 // SetAnswers is ...
@@ -140,7 +140,6 @@ func stackDelete() {
 	utils.ExitOnKeyStroke(stackPage)
 }
 
-// TODO nagyon lassu page load-ot okoz
 func stackExist() bool {
 	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
 	var out bytes.Buffer
