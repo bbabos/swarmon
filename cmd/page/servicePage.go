@@ -1,10 +1,7 @@
 package page
 
 import (
-	"fmt"
-
 	"github.com/bbabos/swarmon/cmd/docker"
-	"github.com/manifoldco/promptui"
 )
 
 type serviceOption struct {
@@ -14,37 +11,14 @@ type serviceOption struct {
 
 func servicePage() {
 	services := docker.GetServices()
-	renderServicePage(services)
-}
-
-func renderServicePage(services []docker.Service) {
-	templates := &promptui.SelectTemplates{
-		Label:    "{{ . }}",
-		Active:   "\u2192 {{ .Name | cyan }}",
-		Inactive: "  {{ .Name | white }}",
-		Details: `
+	details := `
 --------- Service ----------
 {{ "ID:" | faint }}	{{ .ID }}
 {{ "Mode:" | faint }}	{{ .Mode }}
 {{ "Replicas:" | faint }}	{{ .Replicas }}
 {{ "CreatedAt:" | faint }}	{{ .Created }}
-{{ "UpdatedAt:" | faint }}	{{ .Updated }}`,
-	}
-
-	prompt := promptui.Select{
-		Label:        "SERVICES",
-		Items:        services,
-		Templates:    templates,
-		Size:         10,
-		HideSelected: true,
-		HideHelp:     true,
-	}
-
-	i, _, err := prompt.Run()
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
+{{ "UpdatedAt:" | faint }}	{{ .Updated }}`
+	i := renderPage(services, "SERVICES", details, 5)
 	renderServiceSubPage(services[i])
 }
 
@@ -54,27 +28,7 @@ func renderServiceSubPage(s docker.Service) {
 		{Name: "Scale service", Action: docker.ScaleService},
 		{Name: "Back"},
 	}
-
-	templates := &promptui.SelectTemplates{
-		Label:    "{{ . }}",
-		Active:   "\u2192 {{ .Name | cyan }}",
-		Inactive: "  {{ .Name | white }}",
-	}
-
-	prompt := promptui.Select{
-		Label:        s.Name,
-		Items:        options,
-		Templates:    templates,
-		Size:         5,
-		HideSelected: true,
-		HideHelp:     true,
-	}
-
-	i, _, err := prompt.Run()
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
+	i := renderPage(options, s.Name, "", 5)
 
 	if options[i].Name == "Back" {
 		dockerPage()

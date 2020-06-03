@@ -1,10 +1,7 @@
 package page
 
 import (
-	"fmt"
-
 	"github.com/bbabos/swarmon/cmd/docker"
-	"github.com/manifoldco/promptui"
 )
 
 type nodeOption struct {
@@ -14,38 +11,14 @@ type nodeOption struct {
 
 func nodePage() {
 	nodes := docker.GetNodes()
-	renderNodePage(nodes)
-}
-
-func renderNodePage(nodes []docker.Node) {
-	templates := &promptui.SelectTemplates{
-		Label:    "{{ . }}",
-		Active:   "\u2192 {{ .Name | cyan }}",
-		Inactive: "  {{ .Name | white }}",
-		Details: `
+	details := `
 --------- node ----------
 {{ "ID:" | faint }}	{{ .ID }}
 {{ "Status:" | faint }}	{{ .Status }}
 {{ "Role:" | faint }}	{{ .Role }}
 {{ "Availability:" | faint }}	{{ .Availability }}
-{{ "EngineVersion:" | faint }}	{{ .EngineVersion }}`,
-	}
-
-	prompt := promptui.Select{
-		Label:        "NODES",
-		Items:        nodes,
-		Templates:    templates,
-		Size:         5,
-		HideSelected: true,
-		HideHelp:     true,
-	}
-
-	i, _, err := prompt.Run()
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
-
+{{ "EngineVersion:" | faint }}	{{ .EngineVersion }}`
+	i := renderPage(nodes, "NODES", details, 5)
 	renderNodeSubPage(nodes[i])
 }
 
@@ -55,27 +28,7 @@ func renderNodeSubPage(s docker.Node) {
 		{Name: "Demote node", Action: docker.DemoteNode},
 		{Name: "Back"},
 	}
-
-	templates := &promptui.SelectTemplates{
-		Label:    "{{ . }}",
-		Active:   "\u2192 {{ .Name | cyan }}",
-		Inactive: "  {{ .Name | white }}",
-	}
-
-	prompt := promptui.Select{
-		Label:        s.Name,
-		Items:        options,
-		Templates:    templates,
-		Size:         5,
-		HideSelected: true,
-		HideHelp:     true,
-	}
-
-	i, _, err := prompt.Run()
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
+	i := renderPage(options, s.Name, "", 5)
 
 	if options[i].Name == "Back" {
 		dockerPage()

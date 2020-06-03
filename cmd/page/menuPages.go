@@ -1,24 +1,14 @@
 package page
 
-import (
-	"fmt"
-
-	"github.com/manifoldco/promptui"
-)
-
-type page struct {
-	Name   string
-	action func()
-}
-
 // MainPage is ...
 func MainPage() {
 	p := []page{
 		{Name: "Monitoring stack options", action: stackPage},
 		{Name: "Swarm options", action: dockerPage},
-		{Name: "Exit"},
+		{Name: "Exit", action: func() { return }},
 	}
-	renderMenu(p, "MAIN MENU")
+	i := renderPage(p, "MAIN MENU", "", 5)
+	p[i].action()
 }
 
 func dockerPage() {
@@ -28,32 +18,27 @@ func dockerPage() {
 		{Name: "Nodes", action: nodePage},
 		{Name: "Back", action: MainPage},
 	}
-	renderMenu(p, "DOCKER MENU")
+	i := renderPage(p, "DOCKER MENU", "", 5)
+	p[i].action()
 }
 
-func renderMenu(items []page, title string) {
-	templates := &promptui.SelectTemplates{
-		Label:    "{{ . }}",
-		Active:   "\u2192 {{ .Name | cyan }}",
-		Inactive: "  {{ .Name | white }}"}
+func stackPage() {
+	p := []page{}
+	stackexist := stackExist()
 
-	prompt := promptui.Select{
-		Label:        title,
-		Items:        items,
-		Templates:    templates,
-		Size:         5,
-		HideSelected: true,
-		HideHelp:     true,
+	if stackexist {
+		p = []page{
+			{Name: "Docker stack update", action: stackUpdate},
+			{Name: "Remove monitoring stack", action: stackDelete},
+			{Name: "Back", action: MainPage},
+		}
+	} else {
+		p = []page{
+			{Name: "Docker stack deploy", action: stackInit},
+			{Name: "Remove monitoring stack", action: stackDelete},
+			{Name: "Back", action: MainPage},
+		}
 	}
-
-	i, _, err := prompt.Run()
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
-
-	if items[i].Name == "Exit" {
-		return
-	}
-	items[i].action()
+	i := renderPage(p, "STACK MENU", "", 5)
+	p[i].action()
 }

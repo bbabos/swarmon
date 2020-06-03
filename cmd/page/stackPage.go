@@ -13,26 +13,6 @@ import (
 var rawStackFilePath = "config/docker/docker-compose.yml"
 var parsedStackFilePath = "config/docker/parsed.yml"
 
-func stackPage() {
-	p := []page{}
-	stackexist := stackExist()
-
-	if stackexist {
-		p = []page{
-			{Name: "Docker stack update", action: stackUpdate},
-			{Name: "Remove monitoring stack", action: stackDelete},
-			{Name: "Back", action: MainPage},
-		}
-	} else {
-		p = []page{
-			{Name: "Docker stack deploy", action: stackInit},
-			{Name: "Remove monitoring stack", action: stackDelete},
-			{Name: "Back", action: MainPage},
-		}
-	}
-	renderMenu(p, "STACK MENU")
-}
-
 func getAnswers(isExists bool) {
 	length := len(config.Inputs)
 	var num int
