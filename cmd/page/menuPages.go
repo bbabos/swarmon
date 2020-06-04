@@ -3,7 +3,7 @@ package page
 // MainPage is ...
 func MainPage() {
 	p := []page{
-		{Name: "Monitoring stack options", action: stackPage},
+		{Name: "Monitoring stack", action: stackPage},
 		{Name: "Docker options", action: dockerPage},
 		{Name: "Exit", action: func() { return }},
 	}
