@@ -38,6 +38,15 @@ func FileExists(folderPath string) bool {
 	return isExists
 }
 
+// ParseFile is ...
+func ParseFile(fileName string, vars interface{}) string {
+	tmpl, err := template.ParseFiles(fileName)
+	if err != nil {
+		panic(err)
+	}
+	return processTemplate(tmpl, vars)
+}
+
 func processTemplate(t *template.Template, vars interface{}) string {
 	var tmplBytes bytes.Buffer
 
@@ -45,18 +54,7 @@ func processTemplate(t *template.Template, vars interface{}) string {
 	if err != nil {
 		panic(err)
 	}
-
 	return tmplBytes.String()
-}
-
-// ParseFile is ...
-func ParseFile(fileName string, vars interface{}) string {
-	tmpl, err := template.ParseFiles(fileName)
-	if err != nil {
-		panic(err)
-	}
-
-	return processTemplate(tmpl, vars)
 }
 
 // WriteToFile is ...
@@ -83,7 +81,6 @@ func HashPass(password string) string {
 	if err != nil {
 		panic(err)
 	}
-
 	rawpw := string(hash)
 	replacedpw := strings.ReplaceAll(rawpw, "$", "$$")
 
