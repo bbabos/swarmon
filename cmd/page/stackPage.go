@@ -12,11 +12,12 @@ import (
 
 var rawStackFilePath = "config/docker/docker-compose.yml"
 var parsedStackFilePath = "config/docker/parsed.yml"
+var stackexist = stackExist()
 
-func getAnswers(isExists bool) {
+func getAnswers(stackExists bool) {
 	length := len(config.Inputs)
 	var num int
-	if isExists {
+	if stackExists {
 		num = 1
 	} else {
 		num = 0
@@ -69,43 +70,38 @@ func setParams() {
 	config.Params.Docker.GwBridgeIP = config.Inputs[11].Answer
 }
 
-func stackUpdate() {
-	fmt.Println("-----------------------------------")
-	fmt.Println("Update existing monitoring stack...")
-	fmt.Println("-----------------------------------")
+func stackInitUpdate() {
+	stackexist = stackExist()
+	if stackexist {
+		fmt.Println("-----------------------------------")
+		fmt.Println("Update existing monitoring stack...")
+		fmt.Println("-----------------------------------")
+	} else {
+		fmt.Println("----------------------------------------------")
+		fmt.Println("New monitoring stack initialization started...")
+		fmt.Println("----------------------------------------------")
+	}
 
-	getAnswers(true)
+	getAnswers(stackexist)
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
 	utils.WriteToFile(parsedFile, parsedStackFilePath)
 
-	fmt.Println("-------------------------------")
-	fmt.Println("Updating docker services...")
-	fmt.Println("-------------------------------")
-
-	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
-	utils.ExitOnKeyStroke(stackPage)
-}
-
-func stackInit() {
-	fmt.Println("----------------------------------------------")
-	fmt.Println("New monitoring stack initialization started...")
-	fmt.Println("----------------------------------------------")
-
-	getAnswers(false)
-	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
-	utils.WriteToFile(parsedFile, parsedStackFilePath)
-
-	fmt.Println("-----------------------")
-	fmt.Println("Stack deploy started...")
-	fmt.Println("-----------------------")
+	if stackexist {
+		fmt.Println("---------------------------")
+		fmt.Println("Updating docker services...")
+		fmt.Println("---------------------------")
+	} else {
+		fmt.Println("-----------------------")
+		fmt.Println("Stack deploy started...")
+		fmt.Println("-----------------------")
+	}
 
 	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
 	utils.ExitOnKeyStroke(stackPage)
 }
 
 func stackDelete() {
-	stackexist := stackExist()
-
+	stackexist = stackExist()
 	if stackexist {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := utils.ReadInput()

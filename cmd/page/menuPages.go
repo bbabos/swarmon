@@ -4,7 +4,7 @@ package page
 func MainPage() {
 	p := []page{
 		{Name: "Monitoring stack options", action: stackPage},
-		{Name: "Swarm options", action: dockerPage},
+		{Name: "Docker options", action: dockerPage},
 		{Name: "Exit", action: func() { return }},
 	}
 	i := renderPage(p, "MAIN MENU", "", 5)
@@ -28,13 +28,13 @@ func stackPage() {
 
 	if stackexist {
 		p = []page{
-			{Name: "Docker stack update", action: stackUpdate},
+			{Name: "Docker stack update", action: stackInitUpdate},
 			{Name: "Remove monitoring stack", action: stackDelete},
 			{Name: "Back", action: MainPage},
 		}
 	} else {
 		p = []page{
-			{Name: "Docker stack deploy", action: stackInit},
+			{Name: "Docker stack deploy", action: stackInitUpdate},
 			{Name: "Remove monitoring stack", action: stackDelete},
 			{Name: "Back", action: MainPage},
 		}
