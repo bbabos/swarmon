@@ -23,13 +23,9 @@ func containerPage() {
 func renderContainerSubPage(s docker.Container) {
 	options := []containerOption{
 		{Name: "Print container logs", Action: docker.GetContainerLogs},
-		{Name: "Back"},
+		{Name: "Back", Action: func(docker.Container) { return }},
 	}
-	i := renderPage(options, s.Name, "", 5)
 
-	if options[i].Name == "Back" {
-		dockerPage()
-	} else {
-		options[i].Action(s)
-	}
+	i := renderPage(options, s.Name, "", 5)
+	options[i].Action(s)
 }

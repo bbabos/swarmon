@@ -26,14 +26,9 @@ func renderNodeSubPage(s docker.Node) {
 	options := []nodeOption{
 		{Name: "Promote node", Action: docker.PromoteNode},
 		{Name: "Demote node", Action: docker.DemoteNode},
-		{Name: "Back"},
+		{Name: "Back", Action: func(docker.Node) { return }},
 	}
-	i := renderPage(options, s.Name, "", 5)
 
-	if options[i].Name == "Back" {
-		dockerPage()
-	} else {
-		options[i].Action(s)
-		dockerPage()
-	}
+	i := renderPage(options, s.Name, "", 5)
+	options[i].Action(s)
 }
