@@ -35,7 +35,7 @@ func getAnswers(stackExists bool) {
 		}
 	}
 	setParams()
-	utils.SaveConfig(config.ConfigPath)
+	utils.SaveConfig(config.Path)
 	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
 }
 

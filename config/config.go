@@ -57,5 +57,5 @@ var Params = Param{
 	Cgroup: "# - /cgroup:/sys/fs/cgroup:ro",
 }
 
-// ConfigPath is ...
-var ConfigPath = "config/stackconfig.json"
+// Path is ...
+var Path = "config/stackconfig.json"
