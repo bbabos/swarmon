@@ -7,10 +7,10 @@ import (
 )
 
 func main() {
-	configexist := utils.FileExists(config.Path)
+	configExist := utils.FileExists(config.Path)
 
-	if configexist {
-		utils.LoadConfig(config.Path)
+	if configExist {
+		config.Load(config.Path)
 		page.SetAnswers()
 	}
 	page.MainPage()

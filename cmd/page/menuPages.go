@@ -28,13 +28,13 @@ func stackPage() {
 
 	if stackexist {
 		p = []page{
-			{Name: "Docker stack update", action: stackInitUpdate},
+			{Name: "Docker stack update", action: stackInitOrUpdate},
 			{Name: "Remove monitoring stack", action: stackDelete},
 			{Name: "Back", action: MainPage},
 		}
 	} else {
 		p = []page{
-			{Name: "Docker stack deploy", action: stackInitUpdate},
+			{Name: "Docker stack deploy", action: stackInitOrUpdate},
 			{Name: "Remove monitoring stack", action: stackDelete},
 			{Name: "Back", action: MainPage},
 		}

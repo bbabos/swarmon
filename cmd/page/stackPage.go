@@ -35,7 +35,7 @@ func getAnswers(stackExists bool) {
 		}
 	}
 	setParams()
-	utils.SaveConfig(config.Path)
+	config.Save(config.Path)
 	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
 }
 
@@ -70,7 +70,7 @@ func setParams() {
 	config.Params.Docker.GwBridgeIP = config.Inputs[11].Answer
 }
 
-func stackInitUpdate() {
+func stackInitOrUpdate() {
 	stackexist = stackExist()
 	if stackexist {
 		fmt.Println("-----------------------------------")
@@ -96,7 +96,7 @@ func stackInitUpdate() {
 		fmt.Println("-----------------------")
 	}
 
-	utils.ExecCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
+	utils.ExecShellCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
 	utils.ExitOnKeyStroke(stackPage)
 }
 
@@ -106,7 +106,7 @@ func stackDelete() {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := utils.ReadInput()
 		if input == "y" {
-			utils.ExecCommand("docker stack rm " + config.Params.Docker.StackName)
+			utils.ExecShellCommand("docker stack rm " + config.Params.Docker.StackName)
 			fmt.Println("-------------------------------")
 			fmt.Println("Monitoring stack deleted successfully!")
 		}
