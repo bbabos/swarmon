@@ -1,4 +1,4 @@
 swarmon
 secret
-config/stackconfig.json
-config/docker/parsed.yml
+stackconfig.json
+parsed.yml
