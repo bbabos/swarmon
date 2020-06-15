@@ -1,5 +1,10 @@
 package config
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 type input struct {
 	Question string
 	Answer   string
@@ -59,3 +64,15 @@ var Params = Param{
 
 // Path is ...
 var Path = "config/stackconfig.json"
+
+// Save is ...
+func Save(folderPath string) {
+	file, _ := json.MarshalIndent(Params, "", " ")
+	_ = ioutil.WriteFile(folderPath, file, 0644)
+}
+
+// Load is ...
+func Load(filePath string) {
+	file, _ := ioutil.ReadFile(filePath)
+	_ = json.Unmarshal([]byte(file), &Params)
+}
