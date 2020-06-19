@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 branch=$(git rev-parse --abbrev-ref HEAD)
-webhook=$(cat ../secret)
 
+webhook="http://webhook.url.com"
 domain="localhost"
 adminuser="admin"
 adminpw="admin"
