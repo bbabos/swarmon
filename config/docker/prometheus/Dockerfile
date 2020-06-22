@@ -1,4 +1,4 @@
-FROM prom/prometheus:v2.18.0
+FROM prom/prometheus:v2.19.0
 
 COPY conf /etc/prometheus/
 
