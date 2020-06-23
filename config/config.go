@@ -37,6 +37,7 @@ type Param struct {
 		MetricPort string
 		GwBridgeIP string
 	}
+	HostNamePath string // for dev only
 }
 
 // Inputs is ...
