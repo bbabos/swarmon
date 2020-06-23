@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"log"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -22,7 +23,7 @@ func GetServices() []Service {
 	cli, err := client.NewEnvClient()
 	services, err := cli.ServiceList(context.Background(), types.ServiceListOptions{})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	srv := make([]Service, len(services))
 

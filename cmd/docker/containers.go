@@ -3,6 +3,7 @@ package docker
 import (
 	"context"
 	"io"
+	"log"
 	"os"
 	"time"
 
@@ -23,7 +24,7 @@ func GetContainers() []Container {
 	cli, err := client.NewEnvClient()
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	conts := make([]Container, len(containers))
 
@@ -41,7 +42,7 @@ func GetContainerLogs(c Container) {
 	cli, err := client.NewEnvClient()
 	out, err := cli.ContainerLogs(context.Background(), c.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	io.Copy(os.Stdout, out)
 }

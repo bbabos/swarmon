@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"log"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -22,7 +23,7 @@ func GetNodes() []Node {
 	cli, err := client.NewEnvClient()
 	nodes, err := cli.NodeList(context.Background(), types.NodeListOptions{})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	nds := make([]Node, len(nodes))
 
