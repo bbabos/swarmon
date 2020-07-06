@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/bbabos/swarmon/cmd/utils"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
@@ -40,10 +41,10 @@ func GetNodes() []Node {
 
 // PromoteNode is ...
 func PromoteNode(n Node) {
-	// TODO
+	utils.ExecShellCommand("docker node promote "+n.ID, true)
 }
 
 // DemoteNode is ...
 func DemoteNode(n Node) {
-	// TODO
+	utils.ExecShellCommand("docker node demote "+n.ID, true)
 }
