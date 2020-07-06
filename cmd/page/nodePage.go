@@ -28,6 +28,7 @@ func renderNodeSubPage(s docker.Node) {
 		{Name: "Demote node", Action: docker.DemoteNode},
 		{Name: "Back", Action: func(docker.Node) { return }},
 	}
+	defer dockerPage()
 
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)

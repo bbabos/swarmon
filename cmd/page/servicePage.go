@@ -27,6 +27,7 @@ func renderServiceSubPage(s docker.Service) {
 		{Name: "Restart service", Action: docker.RestartService},
 		{Name: "Back", Action: func(docker.Service) { return }},
 	}
+	defer dockerPage()
 
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)

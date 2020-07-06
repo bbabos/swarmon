@@ -25,6 +25,7 @@ func renderContainerSubPage(s docker.Container) {
 		{Name: "Print container logs", Action: docker.GetContainerLogs},
 		{Name: "Back", Action: func(docker.Container) { return }},
 	}
+	defer dockerPage()
 
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
