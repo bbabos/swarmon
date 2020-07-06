@@ -25,7 +25,6 @@ func servicePage() {
 func renderServiceSubPage(s docker.Service) {
 	options := []serviceOption{
 		{Name: "Restart service", Action: docker.RestartService},
-		{Name: "Scale service", Action: docker.ScaleService},
 		{Name: "Back", Action: func(docker.Service) { return }},
 	}
 

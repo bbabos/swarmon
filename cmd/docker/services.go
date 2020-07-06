@@ -2,8 +2,10 @@ package docker
 
 import (
 	"context"
+	"fmt"
 	"log"
 
+	"github.com/bbabos/swarmon/cmd/utils"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
@@ -44,10 +46,7 @@ func GetServices() []Service {
 
 // RestartService is ...
 func RestartService(s Service) {
-	// TODO
-}
-
-// ScaleService is ...
-func ScaleService(s Service) {
-	// TODO
+	fmt.Println("Service restart started...")
+	utils.ExecShellCommand("docker service update --force "+s.ID, false)
+	fmt.Println("Service successfully restarted.")
 }

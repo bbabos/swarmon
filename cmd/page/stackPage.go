@@ -96,7 +96,7 @@ func stackInitOrUpdate() {
 		fmt.Println("-----------------------")
 	}
 
-	utils.ExecShellCommand("docker stack deploy -c " + parsedStackFilePath + " " + config.Params.Docker.StackName)
+	utils.ExecShellCommand("docker stack deploy -c "+parsedStackFilePath+" "+config.Params.Docker.StackName, true)
 	utils.ExitOnKeyStroke(stackPage)
 }
 
@@ -106,7 +106,7 @@ func stackDelete() {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := utils.ReadInput()
 		if input == "y" {
-			utils.ExecShellCommand("docker stack rm " + config.Params.Docker.StackName)
+			utils.ExecShellCommand("docker stack rm "+config.Params.Docker.StackName, true)
 			fmt.Println("-------------------------------")
 			fmt.Println("Monitoring stack deleted successfully!")
 		}

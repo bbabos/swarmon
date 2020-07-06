@@ -80,22 +80,23 @@ func HashPass(password string) string {
 }
 
 // ExecShellCommand is ...
-func ExecShellCommand(command string) {
+func ExecShellCommand(command string, hideOutput bool) {
 	args := strings.Fields(command)
 	cmd := exec.Command(args[0], args[1:]...)
-	reader, err := cmd.StdoutPipe()
-	if err != nil {
-		panic(err)
-	}
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	scanner := bufio.NewScanner(reader)
-
-	go func() {
-		for scanner.Scan() {
-			fmt.Println(scanner.Text())
+	if hideOutput {
+		reader, err := cmd.StdoutPipe()
+		if err != nil {
+			panic(err)
 		}
-	}()
+		scanner := bufio.NewScanner(reader)
+		go func() {
+			for scanner.Scan() {
+				fmt.Println(scanner.Text())
+			}
+		}()
+	}
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
 	}
