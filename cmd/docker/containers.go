@@ -2,11 +2,10 @@ package docker
 
 import (
 	"context"
-	"io"
 	"log"
-	"os"
 	"time"
 
+	"github.com/bbabos/swarmon/cmd/utils"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
@@ -37,12 +36,7 @@ func GetContainers() []Container {
 	return conts
 }
 
-// GetContainerLogs is ...
-func GetContainerLogs(c Container) {
-	cli, err := client.NewEnvClient()
-	out, err := cli.ContainerLogs(context.Background(), c.ID, types.ContainerLogsOptions{ShowStdout: true})
-	if err != nil {
-		log.Fatal(err)
-	}
-	io.Copy(os.Stdout, out)
+// GetLogs is ...
+func GetLogs(c Container) {
+	utils.ExecShellCommand("docker logs "+c.ID, true)
 }

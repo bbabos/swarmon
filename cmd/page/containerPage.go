@@ -22,7 +22,7 @@ func containerPage() {
 
 func renderContainerSubPage(s docker.Container) {
 	options := []containerOption{
-		{Name: "Print container logs", Action: docker.GetContainerLogs},
+		{Name: "Print logs", Action: docker.GetLogs},
 		{Name: "Back", Action: func(docker.Container) { return }},
 	}
 	defer dockerPage()
