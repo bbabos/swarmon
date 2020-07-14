@@ -71,30 +71,30 @@ func setParams() {
 }
 
 func stackInitOrUpdate() {
+	var final string
+	var msg string
+	border := "----------------------------------------------"
 	stackexist = stackExist()
+
 	if stackexist {
-		fmt.Println("-----------------------------------")
-		fmt.Println("Update existing monitoring stack...")
-		fmt.Println("-----------------------------------")
+		msg = "Update existing monitoring stack..."
 	} else {
-		fmt.Println("----------------------------------------------")
-		fmt.Println("New monitoring stack initialization started...")
-		fmt.Println("----------------------------------------------")
+		msg = "New monitoring stack initialization started..."
 	}
+	final = border + "\n" + msg + "\n" + border
+	fmt.Println(final)
 
 	getAnswers(stackexist)
 	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
 	utils.WriteToFile(parsedFile, parsedStackFilePath)
 
 	if stackexist {
-		fmt.Println("---------------------------")
-		fmt.Println("Updating docker services...")
-		fmt.Println("---------------------------")
+		msg = "Updating docker services..."
 	} else {
-		fmt.Println("-----------------------")
-		fmt.Println("Stack deploy started...")
-		fmt.Println("-----------------------")
+		msg = "Stack deploy started..."
 	}
+	final = border + "\n" + msg + "\n" + border
+	fmt.Println(final)
 
 	utils.ExecShellCommand("docker stack deploy -c "+parsedStackFilePath+" "+config.Params.Docker.StackName, true)
 	utils.ExitOnKeyStroke(stackPage)
@@ -117,13 +117,12 @@ func stackDelete() {
 }
 
 func stackExist() bool {
-	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
 	var out bytes.Buffer
+	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
 	cmd.Stdout = &out
-
 	cmd.Run()
 	stdout := out.String()
-
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
+
 	return contains
 }
