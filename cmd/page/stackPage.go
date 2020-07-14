@@ -10,8 +10,6 @@ import (
 	"github.com/bbabos/swarmon/config"
 )
 
-var rawStackFilePath = "config/docker/docker-compose.yml"
-var parsedStackFilePath = "config/docker/parsed.yml"
 var stackexist = stackExist()
 
 func getAnswers(stackExists bool) {
@@ -35,7 +33,7 @@ func getAnswers(stackExists bool) {
 		}
 	}
 	setParams()
-	config.Save(config.Path)
+	config.Save(config.Paths.StackConfig)
 	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
 }
 
@@ -85,8 +83,8 @@ func stackInitOrUpdate() {
 	fmt.Println(final)
 
 	getAnswers(stackexist)
-	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
-	utils.WriteToFile(parsedFile, parsedStackFilePath)
+	parsedFile := utils.ParseFile(config.Paths.RawStack, config.Params)
+	utils.WriteToFile(parsedFile, config.Paths.ParsedStack)
 
 	if stackexist {
 		msg = "Updating docker services..."
@@ -96,7 +94,7 @@ func stackInitOrUpdate() {
 	final = border + "\n" + msg + "\n" + border
 	fmt.Println(final)
 
-	utils.ExecShellCommand("docker stack deploy -c "+parsedStackFilePath+" "+config.Params.Docker.StackName, true)
+	utils.ExecShellCommand("docker stack deploy -c "+config.Paths.ParsedStack+" "+config.Params.Docker.StackName, true)
 	utils.ExitOnKeyStroke(stackPage)
 }
 

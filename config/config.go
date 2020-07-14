@@ -10,8 +10,7 @@ type input struct {
 	Answer   string
 }
 
-// Param is ...
-type Param struct {
+type params struct {
 	Tag    string
 	Domain string
 	Schema string
@@ -37,7 +36,13 @@ type Param struct {
 		MetricPort string
 		GwBridgeIP string
 	}
-	HostNamePath string // for dev only
+	HostNamePath string // dev only
+}
+
+type paths struct {
+	StackConfig string
+	RawStack    string
+	ParsedStack string
 }
 
 // Inputs is ...
@@ -57,14 +62,18 @@ var Inputs = []input{
 }
 
 // Params is ...
-var Params = Param{
+var Params = params{
 	Tag:    "development",
 	Node:   struct{ ID string }{"{{.Node.ID}}"},
 	Cgroup: "# - /cgroup:/sys/fs/cgroup:ro",
 }
 
-// Path is ...
-var Path = "config/stackconfig.json"
+// Paths is ...
+var Paths = paths{
+	StackConfig: "config/stackconfig.json",
+	RawStack:    "config/docker/docker-compose.yml",
+	ParsedStack: "config/docker/parsed.yml",
+}
 
 // Save is ...
 func Save(folderPath string) {
