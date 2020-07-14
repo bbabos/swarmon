@@ -23,21 +23,10 @@ func dockerPage() {
 }
 
 func stackPage() {
-	p := []page{}
-	stackexist := stackExist()
-
-	if stackexist {
-		p = []page{
-			{Name: "Docker stack update", action: stackInitOrUpdate},
-			{Name: "Remove monitoring stack", action: stackDelete},
-			{Name: "Back", action: MainPage},
-		}
-	} else {
-		p = []page{
-			{Name: "Docker stack deploy", action: stackInitOrUpdate},
-			{Name: "Remove monitoring stack", action: stackDelete},
-			{Name: "Back", action: MainPage},
-		}
+	p := []page{
+		{Name: "Docker stack deploy/update", action: stackInitOrUpdate},
+		{Name: "Remove monitoring stack", action: stackDelete},
+		{Name: "Back", action: MainPage},
 	}
 	i := renderPage(p, "STACK MENU", "", 5)
 	p[i].action()
