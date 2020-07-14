@@ -24,7 +24,8 @@ func servicePage() {
 
 func renderServiceSubPage(s docker.Service) {
 	options := []serviceOption{
-		{Name: "Restart service", Action: docker.RestartService},
+		{Name: "Restart service", Action: docker.Restart},
+		{Name: "Inspect service", Action: docker.Inspect},
 		{Name: "Back", Action: func(docker.Service) { return }},
 	}
 	defer dockerPage()
