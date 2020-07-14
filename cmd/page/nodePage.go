@@ -24,8 +24,8 @@ func nodePage() {
 
 func renderNodeSubPage(s docker.Node) {
 	options := []nodeOption{
-		{Name: "Promote node", Action: docker.PromoteNode},
-		{Name: "Demote node", Action: docker.DemoteNode},
+		{Name: "Promote node", Action: docker.Promote},
+		{Name: "Demote node", Action: docker.Demote},
 		{Name: "Back", Action: func(docker.Node) { return }},
 	}
 	defer dockerPage()

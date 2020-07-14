@@ -39,12 +39,12 @@ func GetNodes() []Node {
 	return nds
 }
 
-// PromoteNode is ...
-func PromoteNode(n Node) {
+// Promote is ...
+func Promote(n Node) {
 	utils.ExecShellCommand("docker node promote "+n.ID, true)
 }
 
-// DemoteNode is ...
-func DemoteNode(n Node) {
+// Demote is ...
+func Demote(n Node) {
 	utils.ExecShellCommand("docker node demote "+n.ID, true)
 }
