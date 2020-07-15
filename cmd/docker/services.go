@@ -44,9 +44,14 @@ func GetServices() []Service {
 	return srv
 }
 
-// RestartService is ...
-func RestartService(s Service) {
+// Restart is ...
+func Restart(s Service) {
 	fmt.Println("Service restart started...")
 	utils.ExecShellCommand("docker service update --force "+s.ID, false)
-	fmt.Println("Service successfully restarted.")
+	fmt.Println("Service restarted successfully.")
+}
+
+// Inspect is ...
+func Inspect(s Service) {
+	utils.ExecShellCommand("docker service inspect "+s.ID, true)
 }

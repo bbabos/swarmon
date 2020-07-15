@@ -1,26 +1,17 @@
 package page
 
 import (
-	"bytes"
 	"fmt"
-	"os/exec"
-	"strings"
 
+	"github.com/bbabos/swarmon/cmd/config"
 	"github.com/bbabos/swarmon/cmd/utils"
-	"github.com/bbabos/swarmon/config"
 )
-
-var rawStackFilePath = "config/docker/docker-compose.yml"
-var parsedStackFilePath = "config/docker/parsed.yml"
-var stackexist = stackExist()
 
 func getAnswers(stackExists bool) {
 	length := len(config.Inputs)
-	var num int
+	num := 0
 	if stackExists {
 		num = 1
-	} else {
-		num = 0
 	}
 	for i := num; i < length; i++ {
 		if config.Inputs[i].Answer == "" {
@@ -34,75 +25,44 @@ func getAnswers(stackExists bool) {
 			}
 		}
 	}
-	setParams()
-	config.Save(config.Path)
+	config.SetParams()
+	config.Save(config.Paths.StackConfig)
 	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
 }
 
-// SetAnswers is ...
-func SetAnswers() {
-	config.Inputs[0].Answer = config.Params.Docker.StackName
-	config.Inputs[1].Answer = config.Params.Domain
-	config.Inputs[2].Answer = config.Params.AdminUser.Name
-	config.Inputs[3].Answer = config.Params.AdminUser.Password
-	config.Inputs[4].Answer = config.Params.Traefik.BAUser
-	config.Inputs[5].Answer = config.Params.Traefik.BAPassword
-	config.Inputs[6].Answer = config.Params.Slack.Webhook
-	config.Inputs[7].Answer = config.Params.Slack.AlertUser
-	config.Inputs[8].Answer = config.Params.Traefik.Port
-	config.Inputs[9].Answer = config.Params.Schema
-	config.Inputs[10].Answer = config.Params.Docker.MetricPort
-	config.Inputs[11].Answer = config.Params.Docker.GwBridgeIP
-}
-
-func setParams() {
-	config.Params.Docker.StackName = config.Inputs[0].Answer
-	config.Params.Domain = config.Inputs[1].Answer
-	config.Params.AdminUser.Name = config.Inputs[2].Answer
-	config.Params.AdminUser.Password = config.Inputs[3].Answer
-	config.Params.Traefik.BAUser = config.Inputs[4].Answer
-	config.Params.Traefik.BAPassword = config.Inputs[5].Answer
-	config.Params.Slack.Webhook = config.Inputs[6].Answer
-	config.Params.Slack.AlertUser = config.Inputs[7].Answer
-	config.Params.Traefik.Port = config.Inputs[8].Answer
-	config.Params.Schema = config.Inputs[9].Answer
-	config.Params.Docker.MetricPort = config.Inputs[10].Answer
-	config.Params.Docker.GwBridgeIP = config.Inputs[11].Answer
-}
-
 func stackInitOrUpdate() {
-	stackexist = stackExist()
-	if stackexist {
-		fmt.Println("-----------------------------------")
-		fmt.Println("Update existing monitoring stack...")
-		fmt.Println("-----------------------------------")
+	var final string
+	var msg string
+	border := "----------------------------------------------"
+	stackExist := utils.StackExistCheck()
+
+	if stackExist {
+		msg = "Update existing monitoring stack..."
 	} else {
-		fmt.Println("----------------------------------------------")
-		fmt.Println("New monitoring stack initialization started...")
-		fmt.Println("----------------------------------------------")
+		msg = "New monitoring stack initialization started..."
 	}
+	final = border + "\n" + msg + "\n" + border
+	fmt.Println(final)
 
-	getAnswers(stackexist)
-	parsedFile := utils.ParseFile(rawStackFilePath, config.Params)
-	utils.WriteToFile(parsedFile, parsedStackFilePath)
+	getAnswers(stackExist)
+	parsedFile := utils.ParseFile(config.Paths.RawStack, config.Params)
+	utils.WriteToFile(parsedFile, config.Paths.ParsedStack)
 
-	if stackexist {
-		fmt.Println("---------------------------")
-		fmt.Println("Updating docker services...")
-		fmt.Println("---------------------------")
+	if stackExist {
+		msg = "Updating docker services..."
 	} else {
-		fmt.Println("-----------------------")
-		fmt.Println("Stack deploy started...")
-		fmt.Println("-----------------------")
+		msg = "Stack deploy started..."
 	}
+	final = border + "\n" + msg + "\n" + border
+	fmt.Println(final)
 
-	utils.ExecShellCommand("docker stack deploy -c "+parsedStackFilePath+" "+config.Params.Docker.StackName, true)
+	utils.ExecShellCommand("docker stack deploy -c "+config.Paths.ParsedStack+" "+config.Params.Docker.StackName, true)
 	utils.ExitOnKeyStroke(stackPage)
 }
 
 func stackDelete() {
-	stackexist = stackExist()
-	if stackexist {
+	stackExist := utils.StackExistCheck()
+	if stackExist {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := utils.ReadInput()
 		if input == "y" {
@@ -114,16 +74,4 @@ func stackDelete() {
 		fmt.Println("You may not have a monitoring stack deployed!")
 	}
 	utils.ExitOnKeyStroke(stackPage)
-}
-
-func stackExist() bool {
-	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	cmd.Run()
-	stdout := out.String()
-
-	contains := strings.Contains(stdout, config.Params.Docker.StackName)
-	return contains
 }

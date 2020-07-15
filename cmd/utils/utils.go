@@ -10,6 +10,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/bbabos/swarmon/cmd/config"
 	"github.com/eiannone/keyboard"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -38,7 +39,7 @@ func FileExists(folderPath string) bool {
 func ParseFile(fileName string, vars interface{}) string {
 	tmpl, err := template.ParseFiles(fileName)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return processTemplate(tmpl, vars)
 }
@@ -47,7 +48,7 @@ func processTemplate(t *template.Template, vars interface{}) string {
 	var tmplBytes bytes.Buffer
 	err := t.Execute(&tmplBytes, vars)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return tmplBytes.String()
 }
@@ -56,15 +57,15 @@ func processTemplate(t *template.Template, vars interface{}) string {
 func WriteToFile(content string, filename string) {
 	f, err := os.Create(filename)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	_, err = f.WriteString(content)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	err = f.Close()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -72,7 +73,7 @@ func WriteToFile(content string, filename string) {
 func HashPass(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	rawpw := string(hash)
 	replacedpw := strings.ReplaceAll(rawpw, "$", "$$")
@@ -88,7 +89,7 @@ func ExecShellCommand(command string, hideOutput bool) {
 	if hideOutput {
 		reader, err := cmd.StdoutPipe()
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		scanner := bufio.NewScanner(reader)
 		go func() {
@@ -109,16 +110,26 @@ func ExecShellCommand(command string, hideOutput bool) {
 func ExitOnKeyStroke(menu func()) {
 loop:
 	for {
-		fmt.Println("Press q to exit!")
+		fmt.Print("Press q to exit! ")
 		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
-
 		switch char {
 		case 'q':
 			menu()
 			break loop
 		}
 	}
+}
+
+// StackExistCheck is ...
+func StackExistCheck() bool {
+	var out bytes.Buffer
+	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
+	cmd.Stdout = &out
+	cmd.Run()
+	stdout := out.String()
+	contains := strings.Contains(stdout, config.Params.Docker.StackName)
+	return contains
 }
