@@ -3,9 +3,8 @@ package page
 import (
 	"fmt"
 
-	"github.com/bbabos/swarmon/cmd/stack"
+	"github.com/bbabos/swarmon/cmd/config"
 	"github.com/bbabos/swarmon/cmd/utils"
-	"github.com/bbabos/swarmon/config"
 )
 
 func getAnswers(stackExists bool) {
@@ -26,7 +25,7 @@ func getAnswers(stackExists bool) {
 			}
 		}
 	}
-	stack.SetParams()
+	config.SetParams()
 	config.Save(config.Paths.StackConfig)
 	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
 }
@@ -35,7 +34,7 @@ func stackInitOrUpdate() {
 	var final string
 	var msg string
 	border := "----------------------------------------------"
-	stackExist := stack.ExistCheck()
+	stackExist := utils.StackExistCheck()
 
 	if stackExist {
 		msg = "Update existing monitoring stack..."
@@ -62,7 +61,7 @@ func stackInitOrUpdate() {
 }
 
 func stackDelete() {
-	stackExist := stack.ExistCheck()
+	stackExist := utils.StackExistCheck()
 	if stackExist {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := utils.ReadInput()

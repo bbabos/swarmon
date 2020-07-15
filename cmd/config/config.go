@@ -70,7 +70,7 @@ var Params = params{
 
 // Paths is ...
 var Paths = paths{
-	StackConfig: "config/stackconfig.json",
+	StackConfig: "config/stackjson",
 	RawStack:    "config/docker/docker-compose.yml",
 	ParsedStack: "config/docker/parsed.yml",
 }
@@ -85,4 +85,36 @@ func Save(folderPath string) {
 func Load(filePath string) {
 	file, _ := ioutil.ReadFile(filePath)
 	_ = json.Unmarshal([]byte(file), &Params)
+}
+
+// SetAnswers is ...
+func SetAnswers() {
+	Inputs[0].Answer = Params.Docker.StackName
+	Inputs[1].Answer = Params.Domain
+	Inputs[2].Answer = Params.AdminUser.Name
+	Inputs[3].Answer = Params.AdminUser.Password
+	Inputs[4].Answer = Params.Traefik.BAUser
+	Inputs[5].Answer = Params.Traefik.BAPassword
+	Inputs[6].Answer = Params.Slack.Webhook
+	Inputs[7].Answer = Params.Slack.AlertUser
+	Inputs[8].Answer = Params.Traefik.Port
+	Inputs[9].Answer = Params.Schema
+	Inputs[10].Answer = Params.Docker.MetricPort
+	Inputs[11].Answer = Params.Docker.GwBridgeIP
+}
+
+// SetParams is ...
+func SetParams() {
+	Params.Docker.StackName = Inputs[0].Answer
+	Params.Domain = Inputs[1].Answer
+	Params.AdminUser.Name = Inputs[2].Answer
+	Params.AdminUser.Password = Inputs[3].Answer
+	Params.Traefik.BAUser = Inputs[4].Answer
+	Params.Traefik.BAPassword = Inputs[5].Answer
+	Params.Slack.Webhook = Inputs[6].Answer
+	Params.Slack.AlertUser = Inputs[7].Answer
+	Params.Traefik.Port = Inputs[8].Answer
+	Params.Schema = Inputs[9].Answer
+	Params.Docker.MetricPort = Inputs[10].Answer
+	Params.Docker.GwBridgeIP = Inputs[11].Answer
 }
