@@ -19,7 +19,9 @@ func nodePage() {
 {{ "Availability:" | faint }}	{{ .Availability }}
 {{ "EngineVersion:" | faint }}	{{ .EngineVersion }}`
 	i := renderPage(nodes, "NODES", details, 5)
-	renderNodeSubPage(nodes[i])
+	if i > 0 {
+		renderNodeSubPage(nodes[i])
+	}
 }
 
 func renderNodeSubPage(s docker.Node) {

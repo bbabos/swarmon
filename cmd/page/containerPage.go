@@ -17,7 +17,9 @@ func containerPage() {
 {{ "Created:" | faint }}	{{ .Created }}
 {{ "State:" | faint }}	{{ .State }}`
 	i := renderPage(containers, "CONTAINERS", details, 10)
-	renderContainerSubPage(containers[i])
+	if i > 0 {
+		renderContainerSubPage(containers[i])
+	}
 }
 
 func renderContainerSubPage(s docker.Container) {
