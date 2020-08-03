@@ -70,15 +70,15 @@ var Params = params{
 
 // Paths is ...
 var Paths = paths{
-	StackConfig: "config/stackjson",
-	RawStack:    "config/docker/docker-compose.yml",
-	ParsedStack: "config/docker/parsed.yml",
+	StackConfig: "internal/stackconfig.json",
+	RawStack:    "internal/docker/docker-compose.yml",
+	ParsedStack: "internal/docker/parsed.yml",
 }
 
 // Save is ...
-func Save(folderPath string) {
-	file, _ := json.MarshalIndent(Params, "", " ")
-	_ = ioutil.WriteFile(folderPath, file, 0644)
+func Save() {
+	data, _ := json.MarshalIndent(Params, "", " ")
+	_ = ioutil.WriteFile(Paths.StackConfig, data, 0644)
 }
 
 // Load is ...
