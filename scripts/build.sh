@@ -3,7 +3,7 @@
 branch=$(git rev-parse --abbrev-ref HEAD)
 
 # build
-cd ../config/docker/alertmanager && docker build --no-cache -t babobene/alertmanager:$branch .
+cd ../internal/docker/alertmanager && docker build --no-cache -t babobene/alertmanager:$branch .
 cd ../dockerd-exporter && docker build --no-cache -t babobene/dockerd-exporter:$branch .
 cd ../grafana && docker build --no-cache -t babobene/grafana:$branch .
 cd ../node-exporter && docker build --no-cache -t babobene/node-exporter:$branch .
