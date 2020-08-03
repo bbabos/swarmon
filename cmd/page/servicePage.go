@@ -19,7 +19,9 @@ func servicePage() {
 {{ "CreatedAt:" | faint }}	{{ .Created }}
 {{ "UpdatedAt:" | faint }}	{{ .Updated }}`
 	i := renderPage(services, "SERVICES", details, 5)
-	renderServiceSubPage(services[i])
+	if i > 0 {
+		renderServiceSubPage(services[i])
+	}
 }
 
 func renderServiceSubPage(s docker.Service) {

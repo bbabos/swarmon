@@ -15,7 +15,7 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
       - name: Build Docker images
         run: |
-          cd config/docker/alertmanager && docker build -t babobene/alertmanager:${GITHUB_REF##*/} .
+          cd internal/docker/alertmanager && docker build -t babobene/alertmanager:${GITHUB_REF##*/} .
           cd ../dockerd-exporter && docker build -t babobene/dockerd-exporter:${GITHUB_REF##*/} .
           cd ../grafana && docker build -t babobene/grafana:${GITHUB_REF##*/} .
           cd ../node-exporter && docker build -t babobene/node-exporter:${GITHUB_REF##*/} .
