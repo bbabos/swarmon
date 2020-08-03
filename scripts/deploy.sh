@@ -18,7 +18,7 @@ gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker
 cgroup="# - /cgroup:/sys/fs/cgroup:ro"
 hostname="- /Users/bencebabos/hostname:/etc/nodename"
 
-cd ../config/docker/
+cd ../internal/docker/
 cat docker-compose.yml |
     sed "s/{{.Tag}}/$branch/g" |
     sed "s/{{.Domain}}/$domain/g" |
