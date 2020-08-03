@@ -16,6 +16,7 @@ schema="http"
 metric_port="9323"
 gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
 cgroup="# - /cgroup:/sys/fs/cgroup:ro"
+hostname="- /Users/bencebabos/hostname:/etc/nodename"
 
 cd ../config/docker/
 cat docker-compose.yml |
@@ -31,6 +32,7 @@ cat docker-compose.yml |
     sed "s/{{.Docker.MetricPort}}/$metric_port/g" |
     sed "s/{{.Docker.GwBridgeIP}}/$gwbridge/g" |
     sed "s@{{.Cgroup}}@$cgroup@g" |
+    sed "s@{{.HostNamePath}}@$hostname@g" |
     sed "s/{{.Traefik.BAUser}}/$traefik_user/g" |
     sed "s@{{.Traefik.BAPassword}}@$traefik_pw@g" >tmp-docker-compose.yml
 
