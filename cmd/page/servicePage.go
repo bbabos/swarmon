@@ -22,6 +22,7 @@ func servicePage() {
 	if i > 0 {
 		renderServiceSubPage(services[i])
 	}
+	defer dockerPage()
 }
 
 func renderServiceSubPage(s docker.Service) {
@@ -30,8 +31,6 @@ func renderServiceSubPage(s docker.Service) {
 		{Name: "Inspect service", Action: docker.Inspect},
 		{Name: "Back", Action: func(docker.Service) { return }},
 	}
-	defer dockerPage()
-
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
 }
