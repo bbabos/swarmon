@@ -110,6 +110,7 @@ func ExecShellCommand(command string, hideOutput bool) {
 func ExitOnKeyStroke(menu func()) {
 loop:
 	for {
+		fmt.Print("----------------------------------------------\n")
 		fmt.Print("Press q to exit!")
 		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
