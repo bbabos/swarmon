@@ -20,6 +20,7 @@ func containerPage() {
 	if i > 0 {
 		renderContainerSubPage(containers[i])
 	}
+	defer dockerPage()
 }
 
 func renderContainerSubPage(s docker.Container) {
@@ -27,8 +28,6 @@ func renderContainerSubPage(s docker.Container) {
 		{Name: "Print logs", Action: docker.GetLogs},
 		{Name: "Back", Action: func(docker.Container) { return }},
 	}
-	defer dockerPage()
-
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
 }

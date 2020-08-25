@@ -22,6 +22,7 @@ func nodePage() {
 	if i > 0 {
 		renderNodeSubPage(nodes[i])
 	}
+	defer dockerPage()
 }
 
 func renderNodeSubPage(s docker.Node) {
@@ -30,8 +31,6 @@ func renderNodeSubPage(s docker.Node) {
 		{Name: "Demote node", Action: docker.Demote},
 		{Name: "Back", Action: func(docker.Node) { return }},
 	}
-	defer dockerPage()
-
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
 }
