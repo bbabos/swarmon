@@ -17,9 +17,9 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.6.1 // indirect
-	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de
-	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
-	golang.org/x/sys v0.0.0-20200817155316-9781c653f443 // indirect
+	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
+	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect
+	golang.org/x/sys v0.0.0-20200824131525-c12d262b63d8 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )
