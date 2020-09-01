@@ -2,13 +2,12 @@
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-webhook="http://webhook.url.com"
 domain="localhost"
 adminuser="admin"
 adminpw="admin"
 traefik_user="admin"
 traefik_pw='$$apr1$$EmruEHQ6$$/vaexUtWlwpuI9c24ki7a1' # echo $(htpasswd -nb user password) | sed -e s/\\$/\\$\\$/g
-slack_url=$webhook
+slack_url="http://webhook.url.com"
 slack_user="Alertmanager"
 stackname="swarmon"
 traefik_port="80"
@@ -16,7 +15,7 @@ schema="http"
 metric_port="9323"
 gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
 cgroup="# - /cgroup:/sys/fs/cgroup:ro"
-hostname="- /Users/bencebabos/hostname:/etc/nodename"
+hostname="- /Users/babosbence/hostname:/etc/nodename"
 
 cd ../internal/docker/
 cat docker-compose.yml |
@@ -38,5 +37,3 @@ cat docker-compose.yml |
 
 docker stack deploy -c tmp-docker-compose.yml $stackname
 rm tmp-docker-compose.yml
-
-exit 0
