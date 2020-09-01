@@ -1,40 +1,20 @@
 package page
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
+	"strings"
 
 	"github.com/bbabos/swarmon/cmd/config"
 	"github.com/bbabos/swarmon/cmd/utils"
 )
 
-func getAnswers(stackExists bool) {
-	length := len(config.Inputs)
-	num := 0
-	if stackExists {
-		num = 1
-	}
-	for i := num; i < length; i++ {
-		if config.Inputs[i].Answer == "" {
-			fmt.Print(config.Inputs[i].Question + ": ")
-			config.Inputs[i].Answer = utils.ReadInput()
-		} else {
-			fmt.Print(config.Inputs[i].Question + " [" + config.Inputs[i].Answer + "]" + ": ")
-			result := utils.ReadInput()
-			if result != "" {
-				config.Inputs[i].Answer = result
-			}
-		}
-	}
-	config.SetParams()
-	config.Save()
-	config.Params.Traefik.BAPassword = utils.HashPass(config.Inputs[5].Answer)
-}
-
 func stackInitOrUpdate() {
 	var final string
 	var msg string
 	border := "----------------------------------------------"
-	stackExist := utils.StackExistCheck()
+	stackExist := stackExistCheck()
 
 	if stackExist {
 		msg = "Update existing monitoring stack..."
@@ -44,7 +24,7 @@ func stackInitOrUpdate() {
 	final = border + "\n" + msg + "\n" + border
 	fmt.Println(final)
 
-	getAnswers(stackExist)
+	config.GetAnswers(stackExist)
 	parsedFile := utils.ParseFile(config.Paths.RawStack, config.Params)
 	utils.WriteToFile(parsedFile, config.Paths.ParsedStack)
 
@@ -61,7 +41,7 @@ func stackInitOrUpdate() {
 }
 
 func stackDelete() {
-	stackExist := utils.StackExistCheck()
+	stackExist := stackExistCheck()
 	if stackExist {
 		fmt.Print("Are you sure? [y/N]: ")
 		input := utils.ReadInput()
@@ -74,4 +54,14 @@ func stackDelete() {
 		fmt.Println("You may not have a monitoring stack deployed!")
 	}
 	utils.ExitOnKeyStroke(stackPage)
+}
+
+func stackExistCheck() bool {
+	var out bytes.Buffer
+	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
+	cmd.Stdout = &out
+	cmd.Run()
+	stdout := out.String()
+	contains := strings.Contains(stdout, config.Params.Docker.StackName)
+	return contains
 }

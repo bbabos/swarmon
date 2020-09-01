@@ -2,7 +2,10 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+
+	"github.com/bbabos/swarmon/cmd/utils"
 )
 
 type input struct {
@@ -85,6 +88,30 @@ func Save() {
 func Load(filePath string) {
 	file, _ := ioutil.ReadFile(filePath)
 	_ = json.Unmarshal([]byte(file), &Params)
+}
+
+// GetAnswers is ...
+func GetAnswers(stackExists bool) {
+	length := len(Inputs)
+	num := 0
+	if stackExists {
+		num = 1
+	}
+	for i := num; i < length; i++ {
+		if Inputs[i].Answer == "" {
+			fmt.Print(Inputs[i].Question + ": ")
+			Inputs[i].Answer = utils.ReadInput()
+		} else {
+			fmt.Print(Inputs[i].Question + " [" + Inputs[i].Answer + "]" + ": ")
+			result := utils.ReadInput()
+			if result != "" {
+				Inputs[i].Answer = result
+			}
+		}
+	}
+	SetParams()
+	Save()
+	Params.Traefik.BAPassword = utils.HashPass(Inputs[5].Answer)
 }
 
 // SetAnswers is ...
