@@ -33,9 +33,9 @@ var Params = params{
 
 // Paths is ...
 var Paths = paths{
-	StackConfig: "internal/stackconfig.json",
+	StackConfig: "stackconfig.json",
 	RawStack:    "internal/docker/docker-compose.yml",
-	ParsedStack: "internal/docker/parsed.yml",
+	ParsedStack: "parsed.yml",
 }
 
 // Save is ...
