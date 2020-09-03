@@ -47,12 +47,14 @@ func stackDelete() {
 		input := utils.ReadInput()
 		if input == "y" {
 			utils.ExecShellCommand("docker stack rm "+config.Params.Docker.StackName, true)
-			fmt.Println("-------------------------------")
+			fmt.Println("----------------------------------------------")
 			fmt.Println("Monitoring stack deleted successfully!")
 		}
 	} else {
 		fmt.Println("You may not have a monitoring stack deployed!")
 	}
+	config.Params.Docker.StackName = ""
+	config.CreateOrSave(config.Paths.StackConfig)
 	utils.ExitOnKeyStroke(stackPage)
 }
 
@@ -63,5 +65,8 @@ func stackExistCheck() bool {
 	cmd.Run()
 	stdout := out.String()
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
+	if config.Params.Docker.StackName == "" {
+		return false
+	}
 	return contains
 }

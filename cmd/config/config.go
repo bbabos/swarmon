@@ -35,13 +35,13 @@ var Params = params{
 var Paths = paths{
 	StackConfig: "stackconfig.json",
 	RawStack:    "internal/docker/docker-compose.yml",
-	ParsedStack: "parsed.yml",
+	ParsedStack: "internal/docker/parsed.yml",
 }
 
-// Save is ...
-func Save() {
+// CreateOrSave is ...
+func CreateOrSave(configPath string) {
 	data, _ := json.MarshalIndent(Params, "", " ")
-	_ = ioutil.WriteFile(Paths.StackConfig, data, 0644)
+	_ = ioutil.WriteFile(configPath, data, 0644)
 }
 
 // Load is ...
@@ -70,7 +70,7 @@ func GetAnswers(stackExists bool) {
 		}
 	}
 	SetParams()
-	Save()
+	CreateOrSave(Paths.StackConfig)
 	Params.Traefik.BAPassword = utils.HashPass(Inputs[5].Answer)
 }
 
