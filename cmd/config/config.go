@@ -2,48 +2,11 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+
+	"github.com/bbabos/swarmon/cmd/utils"
 )
-
-type input struct {
-	Question string
-	Answer   string
-}
-
-type params struct {
-	Tag    string
-	Domain string
-	Schema string
-	Cgroup string
-	Node   struct {
-		ID string
-	}
-	AdminUser struct {
-		Name     string
-		Password string
-	}
-	Slack struct {
-		Webhook   string
-		AlertUser string
-	}
-	Traefik struct {
-		Port       string
-		BAPassword string
-		BAUser     string
-	}
-	Docker struct {
-		StackName  string
-		MetricPort string
-		GwBridgeIP string
-	}
-	HostNamePath string // dev only
-}
-
-type paths struct {
-	StackConfig string
-	RawStack    string
-	ParsedStack string
-}
 
 // Inputs is ...
 var Inputs = []input{
@@ -70,21 +33,45 @@ var Params = params{
 
 // Paths is ...
 var Paths = paths{
-	StackConfig: "internal/stackconfig.json",
+	StackConfig: "stackconfig.json",
 	RawStack:    "internal/docker/docker-compose.yml",
 	ParsedStack: "internal/docker/parsed.yml",
 }
 
-// Save is ...
-func Save() {
+// CreateOrSave is ...
+func CreateOrSave(configPath string) {
 	data, _ := json.MarshalIndent(Params, "", " ")
-	_ = ioutil.WriteFile(Paths.StackConfig, data, 0644)
+	_ = ioutil.WriteFile(configPath, data, 0644)
 }
 
 // Load is ...
 func Load(filePath string) {
 	file, _ := ioutil.ReadFile(filePath)
 	_ = json.Unmarshal([]byte(file), &Params)
+}
+
+// GetAnswers is ...
+func GetAnswers(stackExists bool) {
+	length := len(Inputs)
+	num := 0
+	if stackExists {
+		num = 1
+	}
+	for i := num; i < length; i++ {
+		if Inputs[i].Answer == "" {
+			fmt.Print(Inputs[i].Question + ": ")
+			Inputs[i].Answer = utils.ReadInput()
+		} else {
+			fmt.Print(Inputs[i].Question + " [" + Inputs[i].Answer + "]" + ": ")
+			result := utils.ReadInput()
+			if result != "" {
+				Inputs[i].Answer = result
+			}
+		}
+	}
+	SetParams()
+	CreateOrSave(Paths.StackConfig)
+	Params.Traefik.BAPassword = utils.HashPass(Inputs[5].Answer)
 }
 
 // SetAnswers is ...

@@ -10,7 +10,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/bbabos/swarmon/cmd/config"
 	"github.com/eiannone/keyboard"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -111,7 +110,7 @@ func ExitOnKeyStroke(menu func()) {
 loop:
 	for {
 		fmt.Print("----------------------------------------------\n")
-		fmt.Print("Press q to exit!")
+		fmt.Println("Press q to exit!")
 		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
 			log.Fatal(err)
@@ -122,15 +121,4 @@ loop:
 			break loop
 		}
 	}
-}
-
-// StackExistCheck is ...
-func StackExistCheck() bool {
-	var out bytes.Buffer
-	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
-	cmd.Stdout = &out
-	cmd.Run()
-	stdout := out.String()
-	contains := strings.Contains(stdout, config.Params.Docker.StackName)
-	return contains
 }
