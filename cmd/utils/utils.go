@@ -111,6 +111,7 @@ loop:
 	for {
 		fmt.Print("----------------------------------------------\n")
 		fmt.Println("Press q to exit!")
+		fmt.Print("----------------------------------------------\n")
 		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
 			log.Fatal(err)
