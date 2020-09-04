@@ -42,7 +42,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-      - {{.HostNamePath}}:/etc/nodename # for dev only
+      - {{.HostNamePath}}:/etc/nodename
     command:
       - --path.sysfs=/host/sys
       - --path.procfs=/host/proc
@@ -103,7 +103,7 @@ services:
         reservations:
           memory: 128M
       labels:
-        traefik.http.routers.prometheus.rule: Host(`prometheus.{{.Domain}}`)
+        traefik.http.routers.prometheus.rule: Host(`{{.Traefik.PrometheusSubDomain}}.{{.Domain}}`)
         traefik.http.services.prometheus-service.loadbalancer.server.port: 9090
         traefik.http.middlewares.prometheus-auth.basicauth.users: {{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
         traefik.http.routers.prometheus.middlewares: prometheus-auth
@@ -116,7 +116,7 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: {{.AdminUser.Name}}
       GF_SECURITY_ADMIN_PASSWORD: {{.AdminUser.Password}}
-      GF_SERVER_ROOT_URL: {{.Schema}}://grafana.{{.Domain}}
+      GF_SERVER_ROOT_URL: {{.Schema}}://{{.Traefik.GrafanaSubDomain}}.{{.Domain}}
       GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
       - grafana:/var/lib/grafana
@@ -132,7 +132,7 @@ services:
         reservations:
           memory: 64M
       labels:
-        traefik.http.routers.grafana.rule: Host(`grafana.{{.Domain}}`)
+        traefik.http.routers.grafana.rule: Host(`{{.Traefik.GrafanaSubDomain}}.{{.Domain}}`)
         traefik.http.services.grafana-service.loadbalancer.server.port: 3000
         constraint: {{.Docker.StackName}}
 
@@ -162,14 +162,14 @@ services:
         reservations:
           memory: 64M
       labels:
-        traefik.http.routers.alerts.rule: Host(`alerts.{{.Domain}}`)
+        traefik.http.routers.alerts.rule: Host(`{{.Traefik.AlertmanagerSubDomain}}.{{.Domain}}`)
         traefik.http.services.alerts-service.loadbalancer.server.port: 9093
         traefik.http.middlewares.alerts-auth.basicauth.users: {{.Traefik.BAUser}}:{{.Traefik.BAPassword}}
         traefik.http.routers.alerts.middlewares: alerts-auth
         constraint: {{.Docker.StackName}}
 
   traefik:
-    image: traefik:v2.2
+    image: traefik:v2.3
     networks:
       - monitor_net
     ports:

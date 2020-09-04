@@ -23,9 +23,12 @@ type params struct {
 		AlertUser string
 	}
 	Traefik struct {
-		Port       string
-		BAPassword string
-		BAUser     string
+		Port                  string
+		BAPassword            string
+		BAUser                string
+		PrometheusSubDomain   string
+		GrafanaSubDomain      string
+		AlertmanagerSubDomain string
 	}
 	Docker struct {
 		StackName  string
