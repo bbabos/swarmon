@@ -26,9 +26,16 @@ var Inputs = []input{
 
 // Params is ...
 var Params = params{
-	Tag:    "development",
-	Node:   struct{ ID string }{"{{.Node.ID}}"},
-	Cgroup: "# - /cgroup:/sys/fs/cgroup:ro",
+	Tag:        "development",
+	Node:       struct{ ID string }{"{{.Node.ID}}"},
+	CgroupPath: "/cgroup",
+	Docker: struct {
+		StackName  string
+		MetricPort string
+		GwBridgeIP string
+	}{"", "9323", "172.18.0.1"},
+	CgroupDisable: "#",
+	HostNamePath:  "/path/to/hostname", // for dev only
 }
 
 // Paths is ...

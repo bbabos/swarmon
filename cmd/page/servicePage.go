@@ -22,7 +22,7 @@ func servicePage() {
 	if i > 0 {
 		renderServiceSubPage(services[i])
 	}
-	defer dockerPage()
+	dockerPage()
 }
 
 func renderServiceSubPage(s docker.Service) {
