@@ -42,7 +42,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-      {{.HostNamePath}} # for dev only
+      - {{.HostNamePath}}:/etc/nodename # for dev only
     command:
       - --path.sysfs=/host/sys
       - --path.procfs=/host/proc
@@ -67,7 +67,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
-      {{.Cgroup}} # may need for centos or rhel
+      {{.CgroupDisable}}- {{.CgroupPath}}:/sys/fs/cgroup:ro   # may need for centos or rhel
     deploy:
       mode: global
       resources:

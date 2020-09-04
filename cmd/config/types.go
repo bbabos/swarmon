@@ -6,11 +6,12 @@ type input struct {
 }
 
 type params struct {
-	Tag    string
-	Domain string
-	Schema string
-	Cgroup string
-	Node   struct {
+	Tag           string
+	Domain        string
+	Schema        string
+	CgroupPath    string
+	CgroupDisable string
+	Node          struct {
 		ID string
 	}
 	AdminUser struct {
