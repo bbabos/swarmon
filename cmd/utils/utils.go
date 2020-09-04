@@ -80,12 +80,12 @@ func HashPass(password string) string {
 }
 
 // ExecShellCommand is ...
-func ExecShellCommand(command string, hideOutput bool) {
+func ExecShellCommand(command string, showOutput bool) {
 	args := strings.Fields(command)
 	cmd := exec.Command(args[0], args[1:]...)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	if hideOutput {
+	if showOutput {
 		reader, err := cmd.StdoutPipe()
 		if err != nil {
 			log.Fatal(err)
@@ -109,9 +109,9 @@ func ExecShellCommand(command string, hideOutput bool) {
 func ExitOnKeyStroke(menu func()) {
 loop:
 	for {
-		fmt.Print("----------------------------------------------\n")
+		fmt.Println("----------------------------------------------")
 		fmt.Println("Press q to exit!")
-		fmt.Print("----------------------------------------------\n")
+		fmt.Println("----------------------------------------------")
 		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
 			log.Fatal(err)

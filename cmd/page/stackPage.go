@@ -37,6 +37,13 @@ func stackInitOrUpdate() {
 	fmt.Println(final)
 
 	utils.ExecShellCommand("docker stack deploy -c "+config.Paths.ParsedStack+" "+config.Params.Docker.StackName, true)
+	if stackExist {
+		msg = "Services updated succesfully..."
+	} else {
+		msg = "Stack deployed succesfully..."
+	}
+	final = border + "\n" + msg
+	fmt.Println(final)
 	utils.ExitOnKeyStroke(stackPage)
 }
 
