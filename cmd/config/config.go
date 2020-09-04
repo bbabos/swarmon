@@ -12,6 +12,9 @@ import (
 var Inputs = []input{
 	{Question: "Docker stack name"},
 	{Question: "Domain name"},
+	{Question: "Prometheus subdomain"},
+	{Question: "Grafana subdomain"},
+	{Question: "Alertmanager subdomain"},
 	{Question: "Admin username"},
 	{Question: "Admin password"},
 	{Question: "BasicAuth username"},
@@ -85,30 +88,36 @@ func GetAnswers(stackExists bool) {
 func SetAnswers() {
 	Inputs[0].Answer = Params.Docker.StackName
 	Inputs[1].Answer = Params.Domain
-	Inputs[2].Answer = Params.AdminUser.Name
-	Inputs[3].Answer = Params.AdminUser.Password
-	Inputs[4].Answer = Params.Traefik.BAUser
-	Inputs[5].Answer = Params.Traefik.BAPassword
-	Inputs[6].Answer = Params.Slack.Webhook
-	Inputs[7].Answer = Params.Slack.AlertUser
-	Inputs[8].Answer = Params.Traefik.Port
-	Inputs[9].Answer = Params.Schema
-	Inputs[10].Answer = Params.Docker.MetricPort
-	Inputs[11].Answer = Params.Docker.GwBridgeIP
+	Inputs[2].Answer = Params.Traefik.PrometheusSubDomain
+	Inputs[3].Answer = Params.Traefik.GrafanaSubDomain
+	Inputs[4].Answer = Params.Traefik.AlertmanagerSubDomain
+	Inputs[5].Answer = Params.AdminUser.Name
+	Inputs[6].Answer = Params.AdminUser.Password
+	Inputs[7].Answer = Params.Traefik.BAUser
+	Inputs[8].Answer = Params.Traefik.BAPassword
+	Inputs[9].Answer = Params.Slack.Webhook
+	Inputs[10].Answer = Params.Slack.AlertUser
+	Inputs[11].Answer = Params.Traefik.Port
+	Inputs[12].Answer = Params.Schema
+	Inputs[13].Answer = Params.Docker.MetricPort
+	Inputs[14].Answer = Params.Docker.GwBridgeIP
 }
 
 // SetParams is ...
 func SetParams() {
 	Params.Docker.StackName = Inputs[0].Answer
 	Params.Domain = Inputs[1].Answer
-	Params.AdminUser.Name = Inputs[2].Answer
-	Params.AdminUser.Password = Inputs[3].Answer
-	Params.Traefik.BAUser = Inputs[4].Answer
-	Params.Traefik.BAPassword = Inputs[5].Answer
-	Params.Slack.Webhook = Inputs[6].Answer
-	Params.Slack.AlertUser = Inputs[7].Answer
-	Params.Traefik.Port = Inputs[8].Answer
-	Params.Schema = Inputs[9].Answer
-	Params.Docker.MetricPort = Inputs[10].Answer
-	Params.Docker.GwBridgeIP = Inputs[11].Answer
+	Params.Traefik.PrometheusSubDomain = Inputs[2].Answer
+	Params.Traefik.GrafanaSubDomain = Inputs[3].Answer
+	Params.Traefik.AlertmanagerSubDomain = Inputs[4].Answer
+	Params.AdminUser.Name = Inputs[5].Answer
+	Params.AdminUser.Password = Inputs[6].Answer
+	Params.Traefik.BAUser = Inputs[7].Answer
+	Params.Traefik.BAPassword = Inputs[8].Answer
+	Params.Slack.Webhook = Inputs[9].Answer
+	Params.Slack.AlertUser = Inputs[10].Answer
+	Params.Traefik.Port = Inputs[11].Answer
+	Params.Schema = Inputs[12].Answer
+	Params.Docker.MetricPort = Inputs[13].Answer
+	Params.Docker.GwBridgeIP = Inputs[14].Answer
 }
