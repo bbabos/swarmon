@@ -22,7 +22,7 @@ func nodePage() {
 	if i > 0 {
 		renderNodeSubPage(nodes[i])
 	}
-	defer dockerPage()
+	dockerPage()
 }
 
 func renderNodeSubPage(s docker.Node) {

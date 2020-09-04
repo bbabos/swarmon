@@ -20,7 +20,7 @@ func containerPage() {
 	if i > 0 {
 		renderContainerSubPage(containers[i])
 	}
-	defer dockerPage()
+	dockerPage()
 }
 
 func renderContainerSubPage(s docker.Container) {
