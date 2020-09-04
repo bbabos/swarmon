@@ -1,6 +1,8 @@
 package page
 
 import (
+	"fmt"
+
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
@@ -17,10 +19,8 @@ func containerPage() {
 {{ "Created:" | faint }}	{{ .Created }}
 {{ "State:" | faint }}	{{ .State }}`
 	i := renderPage(containers, "CONTAINERS", details, 10)
-	if i > 0 {
-		renderContainerSubPage(containers[i])
-	}
-	dockerPage()
+	renderContainerSubPage(containers[i])
+	defer dockerPage()
 }
 
 func renderContainerSubPage(s docker.Container) {
@@ -30,4 +30,5 @@ func renderContainerSubPage(s docker.Container) {
 	}
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
+	defer fmt.Println("----------------------------------------------")
 }

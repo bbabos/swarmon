@@ -1,6 +1,8 @@
 package page
 
 import (
+	"fmt"
+
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
@@ -19,10 +21,8 @@ func servicePage() {
 {{ "CreatedAt:" | faint }}	{{ .Created }}
 {{ "UpdatedAt:" | faint }}	{{ .Updated }}`
 	i := renderPage(services, "SERVICES", details, 5)
-	if i > 0 {
-		renderServiceSubPage(services[i])
-	}
-	dockerPage()
+	renderServiceSubPage(services[i])
+	defer dockerPage()
 }
 
 func renderServiceSubPage(s docker.Service) {
@@ -33,4 +33,5 @@ func renderServiceSubPage(s docker.Service) {
 	}
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
+	defer fmt.Println("----------------------------------------------")
 }

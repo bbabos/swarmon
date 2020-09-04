@@ -1,6 +1,8 @@
 package page
 
 import (
+	"fmt"
+
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
@@ -19,10 +21,8 @@ func nodePage() {
 {{ "Availability:" | faint }}	{{ .Availability }}
 {{ "EngineVersion:" | faint }}	{{ .EngineVersion }}`
 	i := renderPage(nodes, "NODES", details, 5)
-	if i > 0 {
-		renderNodeSubPage(nodes[i])
-	}
-	dockerPage()
+	renderNodeSubPage(nodes[i])
+	defer dockerPage()
 }
 
 func renderNodeSubPage(s docker.Node) {
@@ -33,4 +33,5 @@ func renderNodeSubPage(s docker.Node) {
 	}
 	i := renderPage(options, s.Name, "", 5)
 	options[i].Action(s)
+	defer fmt.Println("----------------------------------------------")
 }
