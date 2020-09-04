@@ -8,10 +8,9 @@ import (
 
 func main() {
 	configExist := utils.FileExists(config.Paths.StackConfig)
-
 	if configExist {
 		config.Load(config.Paths.StackConfig)
-		config.SetAnswers()
 	}
+	config.SetAnswers()
 	page.MainPage()
 }
