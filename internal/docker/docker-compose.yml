@@ -169,7 +169,7 @@ services:
         constraint: {{.Docker.StackName}}
 
   traefik:
-    image: traefik:v2.2
+    image: traefik:v2.3
     networks:
       - monitor_net
     ports:
