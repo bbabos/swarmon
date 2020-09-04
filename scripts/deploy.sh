@@ -14,8 +14,9 @@ traefik_port="80"
 schema="http"
 metric_port="9323"
 gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
-cgroup="# - /cgroup:/sys/fs/cgroup:ro"
-hostname="- /Users/babosbence/hostname:/etc/nodename"
+cgroup_path="/cgroup"
+cgroup_disable="#"
+hostname_path="/Users/babosbence/hostname"
 
 cd ../internal/docker/
 cat docker-compose.yml |
@@ -30,8 +31,9 @@ cat docker-compose.yml |
     sed "s/{{.Traefik.Port}}/$traefik_port/g" |
     sed "s/{{.Docker.MetricPort}}/$metric_port/g" |
     sed "s/{{.Docker.GwBridgeIP}}/$gwbridge/g" |
-    sed "s@{{.Cgroup}}@$cgroup@g" |
-    sed "s@{{.HostNamePath}}@$hostname@g" |
+    sed "s@{{.CgroupPath}}@$cgroup_path@g" |
+    sed "s@{{.CgroupDisable}}@$cgroup_disable@g" |
+    sed "s@{{.HostNamePath}}@$hostname_path@g" |
     sed "s/{{.Traefik.BAUser}}/$traefik_user/g" |
     sed "s@{{.Traefik.BAPassword}}@$traefik_pw@g" >tmp-docker-compose.yml
 
