@@ -69,14 +69,14 @@ func stackDelete() {
 }
 
 func stackExistCheck() bool {
+	if config.Params.Docker.StackName == "" {
+		return false
+	}
 	var out bytes.Buffer
 	cmd := exec.Command("docker", "stack", "ls", "--format", "'{{.Name}}'")
 	cmd.Stdout = &out
 	cmd.Run()
 	stdout := out.String()
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
-	if config.Params.Docker.StackName == "" {
-		return false
-	}
 	return contains
 }
