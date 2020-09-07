@@ -25,20 +25,24 @@ var Inputs = []input{
 	{Question: "HTTP schema"},
 	{Question: "Docker Swarm metric port"},
 	{Question: "Docker gwbridge IP"},
+	{Question: "Enable/disable cgroup (y/n)"},
+	{Question: "Cgroup path"},
+	{Question: "Hostname path"},
 }
 
 // Params is ...
 var Params = params{
-	Tag:        "development",
-	Node:       struct{ ID string }{"{{.Node.ID}}"},
-	CgroupPath: "/cgroup",
+	Tag:  "development",
+	Node: struct{ ID string }{"{{.Node.ID}}"},
 	Docker: struct {
 		StackName  string
 		MetricPort string
 		GwBridgeIP string
 	}{"", "9323", "172.18.0.1"},
-	CgroupDisable: "#",
-	HostNamePath:  "/path/to/hostname", // for dev only
+	Cgroup: struct {
+		Path    string
+		Enabled string
+	}{"/cgroup", "n"},
 }
 
 // Paths is ...
@@ -68,11 +72,14 @@ func GetAnswers(stackExists bool) {
 		num = 1
 	}
 	for i := num; i < length; i++ {
+		var question string
 		if Inputs[i].Answer == "" {
-			fmt.Print(Inputs[i].Question + ": ")
+			question = Inputs[i].Question + ": "
+			fmt.Print(question)
 			Inputs[i].Answer = utils.ReadInput()
 		} else {
-			fmt.Print(Inputs[i].Question + " [" + Inputs[i].Answer + "]" + ": ")
+			question = Inputs[i].Question + " [" + Inputs[i].Answer + "]" + ": "
+			fmt.Print(question)
 			result := utils.ReadInput()
 			if result != "" {
 				Inputs[i].Answer = result
@@ -81,7 +88,12 @@ func GetAnswers(stackExists bool) {
 	}
 	SetParams()
 	CreateOrSave(Paths.StackConfig)
-	Params.Traefik.BAPassword = utils.HashPass(Inputs[5].Answer)
+	Params.Traefik.BAPassword = utils.HashPass(Inputs[8].Answer)
+	if Inputs[15].Answer == "y" {
+		Params.Cgroup.Enabled = "-"
+	} else {
+		Params.Cgroup.Enabled = "#-"
+	}
 }
 
 // SetAnswers is ...
@@ -101,6 +113,9 @@ func SetAnswers() {
 	Inputs[12].Answer = Params.Schema
 	Inputs[13].Answer = Params.Docker.MetricPort
 	Inputs[14].Answer = Params.Docker.GwBridgeIP
+	Inputs[15].Answer = Params.Cgroup.Enabled
+	Inputs[16].Answer = Params.Cgroup.Path
+	Inputs[17].Answer = Params.HostNamePath
 }
 
 // SetParams is ...
@@ -120,4 +135,7 @@ func SetParams() {
 	Params.Schema = Inputs[12].Answer
 	Params.Docker.MetricPort = Inputs[13].Answer
 	Params.Docker.GwBridgeIP = Inputs[14].Answer
+	Params.Cgroup.Enabled = Inputs[15].Answer
+	Params.Cgroup.Path = Inputs[16].Answer
+	Params.HostNamePath = Inputs[17].Answer
 }
