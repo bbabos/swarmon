@@ -75,7 +75,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
-      {{.CgroupDisable}}- {{.CgroupPath}}:/sys/fs/cgroup:ro   # may need for centos or rhel
+      {{.Cgroup.Enabled}} {{.Cgroup.Path}}:/sys/fs/cgroup:ro   # may need for centos or rhel
     deploy:
       mode: global
       restart_policy:
