@@ -27,6 +27,7 @@ var Inputs = []input{
 	{Question: "Docker gwbridge IP"},
 	{Question: "Enable/disable cgroup (y/n)"},
 	{Question: "Cgroup path"},
+	{Question: "Hostname path"},
 }
 
 // Params is ...
@@ -42,7 +43,6 @@ var Params = params{
 		Path    string
 		Enabled string
 	}{"/cgroup", "n"},
-	HostNamePath: "/path/to/hostname", // dev only
 }
 
 // Paths is ...
@@ -115,6 +115,7 @@ func SetAnswers() {
 	Inputs[14].Answer = Params.Docker.GwBridgeIP
 	Inputs[15].Answer = Params.Cgroup.Enabled
 	Inputs[16].Answer = Params.Cgroup.Path
+	Inputs[17].Answer = Params.HostNamePath
 }
 
 // SetParams is ...
@@ -136,4 +137,5 @@ func SetParams() {
 	Params.Docker.GwBridgeIP = Inputs[14].Answer
 	Params.Cgroup.Enabled = Inputs[15].Answer
 	Params.Cgroup.Path = Inputs[16].Answer
+	Params.HostNamePath = Inputs[17].Answer
 }
