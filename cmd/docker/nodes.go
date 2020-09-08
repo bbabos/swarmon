@@ -9,6 +9,13 @@ import (
 	"github.com/docker/docker/client"
 )
 
+// INode is ...
+type INode interface {
+	Promote()
+	Demote()
+	GetName() string
+}
+
 // Node is ...
 type Node struct {
 	ID            string
@@ -40,11 +47,16 @@ func GetNodes() []Node {
 }
 
 // Promote is ...
-func Promote(n Node) {
+func (n Node) Promote() {
 	utils.ExecShellCommand("docker node promote "+n.ID, true)
 }
 
 // Demote is ...
-func Demote(n Node) {
+func (n Node) Demote() {
 	utils.ExecShellCommand("docker node demote "+n.ID, true)
+}
+
+// GetName is ...
+func (n Node) GetName() string {
+	return n.Name
 }

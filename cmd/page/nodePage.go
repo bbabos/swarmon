@@ -6,11 +6,6 @@ import (
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
-type nodeOption struct {
-	Name   string
-	Action func(n docker.Node)
-}
-
 func nodePage() {
 	nodes := docker.GetNodes()
 	details := `
@@ -25,13 +20,14 @@ func nodePage() {
 	defer dockerPage()
 }
 
-func renderNodeSubPage(s docker.Node) {
-	options := []nodeOption{
-		{Name: "Promote node", Action: docker.Promote},
-		{Name: "Demote node", Action: docker.Demote},
-		{Name: "Back", Action: func(docker.Node) { return }},
+func renderNodeSubPage(n docker.INode) {
+	options := []page{
+		{Name: "Promote node", action: n.Promote},
+		{Name: "Demote node", action: n.Demote},
+		{Name: "Back", action: func() { return }},
 	}
-	i := renderPage(options, s.Name, "", 5)
-	options[i].Action(s)
+	nName := n.GetName()
+	i := renderPage(options, nName, "", 5)
+	options[i].action()
 	defer fmt.Println("----------------------------------------------")
 }

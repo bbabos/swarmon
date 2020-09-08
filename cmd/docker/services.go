@@ -10,6 +10,13 @@ import (
 	"github.com/docker/docker/client"
 )
 
+// IService is ...
+type IService interface {
+	Inspect()
+	Restart()
+	GetName() string
+}
+
 // Service is ...
 type Service struct {
 	ID       string
@@ -45,13 +52,18 @@ func GetServices() []Service {
 }
 
 // Restart is ...
-func Restart(s Service) {
+func (s Service) Restart() {
 	fmt.Println("Service restart started...")
 	utils.ExecShellCommand("docker service update --force "+s.ID, false)
 	fmt.Println("Service restarted successfully.")
 }
 
 // Inspect is ...
-func Inspect(s Service) {
+func (s Service) Inspect() {
 	utils.ExecShellCommand("docker service inspect "+s.ID, true)
+}
+
+// GetName is ...
+func (s Service) GetName() string {
+	return s.Name
 }
