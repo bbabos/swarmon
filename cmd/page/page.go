@@ -6,16 +6,9 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-type iPage interface {
-	render()
-}
-
 type page struct {
 	Name   string
 	action func()
-}
-
-type subPage struct {
 }
 
 func renderPage(items interface{}, title string, details string, size int) int {
