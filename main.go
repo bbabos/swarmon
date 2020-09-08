@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	configExist := utils.FileExists(config.Paths.StackConfig)
-	if configExist {
+	configExists := utils.FileExists(config.Paths.StackConfig)
+	if configExists {
 		config.Load(config.Paths.StackConfig)
 	}
 	config.SetAnswers()
