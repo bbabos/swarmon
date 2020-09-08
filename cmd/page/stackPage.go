@@ -44,7 +44,7 @@ func stackInitOrUpdate() {
 	}
 	final = border + "\n" + msg
 	fmt.Println(final)
-	utils.ExitOnKeyStroke(stackPage)
+	utils.ExitOnKeystroke(stackPage)
 }
 
 func stackDelete() {
@@ -58,13 +58,13 @@ func stackDelete() {
 			config.CreateOrSave(config.Paths.StackConfig)
 			fmt.Println("----------------------------------------------")
 			fmt.Println("Monitoring stack deleted successfully!")
-			utils.ExitOnKeyStroke(stackPage)
+			utils.ExitOnKeystroke(stackPage)
 		} else {
 			stackPage()
 		}
 	} else {
 		fmt.Println("You may not have a monitoring stack deployed!")
-		utils.ExitOnKeyStroke(stackPage)
+		utils.ExitOnKeystroke(stackPage)
 	}
 }
 
