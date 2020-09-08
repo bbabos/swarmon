@@ -10,6 +10,13 @@ import (
 	"github.com/docker/docker/client"
 )
 
+// IContainer is ...
+type IContainer interface {
+	GetLogs()
+	Inspect()
+	GetName() string
+}
+
 // Container is ...
 type Container struct {
 	ID      string
@@ -37,6 +44,16 @@ func GetContainers() []Container {
 }
 
 // GetLogs is ...
-func GetLogs(c Container) {
+func (c Container) GetLogs() {
 	utils.ExecShellCommand("docker logs "+c.ID, true)
+}
+
+// Inspect is ...
+func (c Container) Inspect() {
+	utils.ExecShellCommand("docker inspect "+c.ID, true)
+}
+
+// GetName is ...
+func (c Container) GetName() string {
+	return c.Name
 }

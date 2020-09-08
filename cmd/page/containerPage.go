@@ -6,11 +6,6 @@ import (
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
-type containerOption struct {
-	Name   string
-	Action func(s docker.Container)
-}
-
 func containerPage() {
 	containers := docker.GetContainers()
 	details := `
@@ -23,12 +18,15 @@ func containerPage() {
 	defer dockerPage()
 }
 
-func renderContainerSubPage(s docker.Container) {
-	options := []containerOption{
-		{Name: "Print logs", Action: docker.GetLogs},
-		{Name: "Back", Action: func(docker.Container) { return }},
+func renderContainerSubPage(c docker.IContainer) {
+	options := []page{
+		{Name: "Print logs", action: c.GetLogs},
+		{Name: "Inspect", action: c.Inspect},
+		{Name: "Back", action: func() { return }},
 	}
-	i := renderPage(options, s.Name, "", 5)
-	options[i].Action(s)
+	cName := c.GetName()
+	i := renderPage(options, cName, "", 5)
+
+	options[i].action()
 	defer fmt.Println("----------------------------------------------")
 }
