@@ -6,11 +6,6 @@ import (
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
-type serviceOption struct {
-	Name   string
-	Action func(s docker.Service)
-}
-
 func servicePage() {
 	services := docker.GetServices()
 	details := `
@@ -25,13 +20,14 @@ func servicePage() {
 	defer dockerPage()
 }
 
-func renderServiceSubPage(s docker.Service) {
-	options := []serviceOption{
-		{Name: "Restart service", Action: docker.Restart},
-		{Name: "Inspect service", Action: docker.Inspect},
-		{Name: "Back", Action: func(docker.Service) { return }},
+func renderServiceSubPage(s docker.IService) {
+	options := []page{
+		{Name: "Restart service", action: s.Restart},
+		{Name: "Inspect service", action: s.Inspect},
+		{Name: "Back", action: func() { return }},
 	}
-	i := renderPage(options, s.Name, "", 5)
-	options[i].Action(s)
+	sName := s.GetName()
+	i := renderPage(options, sName, "", 5)
+	options[i].action()
 	defer fmt.Println("----------------------------------------------")
 }
