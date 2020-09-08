@@ -34,7 +34,7 @@ TODO
 │   │   └── stackPage.go
 │   └── utils
 │       └── utils.go
-├── internal
+├── configs
 │   └── docker
 │       ├── alertmanager
 │       │   ├── Dockerfile

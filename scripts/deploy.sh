@@ -18,7 +18,7 @@ cgroup_path="/cgroup"
 cgroup_disable="#"
 hostname_path="/Users/babosbence/hostname"
 
-cd ../internal/docker/
+cd ../configs/docker/
 cat docker-compose.yml |
     sed "s/{{.Tag}}/$branch/g" |
     sed "s/{{.Domain}}/$domain/g" |
