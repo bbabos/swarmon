@@ -26,7 +26,6 @@ func renderContainerSubPage(c docker.IContainer) {
 	}
 	cName := c.GetName()
 	i := renderPage(options, cName, "", 5)
-
 	options[i].action()
 	defer fmt.Println("----------------------------------------------")
 }
