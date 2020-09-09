@@ -105,8 +105,8 @@ func ExecShellCommand(command string, showOutput bool) {
 	}
 }
 
-// ExitOnKeyStroke is ...
-func ExitOnKeyStroke(menu func()) {
+// ExitOnKeystroke is ...
+func ExitOnKeystroke(menu func()) {
 loop:
 	for {
 		fmt.Println("----------------------------------------------")
