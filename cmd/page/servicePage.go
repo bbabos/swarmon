@@ -8,26 +8,37 @@ import (
 
 func servicePage() {
 	services := docker.GetServices()
-	details := `
+	mainPage := page{
+		details: `
 --------- Service ----------
 {{ "ID:" | faint }}	{{ .ID }}
 {{ "Mode:" | faint }}	{{ .Mode }}
 {{ "Replicas:" | faint }}	{{ .Replicas }}
 {{ "CreatedAt:" | faint }}	{{ .Created }}
-{{ "UpdatedAt:" | faint }}	{{ .Updated }}`
-	i := renderPage(services, "SERVICES", details, 5)
-	renderServiceSubPage(services[i])
+{{ "UpdatedAt:" | faint }}	{{ .Updated }}`,
+		title: "SERVICES",
+		items: services,
+		size:  5,
+	}
+	selected := mainPage.render()
+	renderServiceSubPage(services[selected])
 	defer dockerPage()
 }
 
 func renderServiceSubPage(s docker.IService) {
-	options := []page{
+	options := []options{
 		{Name: "Restart service", action: s.Restart},
 		{Name: "Inspect service", action: s.Inspect},
 		{Name: "Back", action: func() { return }},
 	}
 	sName := s.GetName()
-	i := renderPage(options, sName, "", 5)
-	options[i].action()
+	subPage := page{
+		details: "",
+		title:   sName,
+		items:   options,
+		size:    5,
+	}
+	selected := subPage.render()
+	options[selected].action()
 	defer fmt.Println("----------------------------------------------")
 }
