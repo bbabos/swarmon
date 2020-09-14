@@ -2,32 +2,50 @@ package page
 
 // MainPage is ...
 func MainPage() {
-	p := []page{
+	options := []options{
 		{Name: "Monitoring stack", action: stackPage},
 		{Name: "Docker options", action: dockerPage},
 		{Name: "Exit", action: func() { return }},
 	}
-	i := renderPage(p, "MAIN MENU", "", 5)
-	p[i].action()
+	page := page{
+		details: "",
+		title:   "MAIN MENU",
+		items:   options,
+		size:    5,
+	}
+	selected := page.render()
+	options[selected].action()
 }
 
 func dockerPage() {
-	p := []page{
+	options := []options{
 		{Name: "Services", action: servicePage},
 		{Name: "Containers", action: containerPage},
 		{Name: "Nodes", action: nodePage},
 		{Name: "Back", action: MainPage},
 	}
-	i := renderPage(p, "DOCKER MENU", "", 5)
-	p[i].action()
+	page := page{
+		details: "",
+		title:   "DOCKER MENU",
+		items:   options,
+		size:    5,
+	}
+	selected := page.render()
+	options[selected].action()
 }
 
 func stackPage() {
-	p := []page{
+	options := []options{
 		{Name: "Docker stack deploy/update", action: stackInitOrUpdate},
 		{Name: "Remove monitoring stack", action: stackDelete},
 		{Name: "Back", action: MainPage},
 	}
-	i := renderPage(p, "STACK MENU", "", 5)
-	p[i].action()
+	page := page{
+		details: "",
+		title:   "STACK MENU",
+		items:   options,
+		size:    5,
+	}
+	selected := page.render()
+	options[selected].action()
 }
