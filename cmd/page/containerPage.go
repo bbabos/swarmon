@@ -18,12 +18,12 @@ func containerPage() {
 		items: containers,
 		size:  10,
 	}
-	selected := page.render()
-	renderContainerSubPage(containers[selected])
+	selected := page.renderBase()
+	containerSubPage(containers[selected])
 	defer dockerPage()
 }
 
-func renderContainerSubPage(c docker.IContainer) {
+func containerSubPage(c docker.IContainer) {
 	cName := c.GetName()
 	page := mainPage{
 		title: cName,
@@ -34,7 +34,6 @@ func renderContainerSubPage(c docker.IContainer) {
 			{Name: "Back", action: func() { return }},
 		},
 	}
-	selected := page.render()
-	page.items[selected].action()
+	page.render()
 	defer fmt.Println("----------------------------------------------")
 }

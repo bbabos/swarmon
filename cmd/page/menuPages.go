@@ -11,8 +11,7 @@ func MainPage() {
 			{Name: "Exit", action: func() { return }},
 		},
 	}
-	selected := page.render()
-	page.items[selected].action()
+	page.render()
 }
 
 func dockerPage() {
@@ -26,8 +25,7 @@ func dockerPage() {
 			{Name: "Back", action: MainPage},
 		},
 	}
-	selected := page.render()
-	page.items[selected].action()
+	page.render()
 }
 
 func stackPage() {
@@ -40,6 +38,5 @@ func stackPage() {
 			{Name: "Back", action: MainPage},
 		},
 	}
-	selected := page.render()
-	page.items[selected].action()
+	page.render()
 }

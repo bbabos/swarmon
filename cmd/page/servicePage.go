@@ -20,12 +20,12 @@ func servicePage() {
 		items: services,
 		size:  5,
 	}
-	selected := page.render()
-	renderServiceSubPage(services[selected])
+	selected := page.renderBase()
+	serviceSubPage(services[selected])
 	defer dockerPage()
 }
 
-func renderServiceSubPage(s docker.IService) {
+func serviceSubPage(s docker.IService) {
 	sName := s.GetName()
 	page := mainPage{
 		title: sName,
@@ -36,7 +36,6 @@ func renderServiceSubPage(s docker.IService) {
 			{Name: "Back", action: func() { return }},
 		},
 	}
-	selected := page.render()
-	page.items[selected].action()
+	page.render()
 	defer fmt.Println("----------------------------------------------")
 }

@@ -20,12 +20,12 @@ func nodePage() {
 		items: nodes,
 		size:  5,
 	}
-	selected := page.render()
-	renderNodeSubPage(nodes[selected])
+	selected := page.renderBase()
+	nodeSubPage(nodes[selected])
 	defer dockerPage()
 }
 
-func renderNodeSubPage(n docker.INode) {
+func nodeSubPage(n docker.INode) {
 	nName := n.GetName()
 	page := mainPage{
 		title: nName,
@@ -36,7 +36,6 @@ func renderNodeSubPage(n docker.INode) {
 			{Name: "Back", action: func() { return }},
 		},
 	}
-	selected := page.render()
-	page.items[selected].action()
+	page.render()
 	defer fmt.Println("----------------------------------------------")
 }

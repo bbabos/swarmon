@@ -24,7 +24,16 @@ type options struct {
 	action func()
 }
 
-func (p mainPage) render() int {
+func (p mainPage) render() {
+	selected := p.renderBase()
+	p.runAction(selected)
+}
+
+func (p mainPage) runAction(selected int) func() {
+	return p.items[selected].action
+}
+
+func (p mainPage) renderBase() int {
 	prompt := promptui.Select{
 		Label: p.title,
 		Items: p.items,
@@ -44,7 +53,7 @@ func (p mainPage) render() int {
 	return selected
 }
 
-func (p dynamicPage) render() int {
+func (p dynamicPage) renderBase() int {
 	prompt := promptui.Select{
 		Label: p.title,
 		Items: p.items,
