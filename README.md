@@ -6,8 +6,8 @@ The integration and management process simplified with a Golang app, which can c
 **The project is still in a development state, if you have any issues or bugs please contact me.**
 
 ## Prerequisites
-- SSH access to a manager node
-- Docker metrics exposed
+- A manager node (with ssh access) and atleast a worker node
+- Docker daemon configured to expose metrics (with experimental features enabled)
 - Golang installed on your local machine (to build the binary)
 
 ## Usage
@@ -15,7 +15,16 @@ You have to clone the repo, build the binary and copy the config folder and the 
 - ```git clone https://github.com/bbabos/swarmon.git && cd swarmon/```
 - ```GOOS=linux GOARCH=amd64 go build```
 - copy the **configs** folder and the built **binary** from the root directory to the remote host
-- start the binary with the command ```./swarmon```
+- start the binary with this command: ```./swarmon```
+
+## Services
+- prometheus (centralized metrics database)
+- grafana (metric visualizer)
+- alertmanager (alert handler)
+- traefik (reverse proxy and basic auth provider)
+- cadvisor (container metrics collector)
+- dockerd-exporter (Docker daemon metrics collector)
+- node-exporter (host metrics collector)
 
 ## Project tree
 ```
