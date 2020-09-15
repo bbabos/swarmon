@@ -13,15 +13,15 @@ import (
 func stackInitOrUpdate() {
 	stackExists := stackExistCheck()
 
-	renderText(stackExists, "Update existing monitoring stack...", "New monitoring stack initialization started...", false)
+	renderInfoText(stackExists, "Update existing monitoring stack...", "New monitoring stack initialization started...", false)
 	config.GetAnswers(stackExists)
 	parsedFile := utils.ParseFile(config.Paths.RawStack, config.Params)
 	utils.WriteToFile(parsedFile, config.Paths.ParsedStack)
 
-	renderText(stackExists, "Updating docker services...", "Stack deploy started...", false)
+	renderInfoText(stackExists, "Updating docker services...", "Stack deploy started...", false)
 	utils.ExecShellCommand("docker stack deploy -c "+config.Paths.ParsedStack+" "+config.Params.Docker.StackName, true)
 
-	renderText(stackExists, "Services updated succesfully...", "Stack deployed succesfully...", true)
+	renderInfoText(stackExists, "Services updated succesfully...", "Stack deployed succesfully...", true)
 	utils.ExitOnKeystroke(stackPage)
 }
 
@@ -59,7 +59,7 @@ func stackExistCheck() bool {
 	return contains
 }
 
-func renderText(stackExists bool, existMsg string, nonExistMsg string, lastText bool) {
+func renderInfoText(stackExists bool, existMsg string, nonExistMsg string, lastText bool) {
 	var msg string
 	var final string
 	border := "----------------------------------------------"
