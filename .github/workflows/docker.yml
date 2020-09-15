@@ -2,6 +2,8 @@ name: Docker build CI
 
 on:
   push:
+    paths:
+      - 'configs/docker/**'
     branches:
       - master
       - development
