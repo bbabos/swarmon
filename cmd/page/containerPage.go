@@ -8,7 +8,7 @@ import (
 
 func containerPage() {
 	containers := docker.GetContainers()
-	mainPage := page{
+	page := dynamicPage{
 		details: `
 --------- Container ----------
 {{ "ID:" | faint }}	{{ .ID }}
@@ -18,25 +18,23 @@ func containerPage() {
 		items: containers,
 		size:  10,
 	}
-	selected := mainPage.render()
+	selected := page.render()
 	renderContainerSubPage(containers[selected])
 	defer dockerPage()
 }
 
 func renderContainerSubPage(c docker.IContainer) {
-	options := []options{
-		{Name: "Print logs", action: c.GetLogs},
-		{Name: "Inspect", action: c.Inspect},
-		{Name: "Back", action: func() { return }},
-	}
 	cName := c.GetName()
-	subPage := page{
-		details: "",
-		title:   cName,
-		items:   options,
-		size:    5,
+	page := mainPage{
+		title: cName,
+		size:  5,
+		items: []options{
+			{Name: "Print logs", action: c.GetLogs},
+			{Name: "Inspect", action: c.Inspect},
+			{Name: "Back", action: func() { return }},
+		},
 	}
-	selected := subPage.render()
-	options[selected].action()
+	selected := page.render()
+	page.items[selected].action()
 	defer fmt.Println("----------------------------------------------")
 }
