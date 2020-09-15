@@ -11,39 +11,17 @@ import (
 )
 
 func stackInitOrUpdate() {
-	var final string
-	var msg string
-	border := "----------------------------------------------"
-	stackExist := stackExistCheck()
+	stackExists := stackExistCheck()
 
-	if stackExist {
-		msg = "Update existing monitoring stack..."
-	} else {
-		msg = "New monitoring stack initialization started..."
-	}
-	final = border + "\n" + msg + "\n" + border
-	fmt.Println(final)
-
-	config.GetAnswers(stackExist)
+	renderInfoText(stackExists, "Update existing monitoring stack...", "New monitoring stack initialization started...", false)
+	config.GetAnswers(stackExists)
 	parsedFile := utils.ParseFile(config.Paths.RawStack, config.Params)
 	utils.WriteToFile(parsedFile, config.Paths.ParsedStack)
 
-	if stackExist {
-		msg = "Updating docker services..."
-	} else {
-		msg = "Stack deploy started..."
-	}
-	final = border + "\n" + msg + "\n" + border
-	fmt.Println(final)
-
+	renderInfoText(stackExists, "Updating docker services...", "Stack deploy started...", false)
 	utils.ExecShellCommand("docker stack deploy -c "+config.Paths.ParsedStack+" "+config.Params.Docker.StackName, true)
-	if stackExist {
-		msg = "Services updated succesfully..."
-	} else {
-		msg = "Stack deployed succesfully..."
-	}
-	final = border + "\n" + msg
-	fmt.Println(final)
+
+	renderInfoText(stackExists, "Services updated succesfully...", "Stack deployed succesfully...", true)
 	utils.ExitOnKeystroke(stackPage)
 }
 
@@ -79,4 +57,23 @@ func stackExistCheck() bool {
 	stdout := out.String()
 	contains := strings.Contains(stdout, config.Params.Docker.StackName)
 	return contains
+}
+
+func renderInfoText(stackExists bool, existMsg string, nonExistMsg string, lastText bool) {
+	var msg string
+	var final string
+	border := "----------------------------------------------"
+
+	if stackExists {
+		msg = existMsg
+	} else {
+		msg = nonExistMsg
+	}
+	if lastText {
+		final = border + "\n" + msg
+	} else {
+		final = border + "\n" + msg + "\n" + border
+	}
+	fmt.Println(final)
+
 }

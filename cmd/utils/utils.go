@@ -26,12 +26,11 @@ func ReadInput() string {
 
 // FileExists is ...
 func FileExists(folderPath string) bool {
-	isExists := false
 	_, err := os.Stat(folderPath)
 	if !os.IsNotExist(err) {
-		isExists = true
+		return true
 	}
-	return isExists
+	return false
 }
 
 // ParseFile is ...
