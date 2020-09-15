@@ -83,6 +83,6 @@ You have to clone the repo, build the binary and copy the config folder and the 
 │               ├── swarm_node.rules.yml
 │               └── swarm_task.rules.yml
 ├── scripts
-│   ├── build.sh
-│   └── deploy.sh
+    ├── build.sh
+    └── deploy.sh
 ```
