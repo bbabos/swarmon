@@ -8,7 +8,7 @@ import (
 
 func nodePage() {
 	nodes := docker.GetNodes()
-	mainPage := page{
+	page := dynamicPage{
 		details: `
 --------- node ----------
 {{ "ID:" | faint }}	{{ .ID }}
@@ -20,25 +20,22 @@ func nodePage() {
 		items: nodes,
 		size:  5,
 	}
-	selected := mainPage.render()
-	renderNodeSubPage(nodes[selected])
+	selected := page.renderBase()
+	nodeSubPage(nodes[selected])
 	defer dockerPage()
 }
 
-func renderNodeSubPage(n docker.INode) {
-	options := []options{
-		{Name: "Promote node", action: n.Promote},
-		{Name: "Demote node", action: n.Demote},
-		{Name: "Back", action: func() { return }},
-	}
+func nodeSubPage(n docker.INode) {
 	nName := n.GetName()
-	subPage := page{
-		details: "",
-		title:   nName,
-		items:   options,
-		size:    5,
+	page := mainPage{
+		title: nName,
+		size:  5,
+		items: []options{
+			{Name: "Promote node", action: n.Promote},
+			{Name: "Demote node", action: n.Demote},
+			{Name: "Back", action: func() { return }},
+		},
 	}
-	selected := subPage.render()
-	options[selected].action()
+	page.render()
 	defer fmt.Println("----------------------------------------------")
 }
