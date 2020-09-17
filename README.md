@@ -1,4 +1,5 @@
 # SwarMon
+
 An out-of-the-box solution to completely monitor your Docker Swarm environments. The monitoring stack uses Prometheus, Grafana, Alertmanager, Traefik and some exporters like cAdvisor.
 
 The integration and management process simplified with a Golang app, which can create the relevant config files based on your needs, deploy or update the services and some basic Docker option from CLI.
@@ -6,18 +7,22 @@ The integration and management process simplified with a Golang app, which can c
 **The project is still in a development state, if you have any issues or bugs please contact me.**
 
 ## Prerequisites
+
 - A manager node (with ssh access) and atleast a worker node
 - Docker daemon configured to expose metrics (with experimental features enabled)
 - Golang installed on your local machine (to build the binary)
 
 ## Usage
+
 You have to clone the repo, build the binary and copy the config folder and the built binary to the remote host.
-- ```git clone https://github.com/bbabos/swarmon.git && cd swarmon/```
-- ```GOOS=linux GOARCH=amd64 go build```
+
+- `git clone https://github.com/bbabos/swarmon.git && cd swarmon/`
+- `GOOS=linux GOARCH=amd64 go build`
 - copy the **configs** folder and the built **binary** from the root directory to the remote host
-- start the binary with this command: ```./swarmon```
+- start the binary with this command: `./swarmon`
 
 ## Services
+
 - prometheus (centralized metrics database)
 - grafana (metric visualizer)
 - alertmanager (alert handler)
@@ -27,6 +32,7 @@ You have to clone the repo, build the binary and copy the config folder and the 
 - node-exporter (host metrics collector)
 
 ## Project tree
+
 ```
 ├── main.go
 ├── go.mod
