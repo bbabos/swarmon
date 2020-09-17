@@ -15,12 +15,14 @@ schema="http"
 metric_port="9323"
 gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
 cgroup_path="/cgroup"
-cgroup_disable="#"
+cgroup_enabled="#"
 hostname_path="/Users/babosbence/hostname"
+prom_domain="prometheus"
+grafana_domain="grafana"
+alert_domain="alertmanager"
 
-cd ../configs/docker/
-cat docker-compose.yml |
-    sed "s/{{.Tag}}/$branch/g" |
+cd configs/docker/
+< docker-compose.yml sed "s/{{.Tag}}/$branch/g" |
     sed "s/{{.Domain}}/$domain/g" |
     sed "s/{{.AdminUser.Name}}/$adminuser/g" |
     sed "s/{{.AdminUser.Password}}/$adminpw/g" |
@@ -31,11 +33,14 @@ cat docker-compose.yml |
     sed "s/{{.Traefik.Port}}/$traefik_port/g" |
     sed "s/{{.Docker.MetricPort}}/$metric_port/g" |
     sed "s/{{.Docker.GwBridgeIP}}/$gwbridge/g" |
-    sed "s@{{.CgroupPath}}@$cgroup_path@g" |
-    sed "s@{{.CgroupDisable}}@$cgroup_disable@g" |
+    sed "s@{{.Cgroup.Path}}@$cgroup_path@g" |
+    sed "s@{{.Cgroup.Enabled}}@$cgroup_enabled@g" |
     sed "s@{{.HostNamePath}}@$hostname_path@g" |
     sed "s/{{.Traefik.BAUser}}/$traefik_user/g" |
+    sed "s/{{.Traefik.PrometheusSubDomain}}/$prom_domain/g" |
+    sed "s/{{.Traefik.GrafanaSubDomain}}/$grafana_domain/g" |
+    sed "s/{{.Traefik.AlertmanagerSubDomain}}/$alert_domain/g" |
     sed "s@{{.Traefik.BAPassword}}@$traefik_pw@g" >tmp-docker-compose.yml
 
-docker stack deploy -c tmp-docker-compose.yml $stackname
+docker stack deploy -c tmp-docker-compose.yml "$stackname"
 rm tmp-docker-compose.yml
