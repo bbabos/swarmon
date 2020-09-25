@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# TODOs
-# check domains (200 OK) + basic auths
-# check docker services n/n availability
-# test slack integration
-
 domain=$(< ../stackconfig.json jq -r '.Domain')
 schema=$(< ../stackconfig.json jq -r '.Schema')
 traefik_port=$(< ../stackconfig.json jq -r '.Traefik.Port')
@@ -20,22 +15,35 @@ slack_webhook=$(< ../stackconfig.json jq -r '.Slack.Webhook')
 slack_user=$(< ../stackconfig.json jq -r '.Slack.AlertUser')
 slack_channel=$(< ../stackconfig.json jq -r '.Slack.Channel')
 
-function siteCheck {
-    curl -u $ba_user:$ba_pass -H Host:$1.$domain $schema://$domain:$traefik_port > /dev/null 2>&1
-    if [[ $? != 0 ]]; then
-        echo "TEST FAILED > with subdomain: $1"
+function testSiteAccess {
+    if [[ "$2" == BA ]]; then
+        curl -u $ba_user:$ba_pass -H Host:$1.$domain $schema://$domain:$traefik_port > /dev/null 2>&1
     else
-        echo "TEST SUCCEED > with subdomain: $1"
+        curl -H Host:$1.$domain $schema://$domain:$traefik_port > /dev/null 2>&1
+    fi
+    if [[ "$?" != 0 ]]; then
+        echo "TEST FAILED > testSiteAccess with subdomain: $1"
+    else
+        echo "TEST SUCCEED > testSiteAccess with subdomain: $1"
     fi
 }
 
 function testSlackIntegration {
-    curl -X POST -H 'Content-type: application/json' --data '{"text":"Integration test","channel":"'$slack_channel'","username":"'"$slakc_user"'"}' $slack_webhook
+    curl -X POST -H 'Content-type: application/json' --data '{"text":"SwarMon integration test","channel":"'$slack_channel'","username":"'"$slack_user"'"}' $slack_webhook > /dev/null 2>&1
+    if [[ "$?" != 0 ]]; then
+        echo "TEST FAILED > testSlackIntegration"
+    else
+        echo "TEST SUCCEED > testSlackIntegration"
+    fi
 }
 
-# Site checks with BA
-siteCheck $prom_sub
-siteCheck $alertm_sub
+# Test site access
+testSiteAccess $prom_sub BA
+testSiteAccess $alertm_sub BA
+testSiteAccess $grafana_sub
 
 # Slack integration test
-testSlackIntegration
+# testSlackIntegration
+
+# Docker services check
+# TODO
