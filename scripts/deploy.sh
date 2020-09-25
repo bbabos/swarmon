@@ -9,6 +9,7 @@ traefik_user="admin"
 traefik_pw='$$apr1$$EmruEHQ6$$/vaexUtWlwpuI9c24ki7a1' # echo $(htpasswd -nb user password) | sed -e s/\\$/\\$\\$/g
 slack_url="http://webhook.url.com"
 slack_user="Alertmanager"
+slack_channel="testchannel"
 stackname="swarmon"
 traefik_port="80"
 schema="http"
@@ -30,6 +31,7 @@ cd configs/docker/
     sed "s/{{.Schema}}/$schema/g" |
     sed "s@{{.Slack.Webhook}}@$slack_url@g" |
     sed "s/{{.Slack.AlertUser}}/$slack_user/g" |
+    sed "s/{{.Slack.Channel}}/$slack_channel/g" |
     sed "s/{{.Traefik.Port}}/$traefik_port/g" |
     sed "s/{{.Docker.MetricPort}}/$metric_port/g" |
     sed "s/{{.Docker.GwBridgeIP}}/$gwbridge/g" |

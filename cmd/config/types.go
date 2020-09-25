@@ -23,6 +23,7 @@ type params struct {
 	Slack struct {
 		Webhook   string
 		AlertUser string
+		Channel   string
 	}
 	Traefik struct {
 		Port                  string
