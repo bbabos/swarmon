@@ -163,7 +163,9 @@ services:
     environment:
       SLACK_URL: {{.Slack.Webhook}}
       SLACK_USER: {{.Slack.AlertUser}}
+      SLACK_CHANNEL: {{.Slack.Channel}}
       DOMAIN: {{.Domain}}
+      SUB_DOMAIN: {{.Traefik.AlertmanagerSubDomain}}
       SCHEMA: {{.Schema}}
     command:
       - --config.file=/etc/alertmanager/alertmanager.yml

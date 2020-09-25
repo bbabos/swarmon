@@ -2,7 +2,7 @@
 
 An out-of-the-box solution to completely monitor your Docker Swarm environments. The monitoring stack uses Prometheus, Grafana, Alertmanager, Traefik and some exporters like cAdvisor.
 
-The integration and management process simplified with a Golang app, which can create the relevant config files based on your needs, deploy or update the services and some basic Docker option from CLI.
+The integration and management process simplified with a Golang app, which can create the stack with the relevant configs based on your needs. Also it can update the services if you want to change some parameters and can execute some basic Docker options from CLI.
 
 **The project is still in a development state, if you have any issues or bugs please contact me.**
 

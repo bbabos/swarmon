@@ -26,11 +26,7 @@ type options struct {
 
 func (p mainPage) render() {
 	selected := p.renderBase()
-	p.runAction(selected)
-}
-
-func (p mainPage) runAction(selected int) func() {
-	return p.items[selected].action
+	p.items[selected].action()
 }
 
 func (p mainPage) renderBase() int {

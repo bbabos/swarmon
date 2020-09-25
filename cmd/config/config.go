@@ -15,12 +15,13 @@ var Inputs = []input{
 	{Question: "Prometheus subdomain"},
 	{Question: "Grafana subdomain"},
 	{Question: "Alertmanager subdomain"},
-	{Question: "Admin username"},
-	{Question: "Admin password"},
+	{Question: "Admin user for Grafana"},
+	{Question: "Admin password for Grafana"},
 	{Question: "BasicAuth username"},
 	{Question: "BasicAuth password"},
 	{Question: "Slack Webhook URL"},
 	{Question: "Username for Slack alerts"},
+	{Question: "Channel for Slack alerts"},
 	{Question: "Traefik external port"},
 	{Question: "HTTP schema"},
 	{Question: "Docker Swarm metric port"},
@@ -89,7 +90,7 @@ func GetAnswers(stackExists bool) {
 	SetParams()
 	CreateOrSave(Paths.StackConfig)
 	Params.Traefik.BAPassword = utils.HashPass(Inputs[8].Answer)
-	if Inputs[15].Answer == "y" {
+	if Inputs[16].Answer == "y" {
 		Params.Cgroup.Enabled = "-"
 	} else {
 		Params.Cgroup.Enabled = "#-"
@@ -109,13 +110,14 @@ func SetAnswers() {
 	Inputs[8].Answer = Params.Traefik.BAPassword
 	Inputs[9].Answer = Params.Slack.Webhook
 	Inputs[10].Answer = Params.Slack.AlertUser
-	Inputs[11].Answer = Params.Traefik.Port
-	Inputs[12].Answer = Params.Schema
-	Inputs[13].Answer = Params.Docker.MetricPort
-	Inputs[14].Answer = Params.Docker.GwBridgeIP
-	Inputs[15].Answer = Params.Cgroup.Enabled
-	Inputs[16].Answer = Params.Cgroup.Path
-	Inputs[17].Answer = Params.HostNamePath
+	Inputs[11].Answer = Params.Slack.Channel
+	Inputs[12].Answer = Params.Traefik.Port
+	Inputs[13].Answer = Params.Schema
+	Inputs[14].Answer = Params.Docker.MetricPort
+	Inputs[15].Answer = Params.Docker.GwBridgeIP
+	Inputs[16].Answer = Params.Cgroup.Enabled
+	Inputs[17].Answer = Params.Cgroup.Path
+	Inputs[18].Answer = Params.HostNamePath
 }
 
 // SetParams is ...
@@ -131,11 +133,12 @@ func SetParams() {
 	Params.Traefik.BAPassword = Inputs[8].Answer
 	Params.Slack.Webhook = Inputs[9].Answer
 	Params.Slack.AlertUser = Inputs[10].Answer
-	Params.Traefik.Port = Inputs[11].Answer
-	Params.Schema = Inputs[12].Answer
-	Params.Docker.MetricPort = Inputs[13].Answer
-	Params.Docker.GwBridgeIP = Inputs[14].Answer
-	Params.Cgroup.Enabled = Inputs[15].Answer
-	Params.Cgroup.Path = Inputs[16].Answer
-	Params.HostNamePath = Inputs[17].Answer
+	Params.Slack.Channel = Inputs[11].Answer
+	Params.Traefik.Port = Inputs[12].Answer
+	Params.Schema = Inputs[13].Answer
+	Params.Docker.MetricPort = Inputs[14].Answer
+	Params.Docker.GwBridgeIP = Inputs[15].Answer
+	Params.Cgroup.Enabled = Inputs[16].Answer
+	Params.Cgroup.Path = Inputs[17].Answer
+	Params.HostNamePath = Inputs[18].Answer
 }
