@@ -29,8 +29,9 @@ func (p mainPage) render() {
 	p.runAction(selected)
 }
 
-func (p mainPage) runAction(selected int) func() {
-	return p.items[selected].action
+func (p mainPage) runAction(selected int) {
+	fmt.Println(p.items[selected])
+	p.items[selected].action()
 }
 
 func (p mainPage) renderBase() int {
