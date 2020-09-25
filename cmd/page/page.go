@@ -26,11 +26,6 @@ type options struct {
 
 func (p mainPage) render() {
 	selected := p.renderBase()
-	p.runAction(selected)
-}
-
-func (p mainPage) runAction(selected int) {
-	fmt.Println(p.items[selected])
 	p.items[selected].action()
 }
 
