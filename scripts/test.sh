@@ -37,13 +37,29 @@ function testSlackIntegration {
     fi
 }
 
+function testDockerServices {
+    services=$(docker service ls | awk '{print $2":"$4}')
+
+    for service in $services; do
+        if [ $service != "NAME:REPLICAS" ]; then
+            servicename=$(echo $service | cut -d ':' -f 1)
+            echo $service | grep '0/*' > /dev/null 2>&1
+            if [[ "$?" != 0 ]]; then
+                echo "TEST SUCCEED > testDockerServices on service: $servicename"
+            else
+                echo "TEST FAILED > testDockerServices on service: $servicename"
+            fi
+        fi
+    done
+}
+ 
 # Test site access
 testSiteAccess $prom_sub BA
 testSiteAccess $alertm_sub BA
 testSiteAccess $grafana_sub
 
-# Slack integration test
-# testSlackIntegration
-
 # Docker services check
-# TODO
+testDockerServices
+
+# Slack integration test
+testSlackIntegration
