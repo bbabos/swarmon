@@ -12,9 +12,9 @@ volumes:
 
 configs:
   node_rules:
-    file: ./prometheus/rules/swarm_node.rules.yml
+    file: ./prometheus/rules/swarm_node_rules.yml
   task_rules:
-    file: ./prometheus/rules/swarm_task.rules.yml
+    file: ./prometheus/rules/swarm_task_rules.yml
 
 services:
   dockerd-exporter:
