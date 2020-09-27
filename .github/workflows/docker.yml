@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
@@ -29,7 +26,7 @@ jobs:
         name: Build and push alertmanager
         uses: docker/build-push-action@v2
         with:
-          context: ./configs/docker/alertmanager
+          context: ./configs/docker/alertmanager/
           file: ./configs/docker/alertmanager/Dockerfile
           push: true
           tags: babobene/alertmanager:development
@@ -37,7 +34,7 @@ jobs:
         name: Build and push dockerd-exporter
         uses: docker/build-push-action@v2
         with:
-          context: ./configs/docker/dockerd-exporter
+          context: ./configs/docker/dockerd-exporter/
           file: ./configs/docker/dockerd-exporter/Dockerfile
           push: true
           tags: babobene/dockerd-exporter:development
@@ -45,7 +42,7 @@ jobs:
         name: Build and push grafana
         uses: docker/build-push-action@v2
         with:
-          context: ./configs/docker/grafana
+          context: ./configs/docker/grafana/
           file: ./configs/docker/grafana/Dockerfile
           push: true
           tags: babobene/grafana:development
@@ -53,7 +50,7 @@ jobs:
         name: Build and push node-exporter
         uses: docker/build-push-action@v2
         with:
-          context: ./configs/docker/node-exporter
+          context: ./configs/docker/node-exporter/
           file: ./configs/docker/node-exporter/Dockerfile
           push: true
           tags: babobene/node-exporter:development
@@ -61,7 +58,7 @@ jobs:
         name: Build and push prometheus
         uses: docker/build-push-action@v2
         with:
-          context: ./configs/docker/prometheus
+          context: ./configs/docker/prometheus/
           file: ./configs/docker/prometheus/Dockerfile
           push: true
           tags: babobene/prometheus:development
