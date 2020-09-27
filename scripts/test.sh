@@ -11,6 +11,7 @@ ba_pass=$(< stackconfig.json jq -r '.Traefik.BAPassword')
 slack_webhook=$(< stackconfig.json jq -r '.Slack.Webhook')
 slack_user=$(< stackconfig.json jq -r '.Slack.AlertUser')
 slack_channel=$(< stackconfig.json jq -r '.Slack.Channel')
+stack_name=$(< stackconfig.json jq -r '.Docker.StackName')
 grafana_domain=$schema://$grafana_sub.$domain:$traefik_port
 alertm_domain=$schema://$alertm_sub.$domain:$traefik_port
 prom_domain=$schema://$prom_sub.$domain:$traefik_port
@@ -38,7 +39,7 @@ function testSlackIntegration {
 }
 
 function testDockerServices {
-    services=$(docker service ls | awk '{print $2":"$4}')
+    services=$(docker service ls | grep $stack_name | awk '{print $2":"$4}')
 
     for service in $services; do
         if [ $service != "NAME:REPLICAS" ]; then
@@ -52,6 +53,32 @@ function testDockerServices {
         fi
     done
 }
+
+function testDockerDaemon {
+    docker info > /dev/null 2>&1
+    if [[ "$?" != 0 ]]; then
+        echo "TEST FAILED  > testDockerDaemon"
+        exit 1
+    else
+        echo "TEST SUCCEED > testDockerDaemon"
+    fi
+}
+
+function testStackCreation {
+    docker stack ps $stack_name > /dev/null 2>&1
+    if [[ "$?" != 0 ]]; then
+        echo "TEST FAILED  > testStackCreation"
+        exit 1
+    else
+        echo "TEST SUCCEED > testStackCreation"
+    fi
+}
+
+# Test Docker daemon
+testDockerDaemon
+
+# Test stack creation
+testStackCreation
  
 # Test site access
 testSiteAccess $prom_sub BA
@@ -62,4 +89,4 @@ testSiteAccess $grafana_sub
 testDockerServices
 
 # Slack integration test
-testSlackIntegration
+# testSlackIntegration

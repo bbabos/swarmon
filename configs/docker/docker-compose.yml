@@ -12,9 +12,9 @@ volumes:
 
 configs:
   node_rules:
-    file: ./prometheus/rules/swarm_node.rules.yml
+    file: ./prometheus/rules/swarm_node_rules.yml
   task_rules:
-    file: ./prometheus/rules/swarm_task.rules.yml
+    file: ./prometheus/rules/swarm_task_rules.yml
 
 services:
   dockerd-exporter:
@@ -65,7 +65,7 @@ services:
           memory: 64M
 
   cadvisor:
-    image: gcr.io/google-containers/cadvisor:v0.36.0
+    image: gcr.io/cadvisor/cadvisor:v0.37.0
     networks:
       - monitor_net
     command: -logtostderr -docker_only
