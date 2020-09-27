@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'configs/docker/**'
+      - '.github/workflows/**'
     branches:
       - master
       - development
@@ -11,25 +12,55 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Login to DockerHub Registry
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+      -
+        name: Build and push alertmanager
+        uses: docker/build-push-action@v2
+        with:
+          context: ./configs/docker/alertmanager
+          file: ./configs/docker/alertmanager/Dockerfile
+          push: true
+          tags: babobene/alertmanager:${GITHUB_REF##*/}
 
-      - name: Build Docker images
-        run: |
-          cd configs/docker/alertmanager && docker build -t babobene/alertmanager:${GITHUB_REF##*/} .
-          cd ../dockerd-exporter && docker build -t babobene/dockerd-exporter:${GITHUB_REF##*/} .
-          cd ../grafana && docker build -t babobene/grafana:${GITHUB_REF##*/} .
-          cd ../node-exporter && docker build -t babobene/node-exporter:${GITHUB_REF##*/} .
-          cd ../prometheus && docker build -t babobene/prometheus:${GITHUB_REF##*/} .
+      -
+        name: Build and push dockerd-exporter
+        uses: docker/build-push-action@v2
+        with:
+          context: ./configs/docker/dockerd-exporter
+          file: ./configs/docker/dockerd-exporter/Dockerfile
+          push: true
+          tags: babobene/dockerd-exporter:${GITHUB_REF##*/}
 
-      - name: Push Docker images
-        run: |
-          docker push babobene/alertmanager:${GITHUB_REF##*/}
-          docker push babobene/dockerd-exporter:${GITHUB_REF##*/}
-          docker push babobene/grafana:${GITHUB_REF##*/}
-          docker push babobene/node-exporter:${GITHUB_REF##*/}
-          docker push babobene/prometheus:${GITHUB_REF##*/}
+      -
+        name: Build and push grafana
+        uses: docker/build-push-action@v2
+        with:
+          context: ./configs/docker/grafana
+          file: ./configs/docker/grafana/Dockerfile
+          push: true
+          tags: babobene/grafana:${GITHUB_REF##*/}
+
+      -
+        name: Build and push node-exporter
+        uses: docker/build-push-action@v2
+        with:
+          context: ./configs/docker/node-exporter
+          file: ./configs/docker/node-exporter/Dockerfile
+          push: true
+          tags: babobene/node-exporter:${GITHUB_REF##*/}
+
+      -
+        name: Build and push prometheus
+        uses: docker/build-push-action@v2
+        with:
+          context: ./configs/docker/prometheus
+          file: ./configs/docker/prometheus/Dockerfile
+          push: true
+          tags: babobene/prometheus:${GITHUB_REF##*/}
