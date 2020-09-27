@@ -86,9 +86,10 @@ You have to clone the repo, build the binary and copy the config folder and the 
 │           ├── conf
 │           │   └── prometheus.yml
 │           └── rules
-│               ├── swarm_node.rules.yml
-│               └── swarm_task.rules.yml
+│               ├── swarm_node_rules.yml
+│               └── swarm_task_rules.yml
 ├── scripts
     ├── build.sh
+    ├── test.sh
     └── deploy.sh
 ```
