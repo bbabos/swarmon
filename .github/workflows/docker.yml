@@ -7,7 +7,6 @@ on:
       - '.github/workflows/**'
     branches:
       - master
-      - development
 
 jobs:
   build:
@@ -27,7 +26,7 @@ jobs:
           context: ./configs/docker/alertmanager
           file: ./configs/docker/alertmanager/Dockerfile
           push: true
-          tags: babobene/alertmanager:${GITHUB_REF##*/}
+          tags: babobene/alertmanager:master
 
       -
         name: Build and push dockerd-exporter
@@ -36,7 +35,7 @@ jobs:
           context: ./configs/docker/dockerd-exporter
           file: ./configs/docker/dockerd-exporter/Dockerfile
           push: true
-          tags: babobene/dockerd-exporter:${GITHUB_REF##*/}
+          tags: babobene/dockerd-exporter:master
 
       -
         name: Build and push grafana
@@ -45,7 +44,7 @@ jobs:
           context: ./configs/docker/grafana
           file: ./configs/docker/grafana/Dockerfile
           push: true
-          tags: babobene/grafana:${GITHUB_REF##*/}
+          tags: babobene/grafana:master
 
       -
         name: Build and push node-exporter
@@ -54,7 +53,7 @@ jobs:
           context: ./configs/docker/node-exporter
           file: ./configs/docker/node-exporter/Dockerfile
           push: true
-          tags: babobene/node-exporter:${GITHUB_REF##*/}
+          tags: babobene/node-exporter:master
 
       -
         name: Build and push prometheus
@@ -63,4 +62,4 @@ jobs:
           context: ./configs/docker/prometheus
           file: ./configs/docker/prometheus/Dockerfile
           push: true
-          tags: babobene/prometheus:${GITHUB_REF##*/}
+          tags: babobene/prometheus:master
