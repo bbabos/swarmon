@@ -76,7 +76,7 @@ function testStackCreation {
 }
 
 function testDockerMetricPort {
-    nc -z localhost $metric_port
+    nc -z localhost $metric_port > /dev/null 2>&1
     if [[ "$?" != 0 ]]; then
         echo "TEST FAILED  > testDockerMetricPort"
     else
