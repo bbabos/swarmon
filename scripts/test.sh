@@ -12,6 +12,7 @@ slack_webhook=$(< stackconfig.json jq -r '.Slack.Webhook')
 slack_user=$(< stackconfig.json jq -r '.Slack.AlertUser')
 slack_channel=$(< stackconfig.json jq -r '.Slack.Channel')
 stack_name=$(< stackconfig.json jq -r '.Docker.StackName')
+metric_port=$(< stackconfig.json jq -r '.Docker.MetricPort')
 grafana_domain=$schema://$grafana_sub.$domain:$traefik_port
 alertm_domain=$schema://$alertm_sub.$domain:$traefik_port
 prom_domain=$schema://$prom_sub.$domain:$traefik_port
@@ -74,13 +75,22 @@ function testStackCreation {
     fi
 }
 
-# Test Docker daemon
+function testDockerMetricPort {
+    nc -z localhost $metric_port
+    if [[ "$?" != 0 ]]; then
+        echo "TEST FAILED  > testDockerMetricPort"
+    else
+        echo "TEST SUCCEED > testDockerMetricPort"
+    fi
+}
+
+# Test if Docker daemon is running
 testDockerDaemon
 
-# Test stack creation
+# Test if Docker stack creation was succesfull
 testStackCreation
  
-# Test site access
+# Test site access with or without BasicAuth
 testSiteAccess $prom_sub BA
 testSiteAccess $alertm_sub BA
 testSiteAccess $grafana_sub
@@ -90,3 +100,6 @@ testDockerServices
 
 # Slack integration test
 # testSlackIntegration
+
+# Check exposed Docker metrics port on localhost
+testDockerMetricPort
