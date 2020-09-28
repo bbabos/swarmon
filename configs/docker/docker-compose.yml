@@ -18,7 +18,7 @@ configs:
 
 services:
   dockerd-exporter:
-    image: babobene/dockerd-exporter:{{.Tag}}
+    image: babobene/dockerd-exporter:{{.Docker.Tag}}
     networks:
       - monitor_net
     environment:
@@ -37,7 +37,7 @@ services:
           memory: 64M
 
   node-exporter:
-    image: babobene/node-exporter:{{.Tag}}
+    image: babobene/node-exporter:{{.Docker.Tag}}
     networks:
       - monitor_net
     environment:
@@ -89,7 +89,7 @@ services:
           memory: 64M
 
   prometheus:
-    image: babobene/prometheus:{{.Tag}}
+    image: babobene/prometheus:{{.Docker.Tag}}
     networks:
       - monitor_net
     command:
@@ -126,7 +126,7 @@ services:
         constraint: {{.Docker.StackName}}
 
   grafana:
-    image: babobene/grafana:{{.Tag}}
+    image: babobene/grafana:{{.Docker.Tag}}
     networks:
       - monitor_net
     environment:
@@ -157,7 +157,7 @@ services:
         constraint: {{.Docker.StackName}}
 
   alertmanager:
-    image: babobene/alertmanager:{{.Tag}}
+    image: babobene/alertmanager:{{.Docker.Tag}}
     networks:
       - monitor_net
     environment:
