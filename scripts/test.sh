@@ -87,6 +87,9 @@ function testDockerMetricPort {
 # Test if Docker daemon is running
 testDockerDaemon
 
+# Check exposed Docker metrics port on localhost
+testDockerMetricPort
+
 # Test if Docker stack creation was succesfull
 testStackCreation
  
@@ -100,6 +103,3 @@ testDockerServices
 
 # Slack integration test
 # testSlackIntegration
-
-# Check exposed Docker metrics port on localhost
-testDockerMetricPort
