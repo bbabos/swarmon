@@ -6,7 +6,6 @@ type input struct {
 }
 
 type params struct {
-	Tag    string
 	Domain string
 	Schema string
 	Cgroup struct {
@@ -34,6 +33,7 @@ type params struct {
 		AlertmanagerSubDomain string
 	}
 	Docker struct {
+		Tag        string
 		StackName  string
 		MetricPort string
 		GwBridgeIP string

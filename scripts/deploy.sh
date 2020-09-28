@@ -17,13 +17,13 @@ metric_port="9323"
 gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
 cgroup_path="/cgroup"
 cgroup_enabled="#"
-hostname_path="/Users/babosbence/hostname"
+hostname_path="~/hostname"
 prom_domain="prometheus"
 grafana_domain="grafana"
 alert_domain="alertmanager"
 
 cd configs/docker/
-< docker-compose.yml sed "s/{{.Tag}}/$branch/g" |
+< docker-compose.yml sed "s/{{.Docker.Tag}}/$branch/g" |
     sed "s/{{.Domain}}/$domain/g" |
     sed "s/{{.AdminUser.Name}}/$adminuser/g" |
     sed "s/{{.AdminUser.Password}}/$adminpw/g" |
