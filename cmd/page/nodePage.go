@@ -1,8 +1,6 @@
 package page
 
 import (
-	"fmt"
-
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
@@ -37,5 +35,4 @@ func nodeSubPage(n docker.INode) {
 		},
 	}
 	page.render()
-	defer fmt.Println("----------------------------------------------")
 }

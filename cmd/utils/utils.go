@@ -108,9 +108,7 @@ func ExecShellCommand(command string, showOutput bool) {
 func ExitOnKeystroke(menu func()) {
 loop:
 	for {
-		fmt.Println("----------------------------------------------")
-		fmt.Println("Press q to exit!")
-		fmt.Println("----------------------------------------------")
+		fmt.Print("Press q to exit! ")
 		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
 			log.Fatal(err)
