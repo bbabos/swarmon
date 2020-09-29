@@ -1,8 +1,6 @@
 package page
 
 import (
-	"fmt"
-
 	"github.com/bbabos/swarmon/cmd/docker"
 )
 
@@ -35,5 +33,4 @@ func containerSubPage(c docker.IContainer) {
 		},
 	}
 	page.render()
-	defer fmt.Println("----------------------------------------------")
 }
