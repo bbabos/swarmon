@@ -31,6 +31,7 @@ func nodeSubPage(n docker.INode) {
 		items: []options{
 			{Name: "Promote node", action: n.Promote},
 			{Name: "Demote node", action: n.Demote},
+			{Name: "Inspect node", action: n.Inspect},
 			{Name: "Back", action: func() { return }},
 		},
 	}

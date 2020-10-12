@@ -45,6 +45,7 @@ var Params = params{
 		Path    string
 		Enabled string
 	}{"/cgroup", "n"},
+	HostNamePath: "/etc/hostname",
 }
 
 // Paths is ...

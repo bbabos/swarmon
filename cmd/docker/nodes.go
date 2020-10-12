@@ -13,6 +13,7 @@ import (
 type INode interface {
 	Promote()
 	Demote()
+	Inspect()
 	GetName() string
 }
 
@@ -54,6 +55,11 @@ func (n Node) Promote() {
 // Demote is ...
 func (n Node) Demote() {
 	utils.ExecShellCommand("docker node demote "+n.ID, true)
+}
+
+// Inspect is ...
+func (n Node) Inspect() {
+	utils.ExecShellCommand("docker node inspect "+n.ID, true)
 }
 
 // GetName is ...

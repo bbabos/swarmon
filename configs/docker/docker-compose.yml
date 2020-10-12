@@ -1,7 +1,7 @@
 version: "3.6"
 
 networks:
-  monitor_net:
+  net:
     driver: overlay
     attachable: true
 
@@ -20,7 +20,7 @@ services:
   dockerd-exporter:
     image: babobene/dockerd-exporter:{{.Docker.Tag}}
     networks:
-      - monitor_net
+      - net
     environment:
       GW_BRIDGE_IP: {{.Docker.GwBridgeIP}}
       METRIC_PORT: {{.Docker.MetricPort}}
@@ -39,7 +39,7 @@ services:
   node-exporter:
     image: babobene/node-exporter:{{.Docker.Tag}}
     networks:
-      - monitor_net
+      - net
     environment:
       - NODE_ID={{.Node.ID}}
     volumes:
@@ -67,7 +67,7 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.37.0
     networks:
-      - monitor_net
+      - net
     command: -logtostderr -docker_only
     volumes:
       - /:/rootfs:ro
@@ -91,7 +91,7 @@ services:
   prometheus:
     image: babobene/prometheus:{{.Docker.Tag}}
     networks:
-      - monitor_net
+      - net
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
@@ -128,7 +128,7 @@ services:
   grafana:
     image: babobene/grafana:{{.Docker.Tag}}
     networks:
-      - monitor_net
+      - net
     environment:
       GF_SECURITY_ADMIN_USER: {{.AdminUser.Name}}
       GF_SECURITY_ADMIN_PASSWORD: {{.AdminUser.Password}}
@@ -159,7 +159,7 @@ services:
   alertmanager:
     image: babobene/alertmanager:{{.Docker.Tag}}
     networks:
-      - monitor_net
+      - net
     environment:
       SLACK_URL: {{.Slack.Webhook}}
       SLACK_USER: {{.Slack.AlertUser}}
@@ -197,17 +197,16 @@ services:
   traefik:
     image: traefik:v2.3
     networks:
-      - monitor_net
+      - net
     ports:
       - {{.Traefik.Port}}:80
     command:
       - --accesslog=true
-      - --providers.docker=true
-      - --providers.docker.watch
-      - --providers.docker.swarmMode=true
-      - --providers.docker.constraints=Label(`constraint`,`{{.Docker.StackName}}`)
       - --entryPoints.web.address=:80
       - --entryPoints.web.forwardedHeaders.insecure
+      - --providers.docker=true
+      - --providers.docker.swarmMode=true
+      - --providers.docker.constraints=Label(`constraint`,`{{.Docker.StackName}}`)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
