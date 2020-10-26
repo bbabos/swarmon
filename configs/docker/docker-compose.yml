@@ -32,6 +32,7 @@ services:
         max_attempts: 3
       resources:
         limits:
+          cpus: '0.25'
           memory: 128M
         reservations:
           memory: 64M
@@ -60,6 +61,7 @@ services:
         max_attempts: 3
       resources:
         limits:
+          cpus: '0.25'
           memory: 128M
         reservations:
           memory: 64M
@@ -84,6 +86,7 @@ services:
         max_attempts: 3
       resources:
         limits:
+          cpus: '0.25'
           memory: 128M
         reservations:
           memory: 64M
@@ -115,6 +118,7 @@ services:
           - node.role == manager
       resources:
         limits:
+          cpus: '0.25'
           memory: 1024M
         reservations:
           memory: 128M
@@ -148,6 +152,7 @@ services:
           - node.role == manager
       resources:
         limits:
+          cpus: '0.25'
           memory: 128M
         reservations:
           memory: 64M
@@ -184,6 +189,7 @@ services:
           - node.role == manager
       resources:
         limits:
+          cpus: '0.25'
           memory: 128M
         reservations:
           memory: 64M
@@ -223,6 +229,7 @@ services:
         condition: on-failure
       resources:
         limits:
+          cpus: '0.25'
           memory: 128M
         reservations:
           memory: 64M
