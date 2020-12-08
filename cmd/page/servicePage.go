@@ -8,7 +8,7 @@ func servicePage() {
 	services := docker.GetServices()
 	page := dynamicPage{
 		details: `
---------- Service ----------
+--------- Info ----------
 {{ "ID:" | faint }}	{{ .ID }}
 {{ "Mode:" | faint }}	{{ .Mode }}
 {{ "Replicas:" | faint }}	{{ .Replicas }}

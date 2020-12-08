@@ -8,7 +8,7 @@ func containerPage() {
 	containers := docker.GetContainers()
 	page := dynamicPage{
 		details: `
---------- Container ----------
+--------- Info ----------
 {{ "ID:" | faint }}	{{ .ID }}
 {{ "Created:" | faint }}	{{ .Created }}
 {{ "State:" | faint }}	{{ .State }}`,

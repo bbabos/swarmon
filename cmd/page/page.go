@@ -31,7 +31,7 @@ func (p mainPage) render() {
 
 func (p mainPage) renderBase() int {
 	prompt := promptui.Select{
-		Label: "----- " + p.title + " -----",
+		Label: "--------- " + p.title + " ---------",
 		Items: p.items,
 		Templates: &promptui.SelectTemplates{
 			Label:    "{{ . }}",
@@ -51,7 +51,7 @@ func (p mainPage) renderBase() int {
 
 func (p dynamicPage) renderBase() int {
 	prompt := promptui.Select{
-		Label: "----- " + p.title + " -----",
+		Label: "--------- " + p.title + " ---------",
 		Items: p.items,
 		Templates: &promptui.SelectTemplates{
 			Label:    "{{ . }}",
