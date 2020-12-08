@@ -8,7 +8,7 @@ func nodePage() {
 	nodes := docker.GetNodes()
 	page := dynamicPage{
 		details: `
---------- node ----------
+--------- Info ----------
 {{ "ID:" | faint }}	{{ .ID }}
 {{ "Status:" | faint }}	{{ .Status }}
 {{ "Role:" | faint }}	{{ .Role }}
