@@ -51,7 +51,7 @@ services:
     command:
       - --path.sysfs=/host/sys
       - --path.procfs=/host/proc
-      - --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
       - --collector.textfile.directory=/etc/node-exporter/
     deploy:
       mode: global
@@ -201,7 +201,7 @@ services:
         constraint: {{.Docker.StackName}}
 
   traefik:
-    image: traefik:v2.3
+    image: traefik:v2.4
     networks:
       - net
     ports:
