@@ -8,22 +8,22 @@ adminpw="admin"
 traefik_user="admin"
 traefik_pw='$$apr1$$EmruEHQ6$$/vaexUtWlwpuI9c24ki7a1' # echo $(htpasswd -nb user password) | sed -e s/\\$/\\$\\$/g
 slack_url="http://webhook.url.com"
-slack_user="Alertmanager"
-slack_channel="testchannel"
+slack_user="Alert"
+slack_channel="test"
 stackname="swarmon"
 traefik_port="80"
 schema="http"
 metric_port="9323"
-gwbridge="172.18.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
+gwbridge="172.26.0.1" # docker run --rm --net host alpine ip -o addr show docker_gwbridge
 cgroup_path="/cgroup"
 cgroup_enabled="#"
 hostname_path="~/hostname"
 prom_domain="prometheus"
 grafana_domain="grafana"
-alert_domain="alertmanager"
+alert_domain="alerts"
 
 cd configs/docker/
-< docker-compose.yml sed "s/{{.Docker.Tag}}/$branch/g" |
+sed <docker-compose.yml "s/{{.Docker.Tag}}/$branch/g" |
     sed "s/{{.Domain}}/$domain/g" |
     sed "s/{{.AdminUser.Name}}/$adminuser/g" |
     sed "s/{{.AdminUser.Password}}/$adminpw/g" |
